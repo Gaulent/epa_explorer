@@ -1,7 +1,12 @@
-install.packages("readr")
+#install.packages("readr")
 library(readr)
 
-setwd("C:/workarea")
+#install.packages("plyr")
+library(plyr)
+
+#copy /b * newfile #append de ficheros en windows
+
+#setwd("C:/totalcmd")
 
 time_to_hours <- function(x) {
   x[x==0]<-NA # Valor nulo
@@ -12,95 +17,126 @@ time_to_hours <- function(x) {
 
 column_widths<-c(3, 2, 2, 5, 1, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 3, 1, 3, 2, 2, 2, 3, 1, 2, 1, 2, 3, 2, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 2, 2, 3, 3, 2, 3, 1, 2, 4, 4, 4, 1, 4, 4, 2, 1, 1, 1, 2, 4, 1, 1, 2, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 3, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 3, 1, 2, 2, 7)
 column_names<-c("CICLO", "CCAA", "PROV", "NVIVI", "NIVEL", "NPERS", "EDAD5", "RELPP1", "SEXO1", "NCONY", "NPADRE", "NMADRE", "RELLMILI", "ECIV1", "PRONA1", "REGNA1", "NAC1", "EXREGNA1", "ANORE1", "NFORMA", "RELLB", "EDADEST", "CURSR", "NCURSR", "CURSNR", "NCURNR", "HCURNR", "RELLB1", "TRAREM", "AYUDFA", "AUSENT", "RZNOTB", "VINCUL", "NUEVEM", "OCUP1", "ACT1", "SITU", "SP", "DUCON1", "DUCON2", "DUCON3", "TCONTM", "TCONTD", "DREN", "DCOM", "PROEST", "REGEST", "PARCO1", "PARCO2", "HORASP", "HORASH", "HORASE", "EXTRA", "EXTPAG", "EXTNPG", "RZDIFH", "TRAPLU", "OCUPLU1", "ACTPLU1", "SITPLU", "HORPLU", "MASHOR", "DISMAS", "RZNDISH", "HORDES", "BUSOTR", "BUSCA", "DESEA", "FOBACT", "NBUSCA", "ASALA", "EMBUS", "ITBU", "DISP", "RZNDIS", "EMPANT", "DTANT", "OCUPA", "ACTA", "SITUA", "OFEMP", "SIDI1", "SIDI2", "SIDI3", "SIDAC1", "SIDAC2", "MUN1", "PRORE1", "REPAIRE1", "TRAANT", "AOI", "CSE", "FACTOREL")
-col_types<-("nccnc-ncc----cccccnc-nccccn-cccccccccccccnnnnccccnnncnncccccncccncccccccccccncccccccccccccccn")
-dframe<-read_fwf("data/datos_new_full", fwf_widths(column_widths, column_names), col_types)
+col_types<-("nccnc-n-c----cccc--c-nc-c---ccc--cccc-cc-nnnnccc-nnnc---c----c---ccc-c---cccn---ccccccc---ccn")
+dframe<-read_fwf("data/datos_old_full", fwf_widths(column_widths, column_names), col_types)
+
+# ------- RETROCOMPATIBILIDAD
+# REVISAR EL NFORMA
+# REVISAR EL NCURSR
+
+dframe$CCAA[dframe$CCAA==18] <- dframe$PROV[dframe$CCAA==18] # Compatibilidad hacia atras
+dframe$NUEVEM[dframe$NUEVEM=="6" & !is.na(dframe$NUEVEM)]<-"3" # Retrocompatibilidad
+
+
+dframe$NFORMA[dframe$CICLO<130]<-mapvalues(dframe$NFORMA[dframe$CICLO<130],from=c("01","02","03","04","05","06","07","08","09","10","11","12","13","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"), to=c("AN","AN","P2","S1","S1","S1","S1","SG","SP","SP","SP","SP","SP","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU","SU")) #Retrocompatibilidad
+
+dframe$SITU[dframe$CICLO<130]<-mapvalues(dframe$SITU[dframe$CICLO<130],from=c("1","2","3","4","5","6","7","8","9"), to=c("01","01","03","03","05","06","07","08","09")) #Retrocompatibilidad
+dframe$CURSNR[dframe$CICLO<130]<-mapvalues(dframe$NCURSR[dframe$CICLO<130],from=c("PR","S1","SG","SP","SU","ED","EM","PE"), to=c("3","3","3","3","3","1","1","1"))
+dframe$DUCON1[dframe$CICLO<130]<-mapvalues(dframe$DUCON2[dframe$CICLO<130],from=c("1","2","3","4","5","6","7","8","9","0"), to=c("1","1","6","6","6","6","6","6","6","6")) #Retrocompatibilidad
+dframe$DUCON2[dframe$CICLO<130]<-mapvalues(dframe$DUCON2[dframe$CICLO<130],from=c("1","2","3","4","5","6","7","8","9","0"), to=c("1","6",NA,NA,NA,NA,NA,NA,NA,NA)) #Retrocompatibilidad
+dframe$PARCO1[dframe$CICLO<130]<-mapvalues(dframe$PARCO1[dframe$CICLO<130],from=c("1","2","3","4","5","6","7","8","9"), to=c("1","6","6","6","6","6","6","6","6")) #Retrocompatibilidad
+dframe$HORASH[dframe$CICLO<130]<-dframe$HORASH[dframe$CICLO<130]*100 # Retrocompatiblidad
+dframe$HORASE[dframe$CICLO<130]<-dframe$HORASE[dframe$CICLO<130]*100 # Retrocompatiblidad
+dframe$MASHOR[dframe$CICLO<130]<-mapvalues(dframe$MASHOR[dframe$CICLO<130],from=c("1","2","3","4","5","6"), to=c("1","1","1","1","2","3")) #Retrocompatibilidad
+dframe$DESEA[dframe$CICLO<130]<-mapvalues(dframe$BUSCA[dframe$CICLO<130],from=c("1","2","3"), to=c(NA,"1","6")) #Retrocompatibilidad
+dframe$BUSCA[dframe$CICLO<130]<-mapvalues(dframe$BUSCA[dframe$CICLO<130],from=c("1","2","3"), to=c("1","6","6")) #Retrocompatibilidad
+dframe$NBUSCA[dframe$CICLO<130]<-mapvalues(dframe$NBUSCA[dframe$CICLO<130],from=c("01","02","03","04","05","06","07","08","09","10","11","12","13","14","15"), to=c("01","08","08","08","02","08","08","08","08","03","05","06","07","08","08")) #Retrocompatibilidad
+dframe$RZNDIS[dframe$CICLO<130]<-mapvalues(dframe$DISP[dframe$CICLO<130],from=c("1","2","3","4","5","6","7"), to=c(NA,"1","5","2","3","4","4")) #Retrocompatibilidad
+dframe$DISP[dframe$CICLO<130]<-mapvalues(dframe$DISP[dframe$CICLO<130],from=c("1","2","3","4","5","6","7"), to=c("1","6","6","6","6","6","6")) #Retrocompatibilidad
+dframe$SIDI1[dframe$CICLO<130]<-mapvalues(dframe$SIDI1[dframe$CICLO<130],from=c("1","2","3","4","5","6","7"), to=c("01","02","03","04","05","06","07")) #Retrocompatibilidad
+dframe$SIDI2[dframe$CICLO<130]<-mapvalues(dframe$SIDI2[dframe$CICLO<130],from=c("1","2","3","4","5","6","7"), to=c("01","02","03","04","05","06","07")) #Retrocompatibilidad
+dframe$SIDI3[dframe$CICLO<130]<-mapvalues(dframe$SIDI3[dframe$CICLO<130],from=c("1","2","3","4","5","6","7"), to=c("01","02","03","04","05","06","07")) #Retrocompatibilidad
+dframe$AOI[dframe$CICLO<130]<-mapvalues(dframe$AOI[dframe$CICLO<130],from=c("01","02","03","04","05","06","07","08","09"), to=c(NA,NA,"03","04","05","06","07","08","09")) #Retrocompatibilidad
+
+
+
+
+# --------- FIN DE RETROCOMPATIBILIDAD
+
+# ------ INICIO LIMPIEZA
+
 
 dframe <- as.data.frame(unclass(dframe)) #Todos los char a factor.
 
-#--------- UNA SOLA VEZ
-
-dframe$EDADEST[dframe$EDADEST==0]<-NA # Valor nulo
-dframe$HCURNR[dframe$HCURNR==999]<-NA # Valor nulo
-dframe$EXTNPG<-time_to_hours(dframe$EXTNPG)
-dframe$EXTPAG<-time_to_hours(dframe$EXTPAG)
-dframe$HORASE<-time_to_hours(dframe$HORASE)
-dframe$HORASH<-time_to_hours(dframe$HORASH)
-dframe$HORASP<-time_to_hours(dframe$HORASP)
-dframe$HORDES[dframe$HORDES==99]<-NA # Valor nulo
-dframe$HORPLU<-time_to_hours(dframe$HORPLU)
-dframe$TCONTD[dframe$TCONTD==0]<-NA # Valor nulo
-dframe$TCONTD[dframe$TCONTD==99]<-NA # Valor nulo
-dframe$TCONTM[dframe$TCONTM==0]<-NA # Valor nulo
-dframe$ASALA[dframe$ASALA=="0"]<-NA # Valor nulo
-dframe$DUCON3[dframe$DUCON3=="00"]<-NA # Valor nulo
-dframe$RZNOTB[dframe$RZNOTB=="00"]<-NA # Valor nulo
-dframe$SP[dframe$SP=="0"]<-NA # Valor nulo
-dframe$PARCO2[dframe$PARCO2=="00"]<-NA # Valor nulo
-
-dframe$FACTOREL<-dframe$FACTOREL/100
-
-#------ FIN: UNA SOLA VEZ
-
-#------------- CADA VEZ
-
 lista_si_no<-list("Si" = "1", "No" = "6")
-
-levels(dframe$ASALA)<-lista_si_no
-levels(dframe$AUSENT)<-lista_si_no
-levels(dframe$AYUDFA)<-lista_si_no
-levels(dframe$BUSCA)<-lista_si_no
-levels(dframe$BUSOTR)<-lista_si_no
-levels(dframe$DESEA)<-lista_si_no
-levels(dframe$DISMAS)<-lista_si_no
-levels(dframe$DISP)<-lista_si_no
-levels(dframe$TRAANT)<-lista_si_no
-levels(dframe$TRAPLU)<-lista_si_no
-levels(dframe$TRAREM)<-lista_si_no
-levels(dframe$EMPANT)<-lista_si_no
-levels(dframe$EXTRA)<-lista_si_no
-
-levels(dframe$CURSR)<-list("Si" = "1", "En vacaciones" = "2", "No" = "3")
-levels(dframe$MASHOR)<-list("Si" = "1", "Reduccion" = "2", "No" = "3")
-levels(dframe$DUCON1)<-list("Indefinido" = "1", "Temporal" = "6")
-levels(dframe$DUCON2)<-list("Permanente" = "1", "Discontinuo" = "6")
-levels(dframe$ECIV1)<-list("Soltero"="1", "Casado"="2", "Viudo"="3", "Separado"="4")
-levels(dframe$FOBACT)<-list("Activos" = "1", "No activos" = "6")
-levels(dframe$MUN1)<-list("Mismo" = "1", "Distinto" = "6")
-levels(dframe$NAC1)<-list("Española"="1",  "Doble"="2", "Extrangera"="3")
-levels(dframe$NCURNR)<-list("ED" = "ED", "EM" = "EM", "PE" = "PE")
-levels(dframe$NCURSR)<-list("PR" = "PR", "S1" = "S1", "SG" = "SG", "SP" = "SP", "SU" = "SU")
-levels(dframe$NFORMA)<-list("AN" = "AN", "P1" = "P1", "P2" = "P2", "S1" = "S1", "SG" = "SG", "SP" = "SP", "SU" = "SU")
-levels(dframe$PARCO1)<-list("Completa" = "1", "Parcial" = "6")
-
 lista_provincia<-list("Álava"="01",  "Albacete"="02",  "Alicante"="03",  "Almería"="04",  "Ávila"="05",  "Badajoz"="06",  "Baleares"="07",  "Barcelona"="08",  "Burgos"="09",  "Cáceres"="10",  "Cádiz"="11",  "Castellón"="12",  "Ciudad Real"="13",  "Córdoba"="14",  "Coruña"="15",  "Cuenca"="16",  "Girona"="17",  "Granada"="18",  "Guadalajara"="19",  "Guipúzcoa"="20",  "Huelva"="21",  "Huesca"="22",  "Jaén"="23",  "León"="24",  "Lleida"="25",  "Rioja"="26",  "Lugo"="27",  "Madrid"="28",  "Málaga"="29",  "Murcia"="30",  "Navarra"="31",  "Orense"="32",  "Asturias"="33",  "Palencia"="34",  "Palmas"="35",  "Pontevedra"="36",  "Salamanca"="37",  "Santa Cruz de Tenerife"="38",  "Cantabria"="39",  "Segovia"="40",  "Sevilla"="41",  "Soria"="42",  "Tarragona"="43",  "Teruel"="44",  "Toledo"="45",  "Valencia"="46",  "Valladolid"="47",  "Vizcaya"="48",  "Zamora"="49",  "Zaragoza"="50",  "Ceuta"="51",  "Melilla"="52")
-
-levels(dframe$PROEST)<-lista_provincia
-levels(dframe$PRONA1)<-lista_provincia
-levels(dframe$PRORE1)<-lista_provincia
-levels(dframe$PROV)<-lista_provincia
-
 lista_region<-list("Resto de Europa" = "100", "UE-15" = "115", "UE-25" = "125", "UE-27" = "127", "UE-28" = "128", "África" = "200", "Norteamérica" = "300", "Centroamérica" = "310", "Sudamérica" = "350", "Asia Oriental" = "400", "Asia Occidental" = "410", "Asia del Sur" = "420", "Oceanía" = "500", "Portugal" = "600", "Francia" = "610", "Andorra" = "620", "Marruecos" = "630", "Apátridas" = "999")
 
-levels(dframe$REGEST)<-lista_region
-levels(dframe$REGNA1)<-lista_region
-levels(dframe$REPAIRE1)<-lista_region
-levels(dframe$EXREGNA1)<-lista_region
-
+levels(dframe$CCAA)<-list("Andalucía"="01", "Aragón"="02", "Asturias"="03", "Baleares"="04", "Canarias"="05", "Cantabria"="06", "Castilla-León"="07", "Castilla-La Mancha"="08", "Cataluña"="09", "Comunidad Valenciana"="10", "Extremadura"="11", "Galicia"="12", "Madrid"="13", "Murcia"="14", "Navarra"="15", "País Vasco"="16", "Rioja"="17", "Ceuta"="51", "Melilla"="52")
+levels(dframe$PROV)<-lista_provincia
 levels(dframe$SEXO1)<-list("V"="1",  "M"="6")
-
+levels(dframe$ECIV1)<-list("Soltero"="1", "Casado"="2", "Viudo"="3", "Separado"="4")
+levels(dframe$PRONA1)<-lista_provincia
+levels(dframe$REGNA1)<-lista_region
+levels(dframe$NAC1)<-list("Española"="1",  "Doble"="2", "Extrangera"="3")
+levels(dframe$EXREGNA1)<-lista_region
+levels(dframe$NFORMA)<-list("AN" = "AN", "P1" = "P1", "P2" = "P2", "S1" = "S1", "SG" = "SG", "SP" = "SP", "SU" = "SU")
+dframe$EDADEST[dframe$EDADEST==0]<-NA # Valor nulo
+levels(dframe$CURSR)<-list("Si" = "1", "En vacaciones" = "2", "No" = "3")
+levels(dframe$NCURNR)<-list("ED" = "ED", "EM" = "EM", "PE" = "PE")
+levels(dframe$NCURSR)<-list("PR" = "PR", "S1" = "S1", "SG" = "SG", "SP" = "SP", "SU" = "SU")
+levels(dframe$CURSNR)<-list("Si" = "1", "En vacaciones" = "2", "No" = "3")
+dframe$HCURNR[dframe$HCURNR==999]<-NA # Valor nulo
+levels(dframe$TRAREM)<-lista_si_no
+levels(dframe$AYUDFA)<-lista_si_no
+levels(dframe$AUSENT)<-lista_si_no
+dframe$RZNOTB[dframe$RZNOTB=="00"]<-NA # Valor nulo
+dframe$SP[dframe$SP=="0"|dframe$SP=="6"]<-NA # Valor nulo
+levels(dframe$DUCON1)<-list("Indefinido" = "1", "Temporal" = "6")
+dframe$DUCON3[dframe$DUCON3=="00"]<-NA # Valor nulo
+levels(dframe$DUCON3)<-list("01" = "01", "02" = "02", "03" = "03", "04" = "04", "05" = "05", "06" = "06", "07" = "07", "08" = "08")
+levels(dframe$DUCON2)<-list("Permanente" = "1", "Discontinuo" = "6")
+dframe$TCONTM[dframe$TCONTM==0]<-NA # Valor nulo
+dframe$TCONTM[dframe$TCONTM>96]<-96
+dframe$TCONTD[dframe$TCONTD==0]<-NA # Valor nulo
+dframe$TCONTD[dframe$TCONTD==99]<-NA # Valor nulo
+levels(dframe$PROEST)<-lista_provincia
+levels(dframe$REGEST)<-lista_region
+dframe$PARCO2[dframe$PARCO2=="00"]<-NA # Valor nulo
+levels(dframe$PARCO1)<-list("Completa" = "1", "Parcial" = "6")
+dframe$HORASP<-time_to_hours(dframe$HORASP)
+dframe$HORASH<-time_to_hours(dframe$HORASH)
+dframe$HORASE<-time_to_hours(dframe$HORASE)
+levels(dframe$EXTRA)<-lista_si_no
+dframe$EXTPAG<-time_to_hours(dframe$EXTPAG)
+dframe$EXTNPG<-time_to_hours(dframe$EXTNPG)
+dframe$RZDIFH[dframe$RZDIFH=="00"]<-NA # Valor nulo
+dframe$RZDIFH[dframe$RZDIFH=="19"]<-NA # Valor nulo
+levels(dframe$TRAPLU)<-lista_si_no
+dframe$HORPLU<-time_to_hours(dframe$HORPLU)
+levels(dframe$MASHOR)<-list("Si" = "1", "Reduccion" = "2", "No" = "3")
+levels(dframe$DISMAS)<-lista_si_no
+dframe$HORDES[dframe$HORDES==99]<-NA # Valor nulo
+levels(dframe$BUSOTR)<-lista_si_no
+levels(dframe$BUSCA)<-lista_si_no
+levels(dframe$DESEA)<-lista_si_no
+levels(dframe$FOBACT)<-list("Activos" = "1", "No activos" = "6")
+dframe$ASALA[dframe$ASALA=="0"]<-NA # Valor nulo
+levels(dframe$ASALA)<-lista_si_no
+dframe$NBUSCA[dframe$NBUSCA=="00"]<-NA # Valor nulo
+dframe$EMBUS[dframe$EMBUS=="0"]<-NA # Valor nulo
+levels(dframe$DISP)<-lista_si_no
+dframe$SIDI1[dframe$SIDI1=="00"]<-NA # Valor nulo
+dframe$SIDI2[dframe$SIDI2=="00"]<-NA # Valor nulo
+dframe$SIDI3[dframe$SIDI3=="00"]<-NA # Valor nulo
+levels(dframe$EMPANT)<-lista_si_no
 levels(dframe$SIDAC1)<-list("Trabajando" = "1", "Buscando Empleo" = "2")
 levels(dframe$SIDAC2)<-list("Trabajando" = "1", "Buscando Empleo" = "2")
+levels(dframe$MUN1)<-list("Mismo" = "1", "Distinto" = "6")
+levels(dframe$PRORE1)<-lista_provincia
+levels(dframe$REPAIRE1)<-lista_region
+levels(dframe$TRAANT)<-lista_si_no
+dframe$FACTOREL<-dframe$FACTOREL/100
 
 
-levels(dframe$CCAA)<-list("Andalucía"="01", "Aragón"="02", "Asturias"="03", "Baleares"="04", "Canarias"="05", "Cantabria"="06", "Castilla-León"="07", "Castilla-La Mancha"="08", "Cataluña"="09", "Comunidad Valenciana"="10", "Extremadura"="11", "Galicia"="12", "Madrid"="13", "Murcia"="14", "Navarra"="15", "País Vasco"="16", "Rioja"="17", "Ceuta"="51", "Melilla"="52")
 
 #------------- FIN: CADA VEZ
 
-install.packages("RSQLite")
+#install.packages("RSQLite")
 library(RSQLite)
 
 con <- dbConnect(RSQLite::SQLite(), "epa_db.db")
-dbWriteTable(con,"epa_table",dframe)
+dbWriteTable(con,"epa_table",dframe, append=TRUE, overwrite=FALSE)
 dbDisconnect(con)
 
 
@@ -114,7 +150,7 @@ dbDisconnect(con)
 con <- dbConnect(RSQLite::SQLite(), "epa_db.db")
 
 # Fetch all results
-rs <- dbSendQuery(con, "SELECT CCAA FROM epa_table WHERE CICLO=130")
+rs <- dbSendQuery(con, "SELECT CICLO FROM epa_table")
 result<-dbFetch(rs,n=-1)
 dbClearResult(rs)
 
