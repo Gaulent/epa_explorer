@@ -9,21 +9,17 @@
 
 library(RSQLite)
 
-con <- dbConnect(RSQLite::SQLite(), "epa_db.db")
+getData <- function(sql_query) {
+  con <- dbConnect(RSQLite::SQLite(), "epa_db.db")
+  rs <- dbSendQuery(con, sql_query)
+  result_data<-dbFetch(rs,n=-1)
+  dbClearResult(rs)
+  dbDisconnect(con)
+  return(result_data)
+}
 
 # Lista de distintos Ciclos Posibles
-rs <- dbSendQuery(con, "SELECT DISTINCT CICLO FROM epa_table")
-list_ciclo<-dbFetch(rs,n=-1)
-dbClearResult(rs)
+list_ciclo<-getData("SELECT DISTINCT CICLO FROM epa_table")
 
 # Definicion de atributos
-rs <- dbSendQuery(con, "PRAGMA table_info(epa_table)")
-list_attrdef<-dbFetch(rs,n=-1)
-dbClearResult(rs)
-
-dbDisconnect(con)
-
-
-
-
-
+list_attrdef<-getData("PRAGMA table_info(epa_table)")
