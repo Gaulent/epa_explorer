@@ -11,6 +11,10 @@ This README would normally document whatever steps are necessary to get your app
 El objetivo del Proyecto Fin de Carrera será el de desarrollar una herramienta que sirva como soporte para el análisis estadístico y minería de datos. Los datos a analizar serán los históricos de la EPA (Encuesta de Población Activa).
  
 Dicha herramienta será visual, amigable y fácil de usar. Se hará uso del lenguaje de programación R para el desarrollo de la misma por su creciente popularidad, además de la gran cantidad de paquetes disponibles.
+ 
+La herramienta será capaz de mantener actualizada su base de datos con la información trimestral actualizada del repositorio oficial de la EPA, así como interpretarla de acuerdo a sus diccionarios de datos publicados.
+ 
+Un usuario podrá entonces hacer uso de la herramienta para obtener tanto gráficas y estudios estadísticos de los datos extraídos, así como aplicar técnicas de aprendizaje maquina no supervisados como clustering o reglas de asociación.
 
 * Version
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
