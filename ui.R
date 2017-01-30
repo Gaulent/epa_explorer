@@ -21,7 +21,13 @@ shinyUI(
                             selectInput("ciclo","Ciclo:",choices = rev(list_ciclo$CICLO)),
                             selectInput("atributo","Atributo:",choices = list_attrdef$name)
                           ),
-                          mainPanel(plotOutput("plot"))
+                          mainPanel(plotOutput("plot1"),
+                                    plotOutput("plot11"),
+                                    p("Summary:"),
+                                    verbatimTextOutput("text1"),
+                                    verbatimTextOutput("text2"),
+                                    plotOutput("plot2"),
+                                    plotOutput("plot3"))
                         ))
                ),
                tabPanel("Multiple",

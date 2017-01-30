@@ -27,13 +27,62 @@ shinyServer(function(input, output, session) {
     getData(sql_query)
   })
   
-  output$plot <- renderPlot({
-
+  output$plot1 <- renderPlot({
+    #Categorico
     a <- (aggregate(data()$FACTOREL, by=list(SEXO1=data()[,input$atributo]), FUN=sum))
     barplot(a$x, names.arg = a$SEXO1)
 
   })
   
+  output$plot11 <- renderPlot({
+    #Categorico
+    barplot(table(data()[,input$atributo]))
+    
+  })
+  
+  output$plot3 <- renderPlot({
+    if (is.numeric(data()[,input$atributo]))
+    hist(data()[,input$atributo], main = "Histogram of Used Car Prices",xlab = "Price ($)")
+    
+  })
+
+  output$text1 <- renderPrint({
+    if (is.numeric(data()[,input$atributo]))
+    summary(data()[,input$atributo])
+    
+    
+    #> var(usedcars$price)
+    #[1] 9749892
+    #> sd(usedcars$price)
+    #[1] 3122.482
+    #> var(usedcars$mileage)
+    #[1] 728033954
+    #> sd(usedcars$mileage)
+    #[1] 26982.1
+    #IQR(usedcars$price)
+    #> range(usedcars$price)
+    #[1]  3800 21992
+    #> diff(range(usedcars$price))
+    #[1] 18192
+
+  })
+
+  output$text2 <- renderPrint({
+    if (is.numeric(data()[,input$atributo]))
+    quantile(data()[,input$atributo],na.rm = TRUE)
+    
+  })
+  
+  output$plot2 <- renderPlot({
+    if (is.numeric(data()[,input$atributo]))
+    boxplot(data()[,input$atributo], main="Boxplot of Used Car Prices",ylab="Price ($)")
+    
+  })  
+  
+  
+  
+  
+    
   # Se llama al cerrar el navegador
   session$onSessionEnded(function() {
     print ("Session ended.")
