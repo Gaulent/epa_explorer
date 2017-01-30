@@ -1,3 +1,6 @@
+#install.packages("plyr")
+library(plyr)
+
 # ------- RETROCOMPATIBILIDAD
 # REVISAR EL NFORMA
 # REVISAR EL NCURSR

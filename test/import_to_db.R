@@ -1,9 +1,6 @@
 #install.packages("readr")
 library(readr)
 
-#install.packages("plyr")
-library(plyr)
-
 #copy /b * newfile #append de ficheros en windows
 
 #setwd("C:/totalcmd")
