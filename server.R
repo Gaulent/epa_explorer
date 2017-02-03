@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(gmodels) # For CrossTable()
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
@@ -23,32 +24,32 @@ shinyServer(function(input, output, session) {
   data<-reactive({
 
     # Lista de distintos Ciclos Posibles
-    sql_query <- paste(c("SELECT ",input$atributo,",FACTOREL FROM epa_table WHERE CICLO=",input$ciclo),collapse="")
+    sql_query <- paste(c("SELECT ",input$single_atributo,",FACTOREL FROM epa_table WHERE CICLO=",input$single_ciclo),collapse="")
     getData(sql_query)
   })
   
-  output$plot1 <- renderPlot({
+  output$single_plot1 <- renderPlot({
     #Categorico
-    a <- (aggregate(data()$FACTOREL, by=list(SEXO1=data()[,input$atributo]), FUN=sum))
+    a <- (aggregate(data()$FACTOREL, by=list(SEXO1=data()[,input$single_atributo]), FUN=sum))
     barplot(a$x, names.arg = a$SEXO1)
 
   })
   
-  output$plot11 <- renderPlot({
+  output$single_plot11 <- renderPlot({
     #Categorico
-    barplot(table(data()[,input$atributo]))
+    barplot(table(data()[,input$single_atributo]))
     
   })
   
-  output$plot3 <- renderPlot({
-    if (is.numeric(data()[,input$atributo]))
-    hist(data()[,input$atributo], main = "Histogram of Used Car Prices",xlab = "Price ($)")
+  output$single_plot3 <- renderPlot({
+    if (is.numeric(data()[,input$single_atributo]))
+    hist(data()[,input$single_atributo], main = "Histogram of Used Car Prices",xlab = "Price ($)")
     
   })
 
-  output$text1 <- renderPrint({
-    if (is.numeric(data()[,input$atributo]))
-    summary(data()[,input$atributo])
+  output$single_text1 <- renderPrint({
+    if (is.numeric(data()[,input$single_atributo]))
+    summary(data()[,input$single_atributo])
     
     
     #> var(usedcars$price)
@@ -67,20 +68,43 @@ shinyServer(function(input, output, session) {
 
   })
 
-  output$text2 <- renderPrint({
-    if (is.numeric(data()[,input$atributo]))
-    quantile(data()[,input$atributo],na.rm = TRUE)
+  output$single_text2 <- renderPrint({
+    if (is.numeric(data()[,input$single_atributo]))
+    quantile(data()[,input$single_atributo],na.rm = TRUE)
     
   })
   
-  output$plot2 <- renderPlot({
-    if (is.numeric(data()[,input$atributo]))
-    boxplot(data()[,input$atributo], main="Boxplot of Used Car Prices",ylab="Price ($)")
+  output$single_plot2 <- renderPlot({
+    if (is.numeric(data()[,input$single_atributo]))
+    boxplot(data()[,input$single_atributo], main="Boxplot of Used Car Prices",ylab="Price ($)")
     
   })  
   
   
   
+  multi_data<-reactive({
+    
+    # Lista de distintos Ciclos Posibles
+    sql_query <- paste(c("SELECT ",input$multi_atributo1,",",input$multi_atributo2," FROM epa_table WHERE CICLO=",input$multi_ciclo),collapse="")
+    getData(sql_query)
+  })
+  
+  
+  output$multi_plot <- renderPlot({
+    #if (is.numeric(data()[,input$single_atributo]))
+    
+    plot(x = multi_data()[,input$multi_atributo1], y = multi_data()[,input$multi_atributo2],
+         main = "Scatterplot of Price vs. Mileage",
+         xlab = "Used Car Odometer (mi.)",
+         ylab = "Used Car Price ($)")
+  })  
+  
+  output$multi_text <- renderPrint({
+    # TODO: At least 2 elements
+    CrossTable(x = multi_data()[,input$multi_atributo1], y = multi_data()[,input$multi_atributo2])
+  })    
+  
+
   
     
   # Se llama al cerrar el navegador
