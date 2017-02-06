@@ -19,7 +19,8 @@ shinyUI(
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("single_ciclo","Ciclo:",choices = rev(list_ciclo$CICLO)),
-                            selectInput("single_atributo","Atributo:",choices = list_attrdef$name)
+                            selectInput("single_atributo","Atributo:",choices = list_attrdef$name),
+                            downloadButton("report", "Generate report") #Markdown test
                           ),
                           mainPanel(plotOutput("single_plot1"),
                                     plotOutput("single_plot11"),
