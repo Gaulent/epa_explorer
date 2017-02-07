@@ -1,17 +1,333 @@
 ---
-title: "Dynamic report"
+title: "Encuesta de Población Activa (EPA)"
 output: html_document
 params:
-  n: NA
+  ciclo: 176
 ---
+
+### Tercer trimestre de 2016
+
+#### Principales resultados
+
+* El número de ocupados se incrementa en 226.500 personas en el tercer trimestre de 2016 respecto al trimestre anterior (un 1,24%) y se sitúa en 18.527.500. En términos desestacionalizados la variación trimestral es del 0,77%. El empleo ha crecido en 478.800 personas en los 12 últimos meses. La tasa anual es del 2,65%.
+
+* La ocupación sube este trimestre en 8.900 personas en el sector público y en 217.700 en el privado. En los 12 últimos meses el empleo ha aumentado en 461.300 personas en el sector privado y en 17.500 en el público.
+
+* El total de asalariados crece este tercer trimestre en 216.800 (455.700 en un año). Los asalariados con contrato indefinido descienden en 29.100, y los que tienen contrato temporal aumentan en 245.900. En variación anual, el empleo indefinido se ha incrementado en 213.100 personas y el temporal en 242.600. El número de trabajadores por cuenta propia sube en 10.900 este trimestre, mientras que en los 12 últimos meses ha crecido en 22.500.
+
+* La ocupación aumenta este trimestre en los Servicios (178.700 más), en la Industria (34.200) y en la Construcción (29.900), y desciende en la Agricultura (16.300 menos). En el último año el empleo ha subido en todos los sectores: en los Servicios 407.600 ocupados más, en la Agricultura 34.300, en la Construcción 24.500 y en la Industria 12.400.
+
+* Casi todas las comunidades autónomas aumentan su número de ocupados este trimestre. Los mayores incrementos se dan en Cataluña (42.700 ocupados más), Castilla y León (32.100) e Illes Balears (25.400). El número de ocupados desciende en Región de Murcia en 5.600. En el último año todas las comunidades incrementan su ocupación. Los mayores aumentos se observan en Cataluña (113.100), Andalucía (83.100) y Comunitat Valenciana (58.300).
+
+* El número de parados baja este trimestre en 253.900 personas (-5,55%) y se sitúa en 4.320.800. En términos desestacionalizados la variación trimestral es del -3,03%. En los 12 últimos meses el paro ha disminuido en 530.000 personas (-10,93%).
+
+* La tasa de paro se sitúa en el 18,91%, lo que supone 1,09 puntos menos que en el trimestre anterior. En el último año esta tasa ha descendido en 2,27 puntos.
+
+* Por comunidades, las mayores bajadas del paro este trimestre se dan en Cataluña (51.100 parados menos), Comunidad de Madrid (41.800) y Comunitat Valenciana (29.200). En términos anuales, las mayores reducciones se producen en Andalucía (148.200 menos), Cataluña (107.100) y Comunitat Valenciana (52.200).
+
+* El número de activos desciende este trimestre en 27.300, hasta 22.848.300. La tasa de actividad baja 13 centésimas y se sitúa en el 59,28%. En el último año la población activa ha descendido en 51.200 personas. 
+
+#### Ocupación
+
+El número de ocupados aumenta en 226.500 personas en el tercer trimestre de 2016 y se sitúa en 18.527.500, el nivel más alto desde mediados de 2011. La tasa de variación trimestral del empleo es del 1,24%. El incremento en la ocupación es el más elevado en un tercer trimestre desde 2005.
+
+La tasa de empleo (porcentaje de ocupados respecto de la población de 16 y más años) se sitúa en el 48,07%, lo que supone un incremento de 54 centésimas respecto del trimestre anterior. En variación anual, esta tasa ha subido 1,17 puntos.
+
+```{r}
+# Grafica.
+
+```
+
+Por sexo, el empleo aumenta este trimestre en mayor cuantía entre los hombres (141.700 ocupados más) que entre las mujeres (84.900 ocupadas más).
+
+Por nacionalidad, la ocupación se incrementa en 196.800 personas entre los españoles y en 29.700 entre los extranjeros.
+
+Por edad, el aumento del empleo se produce en la mayoría de los grupos de edad. Los mayores incrementos se observan en los grupos más jóvenes (20-24 años con 62.300 más, 25-29 años con 51.600 y 16-19 con 36.300) y en el grupo de 55 años y más (58.400). La ocupación desciende entre los ocupados de 35-39 años (28.800 menos) y entre los de 45-49 años (15.500 menos).
+
+En los 12 últimos meses el empleo se ha incrementado en 478.800 personas (216.300 hombres y 262.600 mujeres). La tasa de variación anual de la ocupación es del 2,65%, lo que supone 22 centésimas más que la del trimestre precedente.
+
+```{r}
+# Grafica.
+
+```
+
+El número de ocupados aumenta este trimestre en los Servicios (178.700 más), en la Industria (34.200) y en la Construcción (29.900) y desciende en la Agricultura (16.300 menos).
+
+En el último año el empleo ha subido en todos los sectores: en los Servicios hay 407.600 ocupados más, en la Agricultura 34.300, en la Construcción 24.500 y en la Industria 12.400.
+
+El empleo a tiempo completo sube este trimestre en 330.500 personas, mientras que el número de ocupados a tiempo parcial baja en 104.000. El porcentaje de personas ocupadas que trabaja a tiempo parcial se reduce 75 centésimas, hasta el 14,56%.
+
+En los 12 últimos meses el empleo a tiempo completo se ha incrementado en 532.100 personas, mientras que el número de ocupados a tiempo parcial ha disminuido en 53.300.
+
+El número de asalariados se incrementa este trimestre en 216.800. Los que tienen contrato indefinido disminuyen en 29.100, mientras que los de contrato temporal aumentan en 245.900. La tasa de temporalidad sube 1,23 centésimas, hasta el 26,96%, la cifra más alta desde finales de 2008.
+
+En los 12 últimos meses el número de asalariados ha subido en 455.700. El empleo indefinido se ha incrementado en 213.100 personas y el temporal en 242.600.
+
+Por su parte, el número total de trabajadores por cuenta propia aumenta en 10.900 personas este trimestre. El de trabajadores independientes y empresarios sin asalariados baja en 9.200, mientras que el de ayudas familiares aumenta en 12.200.
+
+El empleo privado1 sube este trimestre en 217.700 personas, situándose en 15.523.600. El empleo público2 aumenta en 8.900, hasta 3.003.900.
+
+```{r}
+# Grafica.
+
+```
+
+El empleo del sector privado presenta una variación anual del 3,06%, mientras que el empleo público crece un 0,59%. En los 12 últimos meses la ocupación ha aumentado en 461.300 personas en el sector privado y en 17.500 en el público.
+
+```{r}
+# Grafica.
+
+```
+
+#### Desempleo y tasa de paro
+
+El paro disminuye este trimestre en 253.900 personas. El número total de parados se sitúa en 4.320.800, el nivel más reducido desde el tercer trimestre de 2009. En términos relativos, el descenso trimestral del desempleo es del -5,55%. 
+
+```{r}
+# Grafica.
+
+```
+
+La tasa de paro disminuye 1,09 puntos y se sitúa en el 18,91%. Es el valor más bajo desde finales de 2009. En los 12 últimos meses ha descendido en 2,27 puntos.
+
+Por sexo, entre los hombres el paro se reduce en 120.300, hasta 2.129.400. Entre las mujeres el paro baja en 133.600 este trimestre, situándose en 2.191.400.
+
+La tasa de paro masculina baja 1,01 puntos y se sitúa en el 17,39%, mientras que la femenina se reduce 1,16 puntos, hasta el 20,66%.
+
+Por edad, todos los grupos de edad presentan descensos del paro este trimestre. Los mayores se concentran en los tramos de 25-54 años (199.700 parados menos) y de 20-24 años (43.900 menos).
+
+Por nacionalidad, el paro baja en 171.900 personas entre los españoles y en 81.900 entre los extranjeros. La tasa de paro de la población española es del 18,13%, mientras que la de la población extranjera es del 24,78%.
+
+El desempleo disminuye este trimestre en todos los sectores. En los Servicios en 102.100, en la Agricultura y en la Industria baja en 11.300 personas en cada sector y en la Construcción desciende en 4.000.
+
+El paro se reduce en 123.500 entre las personas que perdieron su empleo hace más de un año y en 1.600 entre las que buscan su primer empleo.
+
+La evolución del paro en variación anual es del -10,93%. La cifra total de desempleados se ha reducido en 530.000 personas en un año, con un descenso de 329.400 en los hombres y de 200.600 entre las mujeres. 
+
+```{r}
+# Grafica.
+
+```
+
+Por edad, la reducción anual del desempleo se observa en todos los grupos y se concentra en el grupo de personas de 25-54 años (382.600 parados menos).
+
+En los 12 últimos meses el desempleo ha descendido en los Servicios (78.100 parados menos), en la Construcción (22.000) y en la Agricultura (18.000). En la Industria prácticamente no ha habido variación en el último año. Por su parte, el número de parados que ha perdido su empleo hace más de un año ha bajado en 315.500, mientras que el de parados que buscan su primer empleo ha disminuido en 95.700.
+
+#### Población activa y tasa de actividad
+
+La población activa experimenta un descenso de 27.300 personas en el tercer trimestre de 2016 y se sitúa en 22.848.300. El número de mujeres activas baja en 48.700, mientras que el número de hombres activos aumenta en 21.400.
+
+Por nacionalidad, el número de activos españoles aumenta en 24.900, mientras que el de activos extranjeros desciende en 52.200.
+
+```{r}
+# Grafica.
+
+```
+
+La tasa de actividad baja 13 centésimas este trimestre, hasta el 59,28%. Por sexo, la de los hombres se incrementa cinco centésimas y se sitúa en el 65,26%, mientras que la femenina baja 30 centésimas, hasta el 53,61%.
+
+La tasa de actividad de los españoles no varía respecto del trimestre anterior y continúa en el 57,90%. La de los extranjeros baja 1,31 puntos, hasta el 72,23%. La diferencia entre ambas tasas se explica, fundamentalmente, por la diferente estructura por edades de unos y otros.
+
+En términos anuales, la población activa se ha reducido en 51.200 personas, mientras que la población en edad de trabajar (16-64 años) ha bajado en 102.500. La tasa de variación anual de los activos es del -0,22%, frente al -0,61% del trimestre anterior. 
+
+```{r}
+# Grafica.
+
+```
+
+#### Hogares
+
+El número de hogares se incrementa en 29.600 este trimestre respecto al segundo del año y se sitúa en 18.455.800. De ellos, 4.711.200 son unipersonales.
+
+Los hogares que tienen a todos sus miembros activos en paro disminuyen este trimestre en 55.500, hasta un total de 1.438.300. De ellos, 357.200 son unipersonales.
+
+Por su parte, el número de hogares en los que todos sus miembros activos están ocupados aumenta en 160.800, hasta 9.823.000. De ellos, 1.854.300 son unipersonales.
+
+En comparativa anual, el número de hogares con al menos un activo en los que todos los activos están en paro se ha reducido en 134.700, mientras que los que tienen a todos sus activos ocupados ha crecido en 357.000.
+
+#### Resultados por comunidades autónomas3
+
+Prácticamente todas las comunidades autónomas aumentan su número de ocupados este trimestre. Los mayores incrementos se producen en Cataluña (42.700 más), Castilla y León (32.100) e Illes Balears (25.400). El número de ocupados desciende en Región de Murcia en 5.600.
+
+En términos relativos, las comunidades con mejor evolución trimestral del empleo son Comunidad Foral de Navarra (4,87%), Illes Balears (4,63%) y Cantabria (3,85%). 
+
+```{r}
+# Grafica.
+
+```
+
+En variación anual, todas las comunidades autónomas presentan incrementos de ocupación. Los mayores aumentos se observan en Cataluña (113.100 más), Andalucía (83.100) y Comunitat Valenciana (58.300).
+
+En términos relativos, las mayores variaciones anuales de la ocupación se dan en Región de Murcia (5,51%), Cantabria (3,97%) y en Cataluña y País Vasco (3,64% cada una). 
+
+```{r}
+# Grafica.
+
+```
+
+Las mayores bajadas del paro este trimestre respecto al anterior se dan en Cataluña (51.100 parados menos), Comunidad de Madrid (41.800) y Comunitat Valenciana (29.200). Por el contrario, el paro aumenta este trimestre en Región de Murcia (7.800 parados más) y País Vasco (4.600).
+
+En variación anual, el paro baja en casi todas las comunidades autónomas. Los mayores descensos se dan en Andalucía (148.200 parados menos), Cataluña (107.100) y Comunitat Valenciana (52.200).
+
+Illes Balears (10,60%), Comunidad Foral de Navarra (12,41%) y Cantabria (12,53%) registran las tasas de paro más bajas este trimestre. En el extremo opuesto, Andalucía (28,52%), Canarias (26,01%) y Extremadura (25,61%) presentan las más elevadas.
+
+Los mayores aumentos del número de activos se dan este trimestre en Comunidad Foral de Navarra (11.500 activos más), País Vasco (11.400) e Illes Balears (11.300). Los mayores descensos se registran en Comunidad de Madrid (39.800 activos menos), Andalucía (18.800) y Cataluña (8.400).
+
+En los 12 últimos meses, País Vasco presenta el mayor incremento del número de activos (25.400 más). Le siguen Comunitat Valenciana, con 6.100 activos más, y Principado de Asturias y Cataluña, con 6.000 más cada una. En cambio, los mayores descensos anuales se dan en Andalucía (65.100 activos menos), Castilla-La Mancha (12.500) y Comunidad de Madrid (11.200).
+
+Las tasas de actividad oscilan este trimestre entre el 67,70% de Illes Balears y el 52,36% de Principado de Asturias. 
+
+#### Series desestacionalizadas
+
+En el tercer trimestre de 2016 la tasa de variación trimestral del empleo en términos desestacionalizados es del 0,77%. 
+
+```{r}
+# Grafica.
+
+```
+
+En cuanto a los resultados desestacionalizados de paro, se observa un descenso del 3,03%, con lo que ya son 14 los trimestres consecutivos de reducción del paro. 
+
+```{r}
+# Grafica.
+
+```
+
+Tal y como se expone en la metodología aplicada para desestacionalizar, el modelo de desestacionalización se mantiene durante un año, correspondiendo a los primeros trimestres el momento de la reidentificación del modelo, pero se recalculan trimestralmente los coeficientes, con lo cual cada trimestre se revisan los resultados anteriores (bien por reidentificación o por revisión de coeficientes), por lo que se debe consultar siempre las últimas series disponibles. Los resultados de las series desestacionalizadas de empleo y paro desde 1990 y la descripción del método utilizado se encuentran en http://www.ine.es/daco/daco42/daco4211/epa_desestacional.xls 
+
+#### Flujos en valores absolutos respecto del trimestre anterior4
+
+El flujo total de entrada a la ocupación en el tercer trimestre de 2016 es de 1.427.600 personas, cifra superior en 29.700 a la del mismo trimestre del año anterior.
+
+Por su parte, el flujo de salida de la ocupación es de 1.220.300, lo que supone 47.600 menos que en el mismo trimestre de 2015. 
+
+```{r}
+# Grafica.
+
+```
+
+El número de personas que estaban paradas hace tres meses y ahora no lo están se sitúa en 1.696.800, cifra inferior en 54.200 personas a la del mismo periodo del año anterior.
+
+Por su parte, el flujo total de entradas al paro alcanza las 1.515.100 personas, lo que supone 29.200 personas menos que el tercer trimestre de 2015. 
+
+```{r}
+# Grafica.
+
+```
+
+Las entradas a la actividad en este trimestre son 1.259.600, cifra superior en 87.100 a la del tercer trimestre de 2015.
+
+Por su parte, un total de 1.350.300 personas han salido de la actividad este trimestre, frente a las 1.358.700 que lo hicieron el mismo periodo de 2015 (es decir, 8.400 menos). 
+
+```{r}
+# Grafica.
+
+```
+
+El flujo de salida de la ocupación a la inactividad de los mayores de 60 años es de 75.200 personas este trimestre. Esta cifra es superior en 12.000 a la observada en el tercer trimestre de 2015 (que fue de 63.200). 
+
+Los menores de 25 años que se incorporan directamente a la ocupación desde la inactividad este trimestre son 176.900. Esta cifra supera en 19.000 a la del tercer trimestre de 2015 (que fue de 157.900).
+
+Los datos de flujos en los que se basan estos comentarios se pueden consultar en el anexo a esta nota de prensa http://www.ine.es/daco/daco42/daco4211/epafluj0316.xls
+
+#### Resultados EPA por provincias
+
+Se puede acceder al resumen de resultados provinciales de la EPA desde el enlace:
+
+http://www.ine.es/daco/daco42/daco4211/epapro0316.pdf
+
+También se puede acceder a toda la información provincial desde la base de datos INEbase:
+
+http://www.ine.es/dynt3/inebase/index.html?padre=996
+
+### Nota metodológica
+
+#### Características generales
+
+La Encuesta de Población Activa (EPA) es una investigación por muestreo, continua y de periodicidad trimestral, dirigida a las viviendas familiares, que se realiza desde 1964. Su objetivo principal es obtener datos de la fuerza de trabajo y de sus diversas categorías (ocupados, parados), así como de la población ajena al mercado laboral (inactivos).
+
+Tiene un muestreo bietápico estratificado, en el que las unidades de primera etapa son las secciones censales. Hay 3.588 secciones en la muestra a las que, a partir del tercer trimestre de 2009, se añaden 234 secciones en la Comunidad Autónoma de Galicia, muestra adicional que recoge el Instituto Galego de Estatística (IGE) utilizando el mismo sistema de trabajo de campo e idéntica metodología que el INE. Así pues, en total, la muestra de la EPA está constituida actualmente por 3.822 secciones censales de entre las más de 36.000 en que está dividida España. Partiendo de una muestra teórica mínima de 20 viviendas por sección, lo que supone un tamaño teórico de 76.000 viviendas, se alcanza un tamaño muestral efectivo de 63.000 viviendas aproximadamente, o lo que es lo mismo, información de unas 163.000 personas.
+
+Los datos se recogen por entrevista personal y telefónica. Las entrevistas están distribuidas uniformemente a lo largo de las 13 semanas del trimestre. Siguiendo directrices de Eurostat5, la primera semana del año es aquella que contiene el primer jueves de dicho año. El primer trimestre consta de las 13 semanas consecutivas que comienzan en la primera semana del año. Al segundo trimestre se adjudican las 13 siguientes y así sucesivamente.
+
+Cada cinco o seis años es preciso introducir una semana adicional al último trimestre, con el fin de mantener cercanos al calendario natural los periodos de trece semanas consecutivas. Este fue el caso del cuarto trimestre de 2015 que constaba de 14 semanas.
+
+En 2016, por tanto, el primer trimestre se extiende desde el 4 de enero de 2016 al 3 de abril de 2016; el segundo, desde el 4 de abril al 3 de julio; el tercero, desde el 4 de junio al 2 de octubre, y el cuarto, desde el 3 de octubre de 2016 al 1 de enero de 2017.
+
+La información es cuidadosamente depurada y procesada informáticamente. Los resultados se obtienen dentro del mes siguiente al de finalización del trimestre de referencia de los datos y se publican en la fecha fijada en el Calendario de Estadísticas Coyunturales del INE.
+
+#### Definiciones principales
+
+Activos: personas de 16 o más años que, durante la semana de referencia (la anterior a aquella en que se realiza la entrevista), suministran mano de obra para la producción de bienes y servicios o están disponibles y en condiciones de incorporarse a dicha producción. Se subdividen en ocupados y parados.
+
+Ocupados: personas de 16 o más años que durante la semana de referencia han estado trabajando durante al menos una hora, a cambio de una retribución (salario, jornal, beneficio empresarial,...) en dinero o especie. También son ocupados quienes teniendo trabajo han estado temporalmente ausentes del mismo por enfermedad, vacaciones, etcétera.
+
+Los ocupados se clasifican atendiendo a la situación profesional en no asalariados (empleadores, empresarios sin asalariados y trabajadores independientes, miembros de cooperativas, ayudas familiares) y asalariados (públicos o privados).
+
+Atendiendo a la duración de la jornada se clasifican en ocupados a tiempo completo y ocupados a tiempo parcial. La jornada habitual semanal no puede ser inferior a 30 horas en el primer caso ni superior a 35 en el segundo. La tasa de ocupados a tiempo parcial se calcula como el porcentaje de ocupados a tiempo parcial respecto del total de ocupados.
+
+Los asalariados se clasifican en indefinidos y temporales. Estos últimos tienen fijado el fin de su contrato o relación laboral por medio de condiciones objetivas, tales como la expiración de un cierto plazo, la realización de una tarea determinada, etcétera. La tasa de temporalidad se calcula como el porcentaje de asalariados con contrato temporal respecto del total de asalariados.
+
+Una importante categoría dentro de la ocupación es la de subempleo por insuficiencia de horas de trabajo, definida en la XVIª Conferencia Internacional de Estadísticos del Trabajo (Ginebra, 1998). En la EPA se consideran subempleados por insuficiencia de horas a los ocupados que desean trabajar más horas, que están disponibles para hacerlo y cuyas horas efectivas de trabajo en la semana de referencia son inferiores a las horas semanales que habitualmente trabajan los ocupados a tiempo completo en la rama de actividad en la que el subempleado tiene su empleo principal.
+
+Parados: personas de 16 o más años que durante la semana de referencia han estado sin trabajo, disponibles para trabajar y buscando activamente empleo. Son parados también quienes ya han encontrado un trabajo y están a la espera de incorporarse a él, siempre que verifiquen las dos primeras condiciones.
+
+Según el Reglamento 1897/2000 de la Comisión Europea, se consideran métodos activos de búsqueda, en las cuatro semanas anteriores a la entrevista, los siguientes:
+
+* Estar en contacto con una oficina pública de empleo con el fin de encontrar trabajo, cualquiera que sea la parte que haya tomado la iniciativa (la renovación de la inscripción por razones puramente administrativas no constituye un planteamiento activo).
+
+* Estar en contacto con una oficina privada (oficina de empleo temporal, empresa especializada en contratación, ...) con el fin de encontrar trabajo.
+
+* Enviar una candidatura directamente a los empleadores.
+
+* Indagar a través de relaciones personales, por mediación de sindicatos, ....
+
+* Anunciarse o responder a anuncios de periódicos.
+
+* Estudiar las ofertas de empleo.
+
+* Participar en una prueba, concurso o entrevista, en el marco de un procedimiento de contratación.
+
+* Buscar terrenos, locales o material.
+
+* Realizar gestiones para obtener permisos, licencias o recursos financieros.
+
+Inactivos: población de 16 o más años no incluida en ninguna de las categorías anteriores.
+
+#### Estadística de Flujos de la Población Activa: Cambios en la situación laboral de un trimestre a otro
+
+La Estadística de Flujos estima la magnitud de los movimientos entre las situaciones de ocupación, paro e inactividad del trimestre actual y el anterior. Para ello se hace un seguimiento longitudinal de las personas entrevistadas en la EPA a lo largo del tiempo.
+
+Los resultados se calculan, por tanto, a partir de la muestra común entrevistada de forma efectiva en ambos periodos, a la que se añaden las personas del trimestre actual que han llegado del extranjero o han cumplido 16 años en los últimos tres meses.
+
+La rotación establecida para la EPA, de renovar en cada trimestre un sexto de los hogares de la muestra, implica que la muestra máxima disponible para calcular estimaciones basadas en la muestra común es de 5/6. Sin embargo, las incidencias en la recogida de la información en uno u otro trimestre hacen disminuir algo más la proporción de muestra que se utiliza para estimar los flujos, de forma que si la muestra completa de personas de 16 y más años de un trimestre es de unas 140.000, la que sostiene las estimaciones de flujos es
+de algo más de 100.000.
+
+Los factores de elevación se calculan de la misma manera que para la EPA trimestral, añadiendo un calibrado adicional a los totales de ocupados, parados e inactivos por comunidades autónomas, con el fin de que ambas muestras (la de flujos y la de la muestra completa EPA) ofrezcan en el trimestre actual los mismos resultados para las principales magnitudes.
+
+Este procedimiento, sin embargo, no permite ajustar las estimaciones de flujos con los resultados de trimestres anteriores. Esta información debe ser siempre utilizada en relación con los resultados del trimestre en curso. Cualquier ejercicio contable de sumar y restar cifras de flujos con las del trimestre actual para calcular las del trimestre anterior ofrecerá discrepancias con los resultados de dicho trimestre anterior, debido al procedimiento de ponderación de los resultados utilizado y a la presencia en el trimestre actual de población no considerada en el precedente (los llegados del extranjero y los que han cumplido 16 años en los últimos tres meses).
+
+Una reseña completa de la metodología de flujos puede consultarse en:
+
+http://www.ine.es/inebaseDYN/flujos30310/docs/metoflujos_valores_absolutos.pdf
+
+
+
+```{r}
+# Traca final
+```
+
+
+
+
 
 ```{r}
 # The `params` object is available in the document.
-params$n
+params$ciclo
 ```
 
-A plot of `params$n` random points.
+A plot of `params$ciclo` random points.
 
 ```{r}
-plot(rnorm(params$n), rnorm(params$n))
+plot(rnorm(params$ciclo), rnorm(params$ciclo))
 ```
