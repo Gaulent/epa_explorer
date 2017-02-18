@@ -9,8 +9,10 @@
 
 library(RSQLite)
 
-getData <- function(sql_query) {
-  con <- dbConnect(RSQLite::SQLite(), "epa_db.db")
+database_path <- "D:/workarea/epa_explorer/epa_db.db"
+
+getSQL <- function(sql_query) {
+  con <- dbConnect(RSQLite::SQLite(), database_path)
   rs <- dbSendQuery(con, sql_query)
   result_data<-dbFetch(rs,n=-1)
   dbClearResult(rs)
@@ -18,8 +20,17 @@ getData <- function(sql_query) {
   return(result_data)
 }
 
+getData <- function(select, where = NULL) {
+  select <- paste(select,collapse=",")
+  if (is.null(where))
+    sql_query<-paste(c("SELECT ", select, " FROM epa_table"),collapse="")
+  else
+    sql_query<-paste(c("SELECT ", select, " FROM epa_table WHERE ", where),collapse="")
+  return(getSQL(sql_query))
+}
+
 # Lista de distintos Ciclos Posibles
-list_ciclo<-getData("SELECT DISTINCT CICLO FROM epa_table")
+list_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table")
 
 # Definicion de atributos
-list_attrdef<-getData("PRAGMA table_info(epa_table)")
+list_attrdef<-getSQL("PRAGMA table_info(epa_table)")

@@ -24,8 +24,7 @@ shinyServer(function(input, output, session) {
   data<-reactive({
 
     # Lista de distintos Ciclos Posibles
-    sql_query <- paste(c("SELECT ",input$single_atributo,",FACTOREL FROM epa_table WHERE CICLO=",input$single_ciclo),collapse="")
-    getData(sql_query)
+    getData(c(input$single_atributo,"FACTOREL"),c("CICLO=",input$single_ciclo))
   })
   
   output$single_plot1 <- renderPlot({
@@ -85,8 +84,8 @@ shinyServer(function(input, output, session) {
   multi_data<-reactive({
     
     # Lista de distintos Ciclos Posibles
-    sql_query <- paste(c("SELECT ",input$multi_atributo1,",",input$multi_atributo2," FROM epa_table WHERE CICLO=",input$multi_ciclo),collapse="")
-    getData(sql_query)
+    getData(c(input$multi_atributo1,input$multi_atributo2),c("CICLO=",input$multi_ciclo))
+    
   })
   
   
