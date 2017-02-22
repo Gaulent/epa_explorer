@@ -249,6 +249,27 @@ La evolución del paro en variación anual es del -10,93%. La cifra total de des
 ```{r}
 # Grafica.
 
+grafica<-0
+
+for (i in 0:12) {
+  
+  current_data<-getData("FACTOREL", c("CICLO=",params$ciclo-i," AND ((BUSCA=1 AND FOBACT=1) OR NUEVEM=1) AND DISP=1"))
+  past_data<-getData("FACTOREL", c("CICLO=",params$ciclo-i-4," AND ((BUSCA=1 AND FOBACT=1) OR NUEVEM=1) AND DISP=1"))
+  grafica[13-i] <- (sum(current_data$FACTOREL) - sum(past_data$FACTOREL))/sum(past_data$FACTOREL)*100
+  
+}
+
+datos<-round(grafica,digits = 2)
+nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016")
+colores = c("gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","red3")
+main_text = "Evolución del total de ocupados, en tasa anual"
+
+ylim <- c(1.2*min(datos), 1.5*max(datos))
+bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=main_text, cex.names=0.5, cex.axis = 0.75,ylim=ylim)
+text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
+axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
+abline(h=0)
+
 ```
 
 Por edad, la reducción anual del desempleo se observa en todos los grupos y se concentra en el grupo de personas de 25-54 años (382.600 parados menos).
@@ -264,6 +285,27 @@ Por nacionalidad, el número de activos españoles aumenta en 24.900, mientras q
 ```{r}
 # Grafica.
 
+grafica<-0
+
+for (i in 0:6) {
+  
+  current_data<-getData("FACTOREL", c("CICLO=",params$ciclo-4*i," AND ((((BUSCA=1 AND FOBACT=1) OR NUEVEM=1) AND DISP=1) OR SITU IS NOT NULL)"))
+  past_data<-getData("FACTOREL", c("CICLO=",params$ciclo-4*i-1," AND ((((BUSCA=1 AND FOBACT=1) OR NUEVEM=1) AND DISP=1) OR SITU IS NOT NULL)"))
+  grafica[7-i] <- sum(current_data$FACTOREL) - sum(past_data$FACTOREL)
+  
+}
+
+datos<-round(grafica/1000,digits = 1)
+nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016")
+colores = c("gold1","gold1","gold1","gold1","gold1","gold1","red3")
+main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del 3er trimestre sobre el 2º del mismo año)"
+
+ylim <- c(1.2*min(datos), 1.6*max(datos))
+bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=main_text, cex.names=0.75, cex.axis = 0.75,ylim=ylim)
+text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
+axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
+abline(h=0)
+
 ```
 
 La tasa de actividad baja 13 centésimas este trimestre, hasta el 59,28%. Por sexo, la de los hombres se incrementa cinco centésimas y se sitúa en el 65,26%, mientras que la femenina baja 30 centésimas, hasta el 53,61%.
@@ -274,6 +316,27 @@ En términos anuales, la población activa se ha reducido en 51.200 personas, mi
 
 ```{r}
 # Grafica.
+
+grafica<-0
+
+for (i in 0:12) {
+  
+  current_data<-getData("FACTOREL", c("CICLO=",params$ciclo-i," AND ((((BUSCA=1 AND FOBACT=1) OR NUEVEM=1) AND DISP=1) OR SITU IS NOT NULL)"))
+  past_data<-getData("FACTOREL", c("CICLO=",params$ciclo-i-4," AND ((((BUSCA=1 AND FOBACT=1) OR NUEVEM=1) AND DISP=1) OR SITU IS NOT NULL)"))
+  grafica[13-i] <- (sum(current_data$FACTOREL) - sum(past_data$FACTOREL))/sum(past_data$FACTOREL)*100
+  
+}
+
+datos<-round(grafica,digits = 2)
+nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016")
+colores = c("gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","red3")
+main_text = "Evolución del total de ocupados, en tasa anual"
+
+ylim <- c(1.2*min(datos), 2*max(datos))
+bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=main_text, cex.names=0.5, cex.axis = 0.75,ylim=ylim)
+text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
+axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
+abline(h=0)
 
 ```
 
