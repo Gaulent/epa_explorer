@@ -9,10 +9,14 @@ grafica<-0
 
 
 current_data<-getData("CCAA,FACTOREL", c("CICLO=",176," AND SITU IS NOT NULL AND CCAA<>3"))
-current_data$CCAA<-as.factor(current_data$CCAA)
-levels(current_data$CCAA)<-list("Andaluc?a"=1, "Arag?n"=2, "Asturias"=3, "Baleares"=4, "Canarias"=5, "Cantabria"=6, "Castilla-Le?n"=7, "Castilla-La Mancha"=8, "Catalu?a"=9, "Comunidad Valenciana"=10, "Extremadura"=11, "Galicia"=12, "Madrid"=13, "Murcia"=14, "Navarra"=15, "Pa?s Vasco"=16, "Rioja"=17, "Ceuta"=51, "Melilla"=52)
+a <- (aggregate(current_data$FACTOREL, by=list(CCAA=current_data[,"CCAA"]), FUN=sum, simplify=FALSE, drop=FALSE))
+CCAA<-1:52
+empty_df<-as.data.frame(CCAA)
+result<-merge(empty_df,a,by="CCAA",all.x=TRUE)
+str(result)
 
-a <- (aggregate(current_data$FACTOREL, by=list(SEXO1=current_data[,"CCAA"]), FUN=sum, simplify=FALSE, drop=FALSE))
+#---------------------------
+
 
 a$SEXO1<-as.factor(a$SEXO1)
 levels(a$SEXO1)<-list("Andaluc?a"=1, "Arag?n"=2, "Asturias"=3, "Baleares"=4, "Canarias"=5, "Cantabria"=6, "Castilla-Le?n"=7, "Castilla-La Mancha"=8, "Catalu?a"=9, "Comunidad Valenciana"=10, "Extremadura"=11, "Galicia"=12, "Madrid"=13, "Murcia"=14, "Navarra"=15, "Pa?s Vasco"=16, "Rioja"=17, "Ceuta"=51, "Melilla"=52)
