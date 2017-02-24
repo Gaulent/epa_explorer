@@ -8,12 +8,43 @@ params<-list(ciclo=176)
 grafica<-0
 
 
-current_data<-getData("CCAA,FACTOREL", c("CICLO=",176," AND SITU IS NOT NULL AND CCAA<>3"))
-a <- (aggregate(current_data$FACTOREL, by=list(CCAA=current_data[,"CCAA"]), FUN=sum, simplify=FALSE, drop=FALSE))
-CCAA<-1:52
-empty_df<-as.data.frame(CCAA)
-result<-merge(empty_df,a,by="CCAA",all.x=TRUE)
-str(result)
+CCAA<-c(1:17,51,52)
+current_data<-getData("CCAA,FACTOREL", c("CICLO=",176," AND SITU IS NOT NULL"))
+a <- (aggregate(current_data$FACTOREL, by=list(CCAA=current_data[,"CCAA"]), FUN=sum))
+current_data<-as.data.frame(CCAA)
+current_data<-merge(current_data,a,by="CCAA",all.x=TRUE)
+current_data[is.na(current_data)] <- 0
+
+
+past_data<-getData("CCAA,FACTOREL", c("CICLO=",175," AND SITU IS NOT NULL"))
+a <- (aggregate(past_data$FACTOREL, by=list(CCAA=past_data[,"CCAA"]), FUN=sum))
+past_data<-as.data.frame(CCAA)
+past_data<-merge(past_data,a,by="CCAA",all.x=TRUE)
+past_data[is.na(past_data)] <- 0
+
+current_data$x<-round((current_data$x-past_data$x)/past_data$x*100,2)
+
+datos<-current_data[with(current_data, order(x)), ]
+
+
+
+
+nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016")
+colores = c("gold1","gold1","gold1","gold1","gold1","gold1","red3")
+main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del 3er trimestre sobre el 2º del mismo año)"
+
+barplot(datos$x,horiz=TRUE,space=1)
+
+ylim <- c(1.2*min(datos$x), 1.2*max(datos$x))
+bp <- barplot(datos$x,space=1,horiz=TRUE,names.arg=datos$CCAA, col = colores, border=NA, main=main_text, cex.names=0.75, cex.axis = 0.75,ylim=ylim)
+text(x = bp, y = datos$x, label = datos$x, pos = 3, cex = 0.75,adj = c(0.5,1))
+axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
+abline(h=0)
+
+
+
+
+
 
 #---------------------------
 
