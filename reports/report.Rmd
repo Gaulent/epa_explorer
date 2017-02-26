@@ -8,7 +8,7 @@ params:
 ```{r echo=FALSE}
 
 library(plyr)
-source("../global.R")
+source("../global.R", encoding = "UTF-8")
 
 ```
 
