@@ -34,3 +34,10 @@ list_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table")
 
 # Definicion de atributos
 list_attrdef<-getSQL("PRAGMA table_info(epa_table)")
+
+
+map_ccaa <- data.frame(value=c(1:17,51,52), label=c("Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria", "Castilla y León", "Castilla-La Mancha", "Cataluña", "Comunidad Valenciana", "Extremadura", "Galicia", "Comunidad de Madrid", "Región de Murcia", "Navarra", "País Vasco", "La Rioja", "Ceuta", "Melilla"),stringsAsFactors=FALSE)  
+
+
+
+

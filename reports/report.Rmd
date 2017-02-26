@@ -7,6 +7,7 @@ params:
 
 ```{r echo=FALSE}
 
+library(plyr)
 source("../global.R")
 
 ```
@@ -246,7 +247,7 @@ El paro se reduce en 123.500 entre las personas que perdieron su empleo hace má
 
 La evolución del paro en variación anual es del -10,93%. La cifra total de desempleados se ha reducido en 530.000 personas en un año, con un descenso de 329.400 en los hombres y de 200.600 entre las mujeres. 
 
-```{r}
+```{r echo=FALSE}
 # Grafica.
 
 grafica<-0
@@ -282,7 +283,7 @@ La población activa experimenta un descenso de 27.300 personas en el tercer tri
 
 Por nacionalidad, el número de activos españoles aumenta en 24.900, mientras que el de activos extranjeros desciende en 52.200.
 
-```{r}
+```{r echo=FALSE}
 # Grafica.
 
 grafica<-0
@@ -314,7 +315,7 @@ La tasa de actividad de los españoles no varía respecto del trimestre anterior
 
 En términos anuales, la población activa se ha reducido en 51.200 personas, mientras que la población en edad de trabajar (16-64 años) ha bajado en 102.500. La tasa de variación anual de los activos es del -0,22%, frente al -0,61% del trimestre anterior. 
 
-```{r}
+```{r echo=FALSE}
 # Grafica.
 
 grafica<-0
@@ -350,14 +351,55 @@ Por su parte, el número de hogares en los que todos sus miembros activos están
 
 En comparativa anual, el número de hogares con al menos un activo en los que todos los activos están en paro se ha reducido en 134.700, mientras que los que tienen a todos sus activos ocupados ha crecido en 357.000.
 
-#### Resultados por comunidades autónomas3
+#### Resultados por comunidades autónomas
 
 Prácticamente todas las comunidades autónomas aumentan su número de ocupados este trimestre. Los mayores incrementos se producen en Cataluña (42.700 más), Castilla y León (32.100) e Illes Balears (25.400). El número de ocupados desciende en Región de Murcia en 5.600.
 
 En términos relativos, las comunidades con mejor evolución trimestral del empleo son Comunidad Foral de Navarra (4,87%), Illes Balears (4,63%) y Cantabria (3,85%). 
 
-```{r}
+```{r echo=FALSE}
 # Grafica.
+
+CCAA<-c(1:17,51,52,"TOTAL")
+current_data<-getData("CCAA,FACTOREL", c("CICLO=",176," AND SITU IS NOT NULL"))
+a <- (aggregate(current_data$FACTOREL, by=list(CCAA=current_data[,"CCAA"]), FUN=sum))
+current_data<-as.data.frame(CCAA)
+current_data<-merge(current_data,a,by="CCAA",all.x=TRUE)
+current_data[is.na(current_data)] <- 0
+current_data[20,]$x<-sum(current_data$x)
+
+past_data<-getData("CCAA,FACTOREL", c("CICLO=",175," AND SITU IS NOT NULL"))
+a <- (aggregate(past_data$FACTOREL, by=list(CCAA=past_data[,"CCAA"]), FUN=sum))
+past_data<-as.data.frame(CCAA)
+past_data<-merge(past_data,a,by="CCAA",all.x=TRUE)
+past_data[is.na(past_data)] <- 0
+past_data[20,]$x<-sum(past_data$x)
+
+current_data$x<-round((current_data$x-past_data$x)/past_data$x*100,2)
+current_data$colores<-"gold1"
+current_data[20,]$colores<-"red3"
+
+
+datos<-current_data[with(current_data, order(x)), ]
+
+datos$CCAA<-mapvalues(datos$CCAA,from=map_ccaa$value, to=map_ccaa$label) #Retrocompatibilidad
+
+
+main_text = "Tasa de variación trimestral de la ocupación por comunidades autónomas (%)"
+
+par(mar=c(2,8,4,6)+0.1,cex.axis=0.75) #default par(mar=c(5,5,5,5))
+ylim <- c(0, 43)
+xlim <- c(1.2*min(datos$x), 1.2*max(datos$x))
+bp<-barplot(datos$x,horiz=TRUE,space=1,col=datos$colores,border=NA, main=main_text,axes=FALSE, names.arg=datos$CCAA,las=1,ylim=ylim,xlim=xlim)
+axis(2,pos=0,labels=FALSE, at = seq(-0.5,41.5,2))
+axis(3,pos=41.5, at = seq(-2,8,1))
+text(x=datos$x, y = bp, label = datos$x,adj = c(-0.5,0.5),cex=0.75)
+par(mar=c(5, 4, 4, 2) + 0.1,cex.axis=1) #margenes por defecto
+
+
+
+
+
 
 ```
 
