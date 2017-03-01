@@ -407,7 +407,7 @@ En variación anual, todas las comunidades autónomas presentan incrementos de o
 
 En términos relativos, las mayores variaciones anuales de la ocupación se dan en Región de Murcia (5,51%), Cantabria (3,97%) y en Cataluña y País Vasco (3,64% cada una). 
 
-```{r}
+```{r echo=FALSE}
 # Grafica.
 
 CCAA<-c(1:17,51,52,"TOTAL")
