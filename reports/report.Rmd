@@ -461,59 +461,6 @@ En los 12 últimos meses, País Vasco presenta el mayor incremento del número d
 
 Las tasas de actividad oscilan este trimestre entre el 67,70% de Illes Balears y el 52,36% de Principado de Asturias. 
 
-#### Series desestacionalizadas
-
-En el tercer trimestre de 2016 la tasa de variación trimestral del empleo en términos desestacionalizados es del 0,77%. 
-
-```{r}
-# Grafica.
-
-```
-
-En cuanto a los resultados desestacionalizados de paro, se observa un descenso del 3,03%, con lo que ya son 14 los trimestres consecutivos de reducción del paro. 
-
-```{r}
-# Grafica.
-
-```
-
-Tal y como se expone en la metodología aplicada para desestacionalizar, el modelo de desestacionalización se mantiene durante un año, correspondiendo a los primeros trimestres el momento de la reidentificación del modelo, pero se recalculan trimestralmente los coeficientes, con lo cual cada trimestre se revisan los resultados anteriores (bien por reidentificación o por revisión de coeficientes), por lo que se debe consultar siempre las últimas series disponibles. Los resultados de las series desestacionalizadas de empleo y paro desde 1990 y la descripción del método utilizado se encuentran en http://www.ine.es/daco/daco42/daco4211/epa_desestacional.xls 
-
-#### Flujos en valores absolutos respecto del trimestre anterior4
-
-El flujo total de entrada a la ocupación en el tercer trimestre de 2016 es de 1.427.600 personas, cifra superior en 29.700 a la del mismo trimestre del año anterior.
-
-Por su parte, el flujo de salida de la ocupación es de 1.220.300, lo que supone 47.600 menos que en el mismo trimestre de 2015. 
-
-```{r}
-# Grafica.
-
-```
-
-El número de personas que estaban paradas hace tres meses y ahora no lo están se sitúa en 1.696.800, cifra inferior en 54.200 personas a la del mismo periodo del año anterior.
-
-Por su parte, el flujo total de entradas al paro alcanza las 1.515.100 personas, lo que supone 29.200 personas menos que el tercer trimestre de 2015. 
-
-```{r}
-# Grafica.
-
-```
-
-Las entradas a la actividad en este trimestre son 1.259.600, cifra superior en 87.100 a la del tercer trimestre de 2015.
-
-Por su parte, un total de 1.350.300 personas han salido de la actividad este trimestre, frente a las 1.358.700 que lo hicieron el mismo periodo de 2015 (es decir, 8.400 menos). 
-
-```{r}
-# Grafica.
-
-```
-
-El flujo de salida de la ocupación a la inactividad de los mayores de 60 años es de 75.200 personas este trimestre. Esta cifra es superior en 12.000 a la observada en el tercer trimestre de 2015 (que fue de 63.200). 
-
-Los menores de 25 años que se incorporan directamente a la ocupación desde la inactividad este trimestre son 176.900. Esta cifra supera en 19.000 a la del tercer trimestre de 2015 (que fue de 157.900).
-
-Los datos de flujos en los que se basan estos comentarios se pueden consultar en el anexo a esta nota de prensa http://www.ine.es/daco/daco42/daco4211/epafluj0316.xls
-
 #### Resultados EPA por provincias
 
 Se puede acceder al resumen de resultados provinciales de la EPA desde el enlace:
