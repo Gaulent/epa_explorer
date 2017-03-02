@@ -23,14 +23,14 @@ getSQL <- function(sql_query) {
 getData <- function(select, where = NULL) {
   select <- paste(select,collapse=",")
   if (is.null(where))
-    sql_query<-paste(c("SELECT ", select, " FROM epa_table"),collapse="")
+    sql_query<-paste(c("SELECT", select, "FROM epa_table"),collapse=" ")
   else
-    sql_query<-paste(c("SELECT ", select, " FROM epa_table WHERE ", where),collapse="")
+    sql_query<-paste(c("SELECT", select, "FROM epa_table WHERE", where),collapse=" ")
   return(getSQL(sql_query))
 }
 
-# Lista de distintos Ciclos Posibles
-list_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table")
+# Lista de distintos Ciclos Posibles. Los primeros 25 los mantenemos de historico.
+list_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table WHERE CICLO >= 155")
 
 # Definicion de atributos
 list_attrdef<-getSQL("PRAGMA table_info(epa_table)")
