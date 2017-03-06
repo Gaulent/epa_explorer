@@ -108,7 +108,7 @@ shinyServer(function(input, output, session) {
   
   output$report <- downloadHandler(
     # For PDF output, change this to "report.pdf"
-    filename = "reports$report.html",
+    filename = "report.html",
     content = function(file) {
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
@@ -117,14 +117,16 @@ shinyServer(function(input, output, session) {
       file.copy("reports/report.Rmd", tempReport, overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(n = input$single_ciclo)
+      params <- list(ciclo = as.numeric(input$single_ciclo))
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
       # from the code in this app).
       rmarkdown::render(tempReport, output_file = file,
                         params = params,
-                        envir = new.env(parent = globalenv())
+                        envir = new.env(parent = globalenv()),
+                        encoding = "UTF-8",
+                        output_format = "html_document"
       )
     }  
   )

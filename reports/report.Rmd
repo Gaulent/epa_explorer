@@ -1,14 +1,21 @@
 ---
 title: "Encuesta de Población Activa (EPA)"
-output: html_document
 params:
   ciclo: 176
+output:
+  html_document: default
+  word_document:
+    fig_caption: yes
+    fig_height: 5
+    fig_width: 7
 ---
 
 ```{r echo=FALSE}
 
+#Informacion completa de exportacion a Word http://rmarkdown.rstudio.com/word_document_format.html
+
 library(plyr)
-source("../global.R", encoding = "UTF-8")
+source("D:/workarea/epa_explorer/global.R", encoding = "UTF-8")
 
 ```
 
