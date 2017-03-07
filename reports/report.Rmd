@@ -17,6 +17,10 @@ output:
 library(plyr)
 source("D:/workarea/epa_explorer/global.R", encoding = "UTF-8")
 
+progress <- shiny::Progress$new()
+progress$set(message = "Generando Informe", value = 0)
+progress$set(0.09, detail = "Inicializando")
+
 ```
 
 ### Tercer trimestre de 2016
@@ -71,6 +75,8 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
 abline(h=0)
 
+progress$set(0.17, detail = "Parte 1")
+
 ```
 
 Por sexo, el empleo aumenta este trimestre en mayor cuantía entre los hombres (141.700 ocupados más) que entre las mujeres (84.900 ocupadas más).
@@ -104,6 +110,8 @@ bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=ma
 text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
 abline(h=0)
+
+progress$set(0.26, detail = "Parte 2")
 
 ```
 
@@ -162,6 +170,8 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(2,20,3),outer=TRUE)
 abline(h=0)
 
+progress$set(0.35, detail = "Parte 3")
+
 ```
 
 El empleo del sector privado presenta una variación anual del 3,06%, mientras que el empleo público crece un 0,59%. En los 12 últimos meses la ocupación ha aumentado en 461.300 personas en el sector privado y en 17.500 en el público.
@@ -205,6 +215,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(2,20,3),outer=TRUE)
 abline(h=0)
 
+progress$set(0.43, detail = "Parte 4")
 
 ```
 
@@ -235,6 +246,8 @@ bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=ma
 text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
 abline(h=0)
+
+progress$set(0.52, detail = "Parte 5")
 
 ```
 
@@ -278,6 +291,8 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
 abline(h=0)
 
+progress$set(0.61, detail = "Parte 6")
+
 ```
 
 Por edad, la reducción anual del desempleo se observa en todos los grupos y se concentra en el grupo de personas de 25-54 años (382.600 parados menos).
@@ -314,6 +329,8 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
 abline(h=0)
 
+progress$set(0.70, detail = "Parte 7")
+
 ```
 
 La tasa de actividad baja 13 centésimas este trimestre, hasta el 59,28%. Por sexo, la de los hombres se incrementa cinco centésimas y se sitúa en el 65,26%, mientras que la femenina baja 30 centésimas, hasta el 53,61%.
@@ -345,6 +362,8 @@ bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=ma
 text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
 abline(h=0)
+
+progress$set(0.78, detail = "Parte 8")
 
 ```
 
@@ -406,7 +425,7 @@ par(mar=c(5, 4, 4, 2) + 0.1,cex.axis=1) #margenes por defecto
 
 
 
-
+progress$set(0.87, detail = "Parte 9")
 
 ```
 
@@ -453,6 +472,7 @@ axis(3,pos=41.5, at = seq(-2,8,1))
 text(x=datos$x, y = bp, label = datos$x,adj = c(-0.5,0.5),cex=0.75)
 par(mar=c(5, 4, 4, 2) + 0.1,cex.axis=1) #margenes por defecto
 
+progress$set(0.96, detail = "Parte 10")
 
 ```
 
@@ -531,3 +551,10 @@ Según el Reglamento 1897/2000 de la Comisión Europea, se consideran métodos a
 * Realizar gestiones para obtener permisos, licencias o recursos financieros.
 
 Inactivos: población de 16 o más años no incluida en ninguna de las categorías anteriores.
+
+```{r echo=FALSE}
+
+progress$set(1, detail = "Finalizando")
+
+progress$close()
+```

@@ -108,7 +108,8 @@ shinyServer(function(input, output, session) {
   
   output$report <- downloadHandler(
     # For PDF output, change this to "report.pdf"
-    filename = "report.html",
+    filename = "report_export.docx",
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     content = function(file) {
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
@@ -126,7 +127,7 @@ shinyServer(function(input, output, session) {
                         params = params,
                         envir = new.env(parent = globalenv()),
                         encoding = "UTF-8",
-                        output_format = "html_document"
+                        output_format = rmarkdown::word_document(fig_width = 7, fig_height = 5, fig_caption = TRUE)
       )
     }  
   )
