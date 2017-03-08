@@ -21,6 +21,12 @@ progress <- shiny::Progress$new()
 progress$set(message = "Generando Informe", value = 0)
 progress$set(0.09, detail = "Inicializando")
 
+#TODO: Repasar que los caption salgan correctos.
+#TODO: Calcular las cosas intext.
+#TODO: Obtener todos los datos de una unica vez
+# current_data<-getData("CICLO,SITU,BUSCA,FOBACT,NUEVEM,DISP,CCAA,AOI,FACTOREL", c("CICLO BETWEEN",params$ciclo-25,"AND",params$ciclo))
+
+
 ```
 
 ### Tercer trimestre de 2016
