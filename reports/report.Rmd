@@ -15,7 +15,7 @@ output:
 #Informacion completa de exportacion a Word http://rmarkdown.rstudio.com/word_document_format.html
 
 library(plyr)
-source("D:/workarea/epa_explorer/global.R", encoding = "UTF-8")
+source("D:/workarea/epa_explorer/libs/access_database.R", encoding = "UTF-8")
 
 progress <- shiny::Progress$new()
 progress$set(message = "Generando Informe", value = 0)
