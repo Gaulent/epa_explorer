@@ -62,5 +62,18 @@ shinyUI(
                           mainPanel()
                         ))
                )
-             ))
+             )),
+             tabPanel("Settings",tabsetPanel(
+               tabPanel("Update",
+                        fluidPage(sidebarLayout(
+                          sidebarPanel(
+                            selectInput("cfg_file","Fichero:", choices = check_for_updates()$Name, selectize = FALSE, size = 5),
+                            actionButton("cfg_update_btn", "Update!")
+                          ),
+                          mainPanel(
+                            verbatimTextOutput("cfg_db_summary")
+                          )
+                        ))
+               )
+             ))             
   ))

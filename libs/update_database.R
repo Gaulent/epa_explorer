@@ -4,6 +4,8 @@ source("libs/access_database.R", encoding = "UTF-8")
 if(!exists('update_database_R')){
   update_database_R<-T
   
+  ftp_address <- "ftp://www.ine.es/temas/epa/"
+  
   time_to_hours <- function(x) {
     x[x==0]<-NA # Valor nulo
     x[x==9999]<-NA # Valor nulo
@@ -100,7 +102,6 @@ if(!exists('update_database_R')){
     library(RCurl)
     library(dplyr)
     
-    ftp_address <- "ftp://www.ine.es/temas/epa/"
     filenames <- getURL(ftp_address,ftp.use.epsv = FALSE,dirlistonly = TRUE) 
     filenames<-strsplit(filenames, "\r*\n")
     
@@ -110,11 +111,11 @@ if(!exists('update_database_R')){
     
     db_updates<-getSQL("SELECT * FROM db_updates")
     
-    check_for_updates<-setdiff(df,db_updates)
+    return(setdiff(df,db_updates))
   }
   #--Actualizar base de datos
   
-  update_database <- function(selected_file = "datos_4t16.zip") {
+  update_database <- function(selected_file) {
     
     library(RCurl)
     library(dplyr)
@@ -129,7 +130,7 @@ if(!exists('update_database_R')){
     
     unzip(tempReport,exdir=tempdir())
     
-    import_file_to_db(file.path(ftp_address, unzipped_file))
+    import_file_to_db(tempReport)
     
     getSQL(paste(c("INSERT INTO db_updates VALUES ('",selected_file,"')"),collapse=""))
   }
