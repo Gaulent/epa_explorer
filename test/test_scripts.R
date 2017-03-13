@@ -1,9 +1,12 @@
+
 library(ggplot2)
-library(RSQLite)
-library(plyr)
 
-source("global.R", encoding = "UTF-8")
+source("libs/access_database.R", encoding = "UTF-8")
+source("libs/update_database.R", encoding = "UTF-8")
 
+
+current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL")
+result <- current_data %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL))
 
 
 # Obtener parches que faltan

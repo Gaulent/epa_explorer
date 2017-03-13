@@ -132,6 +132,13 @@ shinyServer(function(input, output, session) {
     }  
   )
   
+  output$graph_plot <- renderPlot({
+    input$graph_btn
+    current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL")
+    result <- current_data %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL))
+    plot(result)
+  })
+  
   rv<-reactiveValues()
   rv$db_patches<-list_ciclo
   

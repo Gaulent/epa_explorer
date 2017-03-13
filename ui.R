@@ -41,6 +41,15 @@ shinyUI(
                           mainPanel(plotOutput("multi_plot"),
                                     verbatimTextOutput("multi_text"))
                         ))
+               ),
+               tabPanel("Test Graph",
+                        fluidPage(sidebarLayout(
+                          sidebarPanel(
+                            selectInput("graph_ciclo","Ciclo:",choices = rev(list_ciclo$CICLO)),
+                            actionButton("graph_btn", "Go!")
+                          ),
+                          mainPanel(plotOutput("graph_plot"))
+                        ))
                )
              )),
              tabPanel("Clustering",tabsetPanel(
