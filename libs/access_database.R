@@ -3,11 +3,12 @@
 if(!exists('access_database_R')){
   access_database_R<-T
   
+  database_path <- "D:/workarea/epa_explorer/epa_db.db"
+  
   getSQL <- function(sql_query) {
     
     library(RSQLite)
-    database_path <- "D:/workarea/epa_explorer/epa_db.db"
-
+    
     con <- dbConnect(RSQLite::SQLite(), database_path)
     rs <- dbSendQuery(con, sql_query)
     result_data<-dbFetch(rs,n=-1)
@@ -16,12 +17,54 @@ if(!exists('access_database_R')){
     return(result_data)
   }
   
-  getData <- function(select, where = NULL) {
+  getData <- function(select, where = NULL, updateProgress = FALSE) {
+    
+    library(RSQLite)
+    library(dplyr)
+    
     select <- paste(select,collapse=",")
     if (is.null(where))
-      sql_query<-paste(c("SELECT", select, "FROM epa_table"),collapse=" ")
+    {  sql_query<-paste(c("SELECT", select, "FROM epa_table"),collapse=" ")
+    total_rows <- getSQL(paste(c("SELECT count(*) FROM epa_table"),collapse=" "))$`count(*)`
+    }
     else
-      sql_query<-paste(c("SELECT", select, "FROM epa_table WHERE", where),collapse=" ")
-    return(getSQL(sql_query))
+    {  sql_query<-paste(c("SELECT", select, "FROM epa_table WHERE", where),collapse=" ")
+    total_rows <- getSQL(paste(c("SELECT count(*) FROM epa_table WHERE", where),collapse=" "))$`count(*)`
+    }
+    
+    if(updateProgress)
+    {
+      progress <- shiny::Progress$new()
+      progress$set(message = "Generando Informe", value = 0)
+      
+    }
+    
+    
+    con <- dbConnect(RSQLite::SQLite(), database_path)
+    rs <- dbSendQuery(con, sql_query)
+    i <- 1
+    datalist = list()
+    
+    while (!dbHasCompleted(rs)) {
+      
+        datalist[[i]]<-dbFetch(rs, 100000)
+        i<-i+1
+      if(updateProgress) {
+        progress$set(dbGetRowCount(rs)/total_rows, detail = "Inicializando")
+      }
+    }
+    
+    if(updateProgress)
+      progress$close()
+    
+    dbClearResult(rs)
+    dbDisconnect(con)
+    return(bind_rows(datalist))
+    
+    
+    
+    
+    
+    
   }
 }
