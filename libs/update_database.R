@@ -102,7 +102,7 @@ if(!exists('update_database_R')){
     library(RCurl)
     library(dplyr)
     
-    filenames <- getURL(ftp_address,ftp.use.epsv = FALSE,dirlistonly = TRUE) 
+    filenames <- try(getURL(ftp_address,ftp.use.epsv = FALSE,dirlistonly = TRUE))
     filenames<-strsplit(filenames, "\r*\n")
     
     df<-data.frame(x=filenames,stringsAsFactors = FALSE)
