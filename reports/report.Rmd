@@ -21,6 +21,7 @@ progress <- shiny::Progress$new()
 progress$set(message = "Generando Informe", value = 0)
 progress$set(0.09, detail = "Inicializando")
 
+#TODO: Lo de cargar plyr y luego dplyr..
 #TODO: Repasar que los caption salgan correctos.
 #TODO: Calcular las cosas intext.
 #TODO: Obtener todos los datos de una unica vez

@@ -132,13 +132,12 @@ shinyServer(function(input, output, session) {
     }  
   )
   
-  output$graph_plot <- renderPlot({
-    
+  # Pestaña de prueba. Solo se lanza el grafico al pulsar el boton.
+  graph <- eventReactive(input$graph_btn, {
     progress <- shiny::Progress$new()
     progress$set(message = "Recuperando Datos", value = 1)
     on.exit(progress$close())
     
-    input$graph_btn
     current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL", updateProgress = progress$set)
     result <- current_data %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL))
     result$hombres <- (filter(current_data, SEXO==1) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
@@ -151,6 +150,12 @@ shinyServer(function(input, output, session) {
       scale_y_continuous(expand = c(0, 0), limits = c(0, max(result$total/1000)))
   })
   
+  output$graph_plot <- renderPlot({
+    graph()
+  })
+
+  # Pestaña Settings. Solo actualiza la base de datos al pulsar el boton,
+  # pero el summary se muestra siempre.
   rv<-reactiveValues()
   rv$db_patches<-list_ciclo
   
