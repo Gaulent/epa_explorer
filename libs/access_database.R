@@ -1,5 +1,3 @@
-
-# Obtener parches que faltan
 if(!exists('access_database_R')){
   access_database_R<-T
   
@@ -17,12 +15,10 @@ if(!exists('access_database_R')){
     return(result_data)
   }
   
-  getData <- function(select, where = NULL) {
+  getData <- function(select, where = NULL, fromShiny = FALSE) {
     
     library(RSQLite)
     library(dplyr)
-    
-    print("test")
     
     select <- paste(select,collapse=",")
     if (is.null(where)) {
@@ -31,45 +27,30 @@ if(!exists('access_database_R')){
     }
     else {
       sql_query<-paste(c("SELECT", select, "FROM epa_table WHERE", where),collapse=" ")
-    total_rows <- getSQL(paste(c("SELECT count(*) FROM epa_table WHERE", where),collapse=" "))$`count(*)`
+      total_rows <- getSQL(paste(c("SELECT count(*) FROM epa_table WHERE", where),collapse=" "))$`count(*)`
     }
     
-    updateProgress <- exists("session") & total_rows > 500000
-    print(updateProgress)
+    updateProgress <- fromShiny & total_rows > 500000
     
-    if(updateProgress)
-    {
+    if(updateProgress) {
       progress <- shiny::Progress$new()
-      progress$set(message = "Generando Informe", value = 0)
-      
+      progress$set(message = "Recuperando Datos", value = 0)
     }
-    
-    
+
     con <- dbConnect(RSQLite::SQLite(), database_path)
     rs <- dbSendQuery(con, sql_query)
-    i <- 1
+
+    i <- 0
     datalist = list()
-    
     while (!dbHasCompleted(rs)) {
-      
-      datalist[[i]]<-dbFetch(rs, 100000)
-      i<-i+1
-      if(updateProgress) {
-        progress$set(dbGetRowCount(rs)/total_rows, detail = "Inicializando")
-      }
+      datalist[[i<-i+1]]<-dbFetch(rs, 100000)
+      if(updateProgress) progress$set(dbGetRowCount(rs)/total_rows)
     }
     
-    if(updateProgress)
-      progress$close()
+    if(updateProgress) progress$close()
     
     dbClearResult(rs)
     dbDisconnect(con)
     return(bind_rows(datalist))
-    
-    
-    
-    
-    
-    
   }
 }

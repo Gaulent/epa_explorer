@@ -7,6 +7,16 @@ source("libs/update_database.R", encoding = "UTF-8")
 
 current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL")
 result <- current_data %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL))
+result$hombres <- (filter(current_data, SEXO==1) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
+result$mujeres <- (filter(current_data, SEXO==6) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
+
+ggplot(result, aes(CICLO)) + 
+  geom_line(aes(y = total/1000, colour = "var0")) + 
+  geom_line(aes(y = hombres/1000, colour = "var1")) +
+  geom_line(aes(y = mujeres/1000, colour = "var2")) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, max(result$total/1000)))
+
+
 
 
 # Obtener parches que faltan

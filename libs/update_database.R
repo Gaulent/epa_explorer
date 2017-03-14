@@ -1,6 +1,5 @@
 source("libs/access_database.R", encoding = "UTF-8")
 
-# Obtener parches que faltan
 if(!exists('update_database_R')){
   update_database_R<-T
   
@@ -22,10 +21,7 @@ if(!exists('update_database_R')){
     column_names<-c("CICLO", "CCAA", "PROV", "NVIVI", "NIVEL", "NPERS", "EDAD5", "RELPP", "SEXO", "NCONY", "NPADRE", "NMADRE", "RELLMILI", "ECIV", "PRONA", "REGNA", "NAC", "EXREGNA", "ANORE", "NFORMA", "RELLB", "EDADEST", "CURSR", "NCURSR", "CURSNR", "NCURNR", "HCURNR", "RELLB1", "TRAREM", "AYUDFA", "AUSENT", "RZNOTB", "VINCUL", "NUEVEM", "OCUP", "ACT", "SITU", "SP", "DUCON1", "DUCON2", "DUCON3", "TCONTM", "TCONTD", "DREN", "DCOM", "PROEST", "REGEST", "PARCO1", "PARCO2", "HORASP", "HORASH", "HORASE", "EXTRA", "EXTPAG", "EXTNPG", "RZDIFH", "TRAPLU", "OCUPLU", "ACTPLU", "SITPLU", "HORPLU", "MASHOR", "DISMAS", "RZNDISH", "HORDES", "BUSOTR", "BUSCA", "DESEA", "FOBACT", "NBUSCA", "ASALA", "EMBUS", "ITBU", "DISP", "RZNDIS", "EMPANT", "DTANT", "OCUPA", "ACTA", "SITUA", "OFEMP", "SIDI1", "SIDI2", "SIDI3", "SIDAC1", "SIDAC2", "MUN", "PRORE", "REPAIRE", "TRAANT", "AOI", "CSE", "FACTOREL")
     col_types<-("iii-i-i-i----iiiiiic-iicici-iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii-iii")
     dframe<-read_fwf(filepath, fwf_widths(column_widths, column_names), col_types)
-    #dframe<-read_fwf("data/raw_new/datos_2016t3", fwf_widths(column_widths, column_names), col_types)
-    
-    
-    
+
     # Nulos para numericos
     
     dframe$EDADEST[dframe$EDADEST==0]<-NA
@@ -93,9 +89,7 @@ if(!exists('update_database_R')){
     con <- dbConnect(RSQLite::SQLite(), "epa_db.db")
     dbWriteTable(con,"epa_table",dframe, append=TRUE, overwrite=FALSE)
     dbDisconnect(con)
-    
   }
-  
   
   check_for_updates <- function() {
     
@@ -113,16 +107,14 @@ if(!exists('update_database_R')){
     
     return(setdiff(df,db_updates))
   }
-  #--Actualizar base de datos
-  
+
   update_database <- function(selected_file) {
     
     library(RCurl)
     library(dplyr)
     
     tempReport <- file.path(tempdir(), selected_file)
-    #file.copy("reports/report.Rmd", tempReport, overwrite = TRUE)
-    
+
     download.file(file.path(ftp_address, selected_file),destfile=tempReport,method="libcurl",quiet=TRUE)
     df<-unzip(tempReport,list=TRUE)
     df<-arrange(df, desc(Length) )
