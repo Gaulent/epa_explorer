@@ -119,3 +119,10 @@ CREATE INDEX [NIVEL-SITU] ON epa_table (
 CREATE INDEX SITU ON epa_table (
     SITU
 );
+
+
+CREATE TABLE db_updates (
+    Name TEXT UNIQUE
+            NOT NULL
+            PRIMARY KEY
+);
