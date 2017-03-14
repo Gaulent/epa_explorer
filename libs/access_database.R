@@ -17,20 +17,25 @@ if(!exists('access_database_R')){
     return(result_data)
   }
   
-  getData <- function(select, where = NULL, updateProgress = FALSE) {
+  getData <- function(select, where = NULL) {
     
     library(RSQLite)
     library(dplyr)
     
+    print("test")
+    
     select <- paste(select,collapse=",")
-    if (is.null(where))
-    {  sql_query<-paste(c("SELECT", select, "FROM epa_table"),collapse=" ")
-    total_rows <- getSQL(paste(c("SELECT count(*) FROM epa_table"),collapse=" "))$`count(*)`
+    if (is.null(where)) {
+      sql_query<-paste(c("SELECT", select, "FROM epa_table"),collapse=" ")
+      total_rows <- getSQL(paste(c("SELECT count(*) FROM epa_table"),collapse=" "))$`count(*)`
     }
-    else
-    {  sql_query<-paste(c("SELECT", select, "FROM epa_table WHERE", where),collapse=" ")
+    else {
+      sql_query<-paste(c("SELECT", select, "FROM epa_table WHERE", where),collapse=" ")
     total_rows <- getSQL(paste(c("SELECT count(*) FROM epa_table WHERE", where),collapse=" "))$`count(*)`
     }
+    
+    updateProgress <- exists("session") & total_rows > 500000
+    print(updateProgress)
     
     if(updateProgress)
     {
@@ -47,8 +52,8 @@ if(!exists('access_database_R')){
     
     while (!dbHasCompleted(rs)) {
       
-        datalist[[i]]<-dbFetch(rs, 100000)
-        i<-i+1
+      datalist[[i]]<-dbFetch(rs, 100000)
+      i<-i+1
       if(updateProgress) {
         progress$set(dbGetRowCount(rs)/total_rows, detail = "Inicializando")
       }
