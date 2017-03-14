@@ -133,8 +133,13 @@ shinyServer(function(input, output, session) {
   )
   
   output$graph_plot <- renderPlot({
+    
+    progress <- shiny::Progress$new()
+    progress$set(message = "Recuperando Datos", value = 1)
+    on.exit(progress$close())
+    
     input$graph_btn
-    current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL", fromShiny = TRUE)
+    current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL", updateProgress = progress$set)
     result <- current_data %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL))
     result$hombres <- (filter(current_data, SEXO==1) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
     result$mujeres <- (filter(current_data, SEXO==6) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
