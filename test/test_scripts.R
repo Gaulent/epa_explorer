@@ -5,7 +5,14 @@ source("libs/access_database.R", encoding = "UTF-8")
 source("libs/update_database.R", encoding = "UTF-8")
 
 
-current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL")
+map_ccaa <- data.frame(value=c(1:17,51,52), label=c("Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria", "Castilla y León", "Castilla-La Mancha", "Cataluña", "Comunidad Valenciana", "Extremadura", "Galicia", "Comunidad de Madrid", "Región de Murcia", "Navarra", "País Vasco", "La Rioja", "Ceuta", "Melilla"),stringsAsFactors=FALSE)  
+dframe<-getData("CCAA")
+dframe$CCAA[dframe$CCAA==1]<-NA
+
+dframe <- as.data.frame(unclass(dframe)) #Todos los char a factor.
+levels(dframe$CCAA)<-list("Andaluc?a"="1", "Arag?n"="2", "Asturias"="3", "Baleares"="4", "Canarias"="5", "Cantabria"="6", "Castilla-Le?n"="7", "Castilla-La Mancha"="8", "Catalu?a"="9", "Comunidad Valenciana"="10", "Extremadura"="11", "Galicia"="12", "Madrid"="13", "Murcia"="14", "Navarra"="15", "Pa?s Vasco"="16", "Rioja"="17", "Ceuta"="51", "Melilla"="52")
+dframe$CCAA<-plyr::mapvalues(dframe$CCAA,from=map_ccaa$value, to=map_ccaa$label)
+
 result <- current_data %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL))
 result$hombres <- (filter(current_data, SEXO==1) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
 result$mujeres <- (filter(current_data, SEXO==6) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
