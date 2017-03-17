@@ -18,7 +18,7 @@ shinyUI(
                tabPanel("Single",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("single_ciclo","Ciclo:",choices = rev(list_ciclo$CICLO)),
+                            selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
                             selectInput("single_atributo","Atributo:",choices = list_attrdef$name),
                             downloadButton("report", "Generate report") #Markdown test
                           ),

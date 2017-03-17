@@ -394,14 +394,14 @@ En términos relativos, las comunidades con mejor evolución trimestral del empl
 # Grafica.
 
 CCAA<-c(1:17,51,52,"TOTAL")
-current_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo," AND SITU IS NOT NULL"))
+current_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo," AND SITU IS NOT NULL"),toFactor = FALSE)
 a <- (aggregate(current_data$FACTOREL, by=list(CCAA=current_data[,"CCAA"]), FUN=sum))
 current_data<-as.data.frame(CCAA)
 current_data<-merge(current_data,a,by="CCAA",all.x=TRUE)
 current_data[is.na(current_data)] <- 0
 current_data[20,]$x<-sum(current_data$x)
 
-past_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo-1," AND SITU IS NOT NULL"))
+past_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo-1," AND SITU IS NOT NULL"),toFactor = FALSE)
 a <- (aggregate(past_data$FACTOREL, by=list(CCAA=past_data[,"CCAA"]), FUN=sum))
 past_data<-as.data.frame(CCAA)
 past_data<-merge(past_data,a,by="CCAA",all.x=TRUE)
@@ -444,14 +444,14 @@ En términos relativos, las mayores variaciones anuales de la ocupación se dan 
 # Grafica.
 
 CCAA<-c(1:17,51,52,"TOTAL")
-current_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo," AND SITU IS NOT NULL"))
+current_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo," AND SITU IS NOT NULL"),toFactor = FALSE)
 a <- (aggregate(current_data$FACTOREL, by=list(CCAA=current_data[,"CCAA"]), FUN=sum))
 current_data<-as.data.frame(CCAA)
 current_data<-merge(current_data,a,by="CCAA",all.x=TRUE)
 current_data[is.na(current_data)] <- 0
 current_data[20,]$x<-sum(current_data$x)
 
-past_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo-4," AND SITU IS NOT NULL"))
+past_data<-getData("CCAA,FACTOREL", c("CICLO=",params$ciclo-4," AND SITU IS NOT NULL"),toFactor = FALSE)
 a <- (aggregate(past_data$FACTOREL, by=list(CCAA=past_data[,"CCAA"]), FUN=sum))
 past_data<-as.data.frame(CCAA)
 past_data<-merge(past_data,a,by="CCAA",all.x=TRUE)
