@@ -9,6 +9,8 @@
 
 library(shiny)
 library(gmodels) # For CrossTable()
+library(ggplot2)
+library(dplyr)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
@@ -84,7 +86,7 @@ shinyServer(function(input, output, session) {
   multi_data<-reactive({
     
     # Lista de distintos Ciclos Posibles
-    getData(c(input$multi_atributo1,input$multi_atributo2),c("CICLO=",input$multi_ciclo))
+    getData(c(input$multi_atributo1,input$multi_atributo2),c("CICLO=",input$multi_ciclo), toString = FALSE)
     
   })
   
@@ -138,12 +140,12 @@ shinyServer(function(input, output, session) {
     progress$set(message = "Recuperando Datos", value = 1)
     on.exit(progress$close())
     
-    current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL", updateProgress = progress$set)
+    current_data<-getData("CICLO, SEXO, FACTOREL", "SITU IS NOT NULL AND CICLO >= 155", updateProgress = progress$set)
     result <- current_data %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL))
-    result$hombres <- (filter(current_data, SEXO==1) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
-    result$mujeres <- (filter(current_data, SEXO==6) %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
+    result$hombres <- (filter(current_data, SEXO=="V") %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
+    result$mujeres <- (filter(current_data, SEXO=="M") %>% group_by(CICLO) %>% summarise(total = sum(FACTOREL)))$total
     
-    ggplot(result, aes(CICLO)) + 
+    ggplot(result, aes(155:176)) + 
       geom_line(aes(y = total/1000, colour = "var0")) + 
       geom_line(aes(y = hombres/1000, colour = "var1")) +
       geom_line(aes(y = mujeres/1000, colour = "var2")) +

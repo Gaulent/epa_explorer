@@ -23,7 +23,7 @@ if(!exists('access_database_R')){
     return(bind_rows(datalist))
   }
   
-  getData <- function(select, where = NULL, updateProgress = NULL, toFactor = TRUE) {
+  getData <- function(select, where = NULL, updateProgress = NULL, toString = TRUE) {
     
     select <- paste(select,collapse=",")
     
@@ -32,21 +32,20 @@ if(!exists('access_database_R')){
     else
       sql_query<-paste(c("SELECT", select, "FROM epa_table WHERE", where),collapse=" ")
     
-    if (toFactor)
-      return(mapToFactor(getSQL(sql_query,updateProgress)))
+    if (toString)
+      return(mapToString(getSQL(sql_query,updateProgress)))
     else
       return(getSQL(sql_query,updateProgress))
   }
   
-  mapToFactor <- function(dframe) {
-    
-    dframe <- as.data.frame(unclass(dframe)) #Todos los char a factor.
+  mapToString <- function(dframe) {
     
     for(col in colnames(dframe)) {
-      if(col=="CICLO")
-        dframe$CICLO <- as.factor(dframe$CICLO)
-      if(!is.null(getMapValues(col)))
-        levels(dframe[,col])<-getMapValues(col)
+      if(!is.null(getMapValues(col))) {
+        dframe[,col]<-plyr::mapvalues(dframe[,col],
+                                      from=unlist(getMapValues(col),use.names=FALSE),
+                                      to=names(getMapValues(col)),warn_missing=FALSE) #Retrocompatibilidad
+      }
     }
     
     return(dframe)
@@ -59,7 +58,7 @@ if(!exists('access_database_R')){
     
     return(switch(attr_name,
                   CICLO={
-                    list_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table WHERE CICLO >= 155")
+                    list_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table")
                     tmp_list<-as.list(list_ciclo$CICLO)
                     names(tmp_list)<-paste((list_ciclo$CICLO+2)%/%4+1972,(list_ciclo$CICLO+2)%%4+1,sep = "T")
                     tmp_list
