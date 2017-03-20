@@ -159,14 +159,13 @@ shinyServer(function(input, output, session) {
   # Pestaña Settings. Solo actualiza la base de datos al pulsar el boton,
   # pero el summary se muestra siempre.
   rv<-reactiveValues()
-  rv$db_patches<- names(list_ciclo)
+  rv$db_patches<- names(getMapValues("CICLO"))
   
   observeEvent(input$cfg_update_btn,{
                update_database(input$cfg_file)
-               list_ciclo<-getMapValues("CICLO")
-               rv$db_patches <- names(list_ciclo)
+               rv$db_patches <- names(getMapValues("CICLO", forceCheck = TRUE))
                updateSelectInput(session, "cfg_file", choices = check_for_updates()$Name)
-               updateSelectInput(session, "single_ciclo",choices = rev(list_ciclo[-(1:25)]))
+               updateSelectInput(session, "single_ciclo",choices = rev(getMapValues("CICLO")[-(1:25)]))
                })
   
   output$cfg_db_summary <- renderPrint({

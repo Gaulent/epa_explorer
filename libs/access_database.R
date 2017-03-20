@@ -3,6 +3,8 @@ if(!exists('access_database_R')){
   
   database_path <- "D:/workarea/epa_explorer/epa_db.db"
   
+  cache_ciclo <- NULL
+  
   getSQL <- function(sql_query, updateProgress = NULL) {
     
     library(RSQLite)
@@ -51,16 +53,18 @@ if(!exists('access_database_R')){
     return(dframe)
   }
   
-  getMapValues <- function(attr_name) {
+  getMapValues <- function(attr_name, forceCheck = FALSE) {
     lista_si_no<-list("Si" = "1", "No" = "6")
     lista_region<-list("Álava"="1",  "Albacete"="2",  "Alicante"="3",  "Almería"="4",  "Ávila"="5",  "Badajoz"="6",  "Baleares"="7",  "Barcelona"="8",  "Burgos"="9",  "Cáceres"="10",  "Cádiz"="11",  "Castellón"="12",  "Ciudad Real"="13",  "Córdoba"="14",  "Coruña"="15",  "Cuenca"="16",  "Girona"="17",  "Granada"="18",  "Guadalajara"="19",  "Guipúzcoa"="20",  "Huelva"="21",  "Huesca"="22",  "Jaén"="23",  "León"="24",  "Lleida"="25",  "Rioja"="26",  "Lugo"="27",  "Madrid"="28",  "Málaga"="29",  "Murcia"="30",  "Navarra"="31",  "Orense"="32",  "Asturias"="33",  "Palencia"="34",  "Palmas"="35",  "Pontevedra"="36",  "Salamanca"="37",  "Santa Cruz de Tenerife"="38",  "Cantabria"="39",  "Segovia"="40",  "Sevilla"="41",  "Soria"="42",  "Tarragona"="43",  "Teruel"="44",  "Toledo"="45",  "Valencia"="46",  "Valladolid"="47",  "Vizcaya"="48",  "Zamora"="49",  "Zaragoza"="50",  "Ceuta"="51",  "Melilla"="52", "Resto de Europa" = "100", "UE-15" = "115", "UE-25" = "125", "UE-27" = "127", "UE-28" = "128", "África" = "200", "Norteamérica" = "300", "Centroamérica" = "310", "Sudamérica" = "350", "Asia Oriental" = "400", "Asia Occidental" = "410", "Asia del Sur" = "420", "Oceanía" = "500", "Portugal" = "600", "Francia" = "610", "Andorra" = "620", "Marruecos" = "630", "Apátridas" = "999")
     
     return(switch(attr_name,
                   CICLO={
-                    list_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table")
-                    tmp_list<-as.list(list_ciclo$CICLO)
-                    names(tmp_list)<-paste((list_ciclo$CICLO+2)%/%4+1972,(list_ciclo$CICLO+2)%%4+1,sep = "T")
-                    tmp_list
+                    if(is.null(cache_ciclo) | forceCheck) {
+                      tmp_ciclo<-getSQL("SELECT DISTINCT CICLO FROM epa_table")
+                      cache_ciclo<<-as.list(tmp_ciclo$CICLO)
+                      names(cache_ciclo)<<-paste((tmp_ciclo$CICLO+2)%/%4+1972,(tmp_ciclo$CICLO+2)%%4+1,sep = "T")
+                    }
+                    cache_ciclo
                   },
                   CCAA=list("Andalucía"="1", "Aragón"="2", "Asturias"="3", "Baleares"="4", "Canarias"="5", "Cantabria"="6", "Castilla y León"="7", "Castilla-La Mancha"="8", "Cataluña"="9", "Comunidad Valenciana"="10", "Extremadura"="11", "Galicia"="12", "Comunidad de Madrid"="13", "Región de Murcia"="14", "Navarra"="15", "País Vasco"="16", "La Rioja"="17", "Ceuta"="51", "Melilla"="52"),
                   PROV=lista_region,

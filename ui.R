@@ -18,7 +18,7 @@ shinyUI(
                tabPanel("Single",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("single_ciclo","Ciclo:",choices = rev(list_ciclo[-(1:25)])),
+                            selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")[-(1:25)])),
                             selectInput("single_atributo","Atributo:",choices = list_attrdef$name),
                             downloadButton("report", "Generate report") #Markdown test
                           ),
@@ -34,7 +34,7 @@ shinyUI(
                tabPanel("Multiple",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("multi_ciclo","Ciclo:",choices = rev(list_ciclo[-(1:25)])),
+                            selectInput("multi_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")[-(1:25)])),
                             selectInput("multi_atributo1","Atributo:",choices = list_attrdef$name),
                             selectInput("multi_atributo2","Atributo2:",choices = list_attrdef$name)
                           ),
@@ -45,7 +45,7 @@ shinyUI(
                tabPanel("Test Graph",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("graph_ciclo","Ciclo:",choices =  rev(list_ciclo[-(1:25)])),
+                            selectInput("graph_ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")[-(1:25)])),
                             actionButton("graph_btn", "Go!")
                           ),
                           mainPanel(plotOutput("graph_plot"))
@@ -56,7 +56,7 @@ shinyUI(
                tabPanel("SubTab1",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("ciclo","Ciclo:",choices =  rev(list_ciclo[-(1:25)]))
+                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")[-(1:25)]))
                           ),
                           mainPanel()
                         ))
@@ -66,7 +66,7 @@ shinyUI(
                tabPanel("SubTab1",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("ciclo","Ciclo:",choices =  rev(list_ciclo[-(1:25)]))
+                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")[-(1:25)]))
                           ),
                           mainPanel()
                         ))
