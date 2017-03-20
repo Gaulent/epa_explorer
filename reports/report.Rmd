@@ -2,6 +2,7 @@
 title: "Encuesta de Población Activa (EPA)"
 params:
   ciclo: 176
+  underShiny: FALSE
 output:
   html_document: default
   word_document:
@@ -16,9 +17,11 @@ output:
 
 source("D:/workarea/epa_explorer/libs/access_database.R", encoding = "UTF-8")
 
-progress <- shiny::Progress$new()
-progress$set(message = "Generando Informe", value = 0)
-progress$set(0.09, detail = "Inicializando")
+if(params$underShiny) {
+  progress <- shiny::Progress$new()
+  progress$set(message = "Generando Informe", value = 0)
+  progress$set(0.09, detail = "Inicializando")
+}
 
 #TODO: Repasar que los caption salgan correctos.
 #TODO: Calcular las cosas intext.
@@ -80,7 +83,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
 abline(h=0)
 
-progress$set(0.17, detail = "Parte 1")
+if(params$underShiny) progress$set(0.17, detail = "Parte 1")
 
 ```
 
@@ -116,7 +119,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
 abline(h=0)
 
-progress$set(0.26, detail = "Parte 2")
+if(params$underShiny) progress$set(0.26, detail = "Parte 2")
 
 ```
 
@@ -175,7 +178,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(2,20,3),outer=TRUE)
 abline(h=0)
 
-progress$set(0.35, detail = "Parte 3")
+if(params$underShiny) progress$set(0.35, detail = "Parte 3")
 
 ```
 
@@ -220,7 +223,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(2,20,3),outer=TRUE)
 abline(h=0)
 
-progress$set(0.43, detail = "Parte 4")
+if(params$underShiny) progress$set(0.43, detail = "Parte 4")
 
 ```
 
@@ -252,7 +255,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
 abline(h=0)
 
-progress$set(0.52, detail = "Parte 5")
+if(params$underShiny) progress$set(0.52, detail = "Parte 5")
 
 ```
 
@@ -296,7 +299,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
 abline(h=0)
 
-progress$set(0.61, detail = "Parte 6")
+if(params$underShiny) progress$set(0.61, detail = "Parte 6")
 
 ```
 
@@ -334,7 +337,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,13.5,2),outer=TRUE)
 abline(h=0)
 
-progress$set(0.70, detail = "Parte 7")
+if(params$underShiny) progress$set(0.70, detail = "Parte 7")
 
 ```
 
@@ -368,7 +371,7 @@ text(x = bp, y = datos, label = datos, pos = 3, cex = 0.75,adj = c(0.5,1))
 axis(1,pos=0,labels=FALSE, at = seq(1.5,25.5,2),outer=TRUE)
 abline(h=0)
 
-progress$set(0.78, detail = "Parte 8")
+if(params$underShiny) progress$set(0.78, detail = "Parte 8")
 
 ```
 
@@ -430,7 +433,7 @@ par(mar=c(5, 4, 4, 2) + 0.1,cex.axis=1) #margenes por defecto
 
 
 
-progress$set(0.87, detail = "Parte 9")
+if(params$underShiny) progress$set(0.87, detail = "Parte 9")
 
 ```
 
@@ -477,7 +480,7 @@ axis(3,pos=41.5, at = seq(-2,8,1))
 text(x=datos$x, y = bp, label = datos$x,adj = c(-0.5,0.5),cex=0.75)
 par(mar=c(5, 4, 4, 2) + 0.1,cex.axis=1) #margenes por defecto
 
-progress$set(0.96, detail = "Parte 10")
+if(params$underShiny) progress$set(0.96, detail = "Parte 10")
 
 ```
 
@@ -559,7 +562,8 @@ Inactivos: población de 16 o más años no incluida en ninguna de las categorí
 
 ```{r echo=FALSE}
 
-progress$set(1, detail = "Finalizando")
-
-progress$close()
+if(params$underShiny) {
+  progress$set(1, detail = "Finalizando")
+  progress$close()
+}
 ```

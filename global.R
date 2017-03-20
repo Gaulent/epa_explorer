@@ -10,5 +10,7 @@
 source("libs/access_database.R", encoding = "UTF-8")
 source("libs/update_database.R", encoding = "UTF-8")
 
+list_ciclo<-getMapValues("CICLO")
+
 # Definicion de atributos
 list_attrdef<-getSQL("PRAGMA table_info(epa_table)")

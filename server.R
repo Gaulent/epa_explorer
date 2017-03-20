@@ -120,7 +120,7 @@ shinyServer(function(input, output, session) {
       file.copy("reports/report.Rmd", tempReport, overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(ciclo = as.numeric(input$single_ciclo))
+      params <- list(ciclo = as.numeric(input$single_ciclo), underShiny = TRUE)
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
@@ -159,13 +159,14 @@ shinyServer(function(input, output, session) {
   # Pestaña Settings. Solo actualiza la base de datos al pulsar el boton,
   # pero el summary se muestra siempre.
   rv<-reactiveValues()
-  rv$db_patches<- names(getMapValues("CICLO"))
+  rv$db_patches<- names(list_ciclo)
   
   observeEvent(input$cfg_update_btn,{
                update_database(input$cfg_file)
+               list_ciclo<-getMapValues("CICLO")
+               rv$db_patches <- names(list_ciclo)
                updateSelectInput(session, "cfg_file", choices = check_for_updates()$Name)
-               updateSelectInput(session, "single_ciclo",choices = rev(getMapValues("CICLO")[-(1:25)]))
-               rv$db_patches <- names(getMapValues("CICLO"))
+               updateSelectInput(session, "single_ciclo",choices = rev(list_ciclo[-(1:25)]))
                })
   
   output$cfg_db_summary <- renderPrint({
