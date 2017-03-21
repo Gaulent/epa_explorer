@@ -72,6 +72,16 @@ shinyUI(
                         ))
                )
              )),
+             tabPanel("Reports",
+                      fluidPage(sidebarLayout(
+                        sidebarPanel(
+                          selectInput("rpt_file","Fichero:", choices = dir("./reports", pattern="*.Rmd"), selectize = FALSE, size = 5),
+                          selectInput("rpt_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")[-(1:25)])),
+                          downloadButton("rpt_generate", "Generate report") #Markdown test
+                        ),
+                        mainPanel()
+                      ))
+             ),
              tabPanel("Settings",tabsetPanel(
                tabPanel("Update",
                         fluidPage(sidebarLayout(

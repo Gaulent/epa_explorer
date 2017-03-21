@@ -105,22 +105,23 @@ shinyServer(function(input, output, session) {
     CrossTable(x = multi_data()[,input$multi_atributo1], y = multi_data()[,input$multi_atributo2])
   })    
   
+  get_export_filename <- function() {
+    paste(c(gsub("\\.Rmd$","",input$rpt_file),".docx"),collapse="")
+  }
 
-
-  
-  output$report <- downloadHandler(
+  output$rpt_generate <- downloadHandler(
     # For PDF output, change this to "report.pdf"
-    filename = "report_export.docx",
+    filename = get_export_filename,
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     content = function(file) {
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
       # can happen when deployed).
-      tempReport <- file.path(tempdir(), "report.Rmd")
-      file.copy("reports/report.Rmd", tempReport, overwrite = TRUE)
+      tempReport <- file.path(tempdir(), input$rpt_file)
+      file.copy(paste(c("reports/",input$rpt_file),collapse=""), tempReport, overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(ciclo = as.numeric(input$single_ciclo), underShiny = TRUE)
+      params <- list(ciclo = as.numeric(input$rpt_ciclo), underShiny = TRUE)
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
