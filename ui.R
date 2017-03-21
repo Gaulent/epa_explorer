@@ -18,9 +18,8 @@ shinyUI(
                tabPanel("Single",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")[-(1:25)])),
-                            selectInput("single_atributo","Atributo:",choices = list_attrdef$name),
-                            downloadButton("report", "Generate report") #Markdown test
+                            selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
+                            selectInput("single_atributo","Atributo:",choices = list_attrdef$name)
                           ),
                           mainPanel(plotOutput("single_plot1"),
                                     plotOutput("single_plot11"),
@@ -34,7 +33,7 @@ shinyUI(
                tabPanel("Multiple",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("multi_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")[-(1:25)])),
+                            selectInput("multi_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
                             selectInput("multi_atributo1","Atributo:",choices = list_attrdef$name),
                             selectInput("multi_atributo2","Atributo2:",choices = list_attrdef$name)
                           ),
@@ -45,7 +44,7 @@ shinyUI(
                tabPanel("Test Graph",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("graph_ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")[-(1:25)])),
+                            selectInput("graph_ciclo","Ciclo:",choices =  rev(getMapValues("CICLO"))),
                             actionButton("graph_btn", "Go!")
                           ),
                           mainPanel(plotOutput("graph_plot"))
@@ -56,7 +55,7 @@ shinyUI(
                tabPanel("SubTab1",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")[-(1:25)]))
+                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")))
                           ),
                           mainPanel()
                         ))
@@ -66,7 +65,7 @@ shinyUI(
                tabPanel("SubTab1",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")[-(1:25)]))
+                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")))
                           ),
                           mainPanel()
                         ))
@@ -82,8 +81,7 @@ shinyUI(
                         mainPanel()
                       ))
              ),
-             tabPanel("Settings",tabsetPanel(
-               tabPanel("Update",
+             tabPanel("Update",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("cfg_file","Fichero:", choices = check_for_updates()$Name, selectize = FALSE, size = 5),
@@ -93,6 +91,5 @@ shinyUI(
                             verbatimTextOutput("cfg_db_summary")
                           )
                         ))
-               )
-             ))             
+             )
   ))
