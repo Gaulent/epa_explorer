@@ -23,12 +23,17 @@ shinyServer(function(input, output, session) {
   # TODO: Puedo dejar la conexion a la bd abierta?
   # Como se que no pilla mucha memoria?
   
+  rv<-reactiveValues()
+  
+  # Pestaña Single ---------------------------------
+
   data<-reactive({
 
     # Lista de distintos Ciclos Posibles
     getData(c(input$single_atributo,"FACTOREL"),c("CICLO=",input$single_ciclo))
   })
-  
+
+    
   output$single_plot1 <- renderPlot({
     #Categorico
     a <- (aggregate(data()$FACTOREL, by=list(SEXO1=data()[,input$single_atributo]), FUN=sum))
@@ -81,15 +86,14 @@ shinyServer(function(input, output, session) {
     
   })  
   
-  
-  
+  # Pestaña Multi ---------------------------------
+
   multi_data<-reactive({
     
     # Lista de distintos Ciclos Posibles
     getData(c(input$multi_atributo1,input$multi_atributo2),c("CICLO=",input$multi_ciclo), toString = FALSE)
     
   })
-  
   
   output$multi_plot <- renderPlot({
     #if (is.numeric(data()[,input$single_atributo]))
@@ -104,6 +108,8 @@ shinyServer(function(input, output, session) {
     # TODO: At least 2 elements
     CrossTable(x = multi_data()[,input$multi_atributo1], y = multi_data()[,input$multi_atributo2])
   })    
+
+  # Pestaña Report ---------------------------------
   
   get_export_filename <- function() {
     paste(c(gsub("\\.Rmd$","",input$rpt_file),".docx"),collapse="")
@@ -135,7 +141,9 @@ shinyServer(function(input, output, session) {
     }  
   )
   
+  # Pestaña Graph ---------------------------------
   # Pestaña de prueba. Solo se lanza el grafico al pulsar el boton.
+
   graph <- eventReactive(input$graph_btn, {
     progress <- shiny::Progress$new()
     progress$set(message = "Recuperando Datos", value = 1)
@@ -157,9 +165,10 @@ shinyServer(function(input, output, session) {
     graph()
   })
 
+  # Pestaña Update ---------------------------------
   # Pestaña Settings. Solo actualiza la base de datos al pulsar el boton,
   # pero el summary se muestra siempre.
-  rv<-reactiveValues()
+
   rv$db_patches<- names(getMapValues("CICLO"))
   
   observeEvent(input$cfg_update_btn,{
