@@ -56,6 +56,7 @@ if(!exists('access_database_R')){
   getMapValues <- function(attr_name, forceCheck = FALSE) {
     lista_si_no<-list("Si" = "1", "No" = "6")
     lista_region<-list("Álava"="1",  "Albacete"="2",  "Alicante"="3",  "Almería"="4",  "Ávila"="5",  "Badajoz"="6",  "Baleares"="7",  "Barcelona"="8",  "Burgos"="9",  "Cáceres"="10",  "Cádiz"="11",  "Castellón"="12",  "Ciudad Real"="13",  "Córdoba"="14",  "Coruña"="15",  "Cuenca"="16",  "Girona"="17",  "Granada"="18",  "Guadalajara"="19",  "Guipúzcoa"="20",  "Huelva"="21",  "Huesca"="22",  "Jaén"="23",  "León"="24",  "Lleida"="25",  "Rioja"="26",  "Lugo"="27",  "Madrid"="28",  "Málaga"="29",  "Murcia"="30",  "Navarra"="31",  "Orense"="32",  "Asturias"="33",  "Palencia"="34",  "Palmas"="35",  "Pontevedra"="36",  "Salamanca"="37",  "Santa Cruz de Tenerife"="38",  "Cantabria"="39",  "Segovia"="40",  "Sevilla"="41",  "Soria"="42",  "Tarragona"="43",  "Teruel"="44",  "Toledo"="45",  "Valencia"="46",  "Valladolid"="47",  "Vizcaya"="48",  "Zamora"="49",  "Zaragoza"="50",  "Ceuta"="51",  "Melilla"="52", "Resto de Europa" = "100", "UE-15" = "115", "UE-25" = "125", "UE-27" = "127", "UE-28" = "128", "África" = "200", "Norteamérica" = "300", "Centroamérica" = "310", "Sudamérica" = "350", "Asia Oriental" = "400", "Asia Occidental" = "410", "Asia del Sur" = "420", "Oceanía" = "500", "Portugal" = "600", "Francia" = "610", "Andorra" = "620", "Marruecos" = "630", "Apátridas" = "999")
+    lista_boolean<-list("Si" = "1", "No" = "0")
     
     return(switch(attr_name,
                   CICLO={
@@ -75,15 +76,16 @@ if(!exists('access_database_R')){
                   EXREGNA=lista_region,
                   NFORMA=list("AN" = "AN", "P1" = "P1", "P2" = "P2", "S1" = "S1", "SG" = "SG", "SP" = "SP", "SU" = "SU"),
                   CURSR=list("Si" = "1", "En vacaciones" = "2", "No" = "3"),
-                  NCURNR=list("ED" = "ED", "EM" = "EM", "PE" = "PE"),
                   NCURSR=list("PR" = "PR", "S1" = "S1", "SG" = "SG", "SP" = "SP", "SU" = "SU"),
                   CURSNR=list("Si" = "1", "En vacaciones" = "2", "No" = "3"),
+                  NCURNR=list("ED" = "ED", "EM" = "EM", "PE" = "PE"),
                   TRAREM=lista_si_no,
                   AYUDFA=lista_si_no,
                   AUSENT=lista_si_no,
+                  SP=list("Admin. central" = "1.0", "Admin. de SS" = "2.0", "Admin. de CA" = "3.0", "Admin. local" = "4.0", "Empresas públicas" = "5.0", "No sabe" = "0.0"),
                   DUCON1=list("Indefinido" = "1", "Temporal" = "6"),
-                  DUCON3=list("1" = "1", "2" = "2", "3" = "3", "4" = "4", "5" = "5", "6" = "6", "7" = "7", "8" = "8"),
                   DUCON2=list("Permanente" = "1", "Discontinuo" = "6"),
+                  DUCON3=list("1" = "1", "2" = "2", "3" = "3", "4" = "4", "5" = "5", "6" = "6", "7" = "7", "8" = "8"),
                   REGEST=lista_region,
                   PARCO1=list("Completa" = "1", "Parcial" = "6"),
                   EXTRA=lista_si_no,
@@ -94,9 +96,18 @@ if(!exists('access_database_R')){
                   BUSCA=lista_si_no,
                   DESEA=lista_si_no,
                   FOBACT=list("Activos" = "1", "No activos" = "6"),
-                  ASALA=lista_si_no,
+                  ASALA=list("No sabe" = "0", "Si" = "1", "No" = "6"),
                   DISP=lista_si_no,
                   EMPANT=lista_si_no,
+                  SIDI1=lista_boolean,
+                  SIDI2=lista_boolean,
+                  SIDI3=lista_boolean,
+                  SIDI4=lista_boolean,
+                  SIDI5=lista_boolean,
+                  SIDI6=lista_boolean,
+                  SIDI7=lista_boolean,
+                  SIDAC1=lista_boolean,
+                  SIDAC2=lista_boolean,
                   MUN=list("Mismo" = "1", "Distinto" = "6"),
                   REPAIRE=lista_region,
                   NULL

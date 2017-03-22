@@ -19,7 +19,7 @@ shinyUI(
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
-                            selectInput("single_atributo","Atributo:",choices = list_attrdef$name)
+                            selectInput("single_atributo","Atributo:",choices = list_select_attr)
                           ),
                           mainPanel(plotOutput("single_plot1"),
                                     plotOutput("single_plot11"),
