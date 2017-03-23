@@ -12,6 +12,7 @@ source("libs/update_database.R", encoding = "UTF-8")
 
 # Definicion de atributos
 list_attrdef<-getSQL("SELECT * FROM list_attrdef")
+list_attrdef<-filter(list_attrdef, type=="NUMERIC")
 list_select_attr<-as.list(list_attrdef$name)
-names(list_select_attr)<-paste(list_attrdef$name,list_attrdef$description,sep = " ")
+names(list_select_attr)<-paste(list_attrdef$name,list_attrdef$description,sep = " - ")
 #filter(list_attrdef, type=="NUMERIC")$name
