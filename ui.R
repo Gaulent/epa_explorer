@@ -14,28 +14,27 @@ library(shiny)
 shinyUI(
   navbarPage(title = "EPA Database",
                    
-             tabPanel("Explore",tabsetPanel(
+             navbarMenu("Explore",
                tabPanel("Single",
-                        fluidPage(sidebarLayout(
-                          sidebarPanel(
-                            selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
-                            selectInput("single_atributo","Atributo:",choices = list_select_attr)
-                          ),
-                          mainPanel(plotOutput("single_plot1"),
-                                    plotOutput("single_plot11"),
-                                    p("Summary:"),
-                                    verbatimTextOutput("single_text1"),
-                                    verbatimTextOutput("single_text2"),
-                                    plotOutput("single_plot2"),
-                                    plotOutput("single_plot3"))
-                        ))
+                        wellPanel(fluidRow(
+                          column(width=6,
+                                 selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
+                          column(width=6,
+                                 selectInput("single_atributo","Atributo:",choices = getAttrDef("NUMERIC")))
+                        )),
+                        
+                        tabsetPanel(type = "tabs", 
+                                    tabPanel("Plot", plotOutput("single_plot1"),plotOutput("single_plot11"),plotOutput("single_plot3")), 
+                                    tabPanel("Boxplot", plotOutput("single_plot2")),
+                                    tabPanel("Summary", verbatimTextOutput("single_text1"),verbatimTextOutput("single_text2"))
+                        )
                ),
                tabPanel("Multiple",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("multi_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
-                            selectInput("multi_atributo1","Atributo:",choices = list_attrdef$name),
-                            selectInput("multi_atributo2","Atributo2:",choices = list_attrdef$name)
+                            selectInput("multi_atributo1","Atributo:",choices = getAttrDef("NUMERIC")),
+                            selectInput("multi_atributo2","Atributo2:",choices = getAttrDef("NUMERIC"))
                           ),
                           mainPanel(plotOutput("multi_plot"),
                                     verbatimTextOutput("multi_text"))
@@ -50,7 +49,7 @@ shinyUI(
                           mainPanel(plotOutput("graph_plot"))
                         ))
                )
-             )),
+             ),
              tabPanel("Clustering",tabsetPanel(
                tabPanel("SubTab1",
                         fluidPage(sidebarLayout(

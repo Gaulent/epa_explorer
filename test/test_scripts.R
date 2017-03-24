@@ -18,6 +18,7 @@ ggplot(result, aes(155:176)) +
 
 
 
+data<-getData(c("ANORE","FACTOREL"),c("CICLO=176"))
 
 
-
+ggplot

@@ -25,6 +25,18 @@ if(!exists('access_database_R')){
     return(bind_rows(datalist))
   }
   
+  getAttrDef <- function(filter_by = NULL, withDesc = TRUE) {
+    
+    library(dplyr)
+    
+    list_attrdef<-getSQL("SELECT * FROM list_attrdef")
+    if (!is.null(filter_by)) list_attrdef<-filter(list_attrdef, type==filter_by)
+    list_select_attr<-as.list(list_attrdef$name)
+    if(withDesc) names(list_select_attr)<-paste(list_attrdef$name,list_attrdef$description,sep = " - ")
+
+    return(list_select_attr)
+  }
+  
   getData <- function(select, where = NULL, updateProgress = NULL, toString = TRUE) {
     
     select <- paste(select,collapse=",")
