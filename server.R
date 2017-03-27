@@ -43,8 +43,8 @@ shinyServer(function(input, output, session) {
   
   output$single_plot11 <- renderPlot({
     #Categorico
-    barplot(table(data()[,input$single_atributo]))
-    
+    #barplot(table(data()[,input$single_atributo]))
+    ggplot(data=data(), aes_string(x=input$single_atributo)) + geom_histogram()
   })
   
   output$single_plot3 <- renderPlot({
