@@ -27,35 +27,68 @@ shinyServer(function(input, output, session) {
   
   # Pestaña Single ---------------------------------
 
-  data<-reactive({
-
-    # Lista de distintos Ciclos Posibles
-    getData(c(input$single_atributo,"FACTOREL"),c("CICLO=",input$single_ciclo))
-  })
-
-    
-  output$single_plot1 <- renderPlot({
-    #Categorico
-    a <- (aggregate(data()$FACTOREL, by=list(SEXO1=data()[,input$single_atributo]), FUN=sum))
-    barplot(a$x, names.arg = a$SEXO1)
-
+  single_data <- reactive({
+    if (input$single_group == "none")
+      dframe <- getData(input$single_atributo, c("CICLO=", input$single_ciclo))
+    else
+      dframe <- getData(c(input$single_atributo, input$single_group),c("CICLO=", input$single_ciclo))
+    minv <- floor(min(dframe[, input$single_atributo], na.rm = TRUE))
+    maxv <- ceiling(max(dframe[, input$single_atributo], na.rm = TRUE))
+    updateSliderInput(session,"single_limit","Limit",min = minv,max = maxv,value = c(minv, maxv))
+    dframe
   })
   
-  output$single_plot11 <- renderPlot({
-    #Categorico
-    #barplot(table(data()[,input$single_atributo]))
-    ggplot(data=data(), aes_string(x=input$single_atributo)) + geom_histogram()
+  output$single_hist_plot <- renderPlot({
+    resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo)) +
+      geom_histogram(bins = input$single_bins,color = 'black',fill = '#099DD9')
+    
+    if (input$single_group != "none")
+      resplot <- resplot + facet_wrap(input$single_group, ncol = 2)
+    
+    if (input$single_scale == "None")
+      resplot <- resplot + scale_x_continuous(limits = input$single_limit)
+    if (input$single_scale == "Log10")
+      resplot <- resplot + scale_x_log10()
+    if (input$single_scale == "SQRT")
+      resplot <- resplot + scale_x_sqrt()
+    
+    resplot
   })
   
-  output$single_plot3 <- renderPlot({
-    if (is.numeric(data()[,input$single_atributo]))
-    hist(data()[,input$single_atributo], main = "Histogram of Used Car Prices",xlab = "Price ($)")
+  output$single_freq_plot <- renderPlot({
+    resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo))
+
+    if (input$single_group == "none")
+      resplot <- resplot + geom_freqpoly(bins = input$single_bins)
+    else
+      resplot <- resplot + geom_freqpoly(bins = input$single_bins, aes_string(color = input$single_group))
     
+    if (input$single_scale == "None")
+      resplot <- resplot + scale_x_continuous(limits = input$single_limit)
+    if (input$single_scale == "Log10")
+      resplot <- resplot + scale_x_log10()
+    if (input$single_scale == "SQRT")
+      resplot <- resplot + scale_x_sqrt()
+    
+    resplot
   })
+
+  output$single_box_plot <- renderPlot({
+    
+    if (input$single_group == "none")
+      resplot <- ggplot(data=na.omit(single_data()), aes_string(x=1, y=input$single_atributo)) + geom_boxplot()
+    else
+      resplot <- ggplot(data=na.omit(single_data()), aes_string(x=input$single_group, y=input$single_atributo)) + geom_boxplot()
+    
+    resplot <- resplot + coord_cartesian(ylim = input$single_limit)
+
+    resplot
+  })  
+    
 
   output$single_text1 <- renderPrint({
-    if (is.numeric(data()[,input$single_atributo]))
-    summary(data()[,input$single_atributo])
+    if (is.numeric(single_data()[,input$single_atributo]))
+    summary(single_data()[,input$single_atributo])
     
     
     #> var(usedcars$price)
@@ -75,16 +108,12 @@ shinyServer(function(input, output, session) {
   })
 
   output$single_text2 <- renderPrint({
-    if (is.numeric(data()[,input$single_atributo]))
-    quantile(data()[,input$single_atributo],na.rm = TRUE)
+    if (is.numeric(single_data()[,input$single_atributo]))
+    quantile(single_data()[,input$single_atributo],na.rm = TRUE)
     
   })
   
-  output$single_plot2 <- renderPlot({
-    if (is.numeric(data()[,input$single_atributo]))
-    boxplot(data()[,input$single_atributo], main="Boxplot of Used Car Prices",ylab="Price ($)")
-    
-  })  
+
   
   # Pestaña Multi ---------------------------------
 

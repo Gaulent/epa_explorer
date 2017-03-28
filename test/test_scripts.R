@@ -10,7 +10,7 @@ library(ggplot2)
 #library(ggthemes) 
 #theme_set(theme_minimal(24)) 
 
-dframe<-getData(c("SEXO", "ANORE","FACTOREL"),c("CICLO=176"))
+dframe<-getData(c("EDAD5", "ANORE","FACTOREL"),c("CICLO=176"))
 
 qplot(data=dframe, x=ANORE)
 
@@ -23,9 +23,11 @@ ggplot(data=na.omit(dframe), aes_string(x="ANORE")) +
   scale_x_log10()
   scale_x_sqrt()
 
+  ggplot(data=na.omit(dframe), aes_string(x="EDAD5")) + 
+    geom_histogram(bins=20, color = 'black', fill = '#099DD9')
 
   ggplot(data=na.omit(dframe), aes_string(x="ANORE")) + 
-    geom_freqpoly(aes_string(color = "SEXO"), binwidth=1) #Ajustar ancho de columna
+    geom_freqpoly(aes_string(color = "SEXO")) #Ajustar ancho de columna
 
   ggplot(data=na.omit(dframe), aes_string(x="SEXO", y="ANORE")) + 
     geom_boxplot() +#Ajustar ancho de columna

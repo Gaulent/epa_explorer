@@ -25,7 +25,7 @@ if(!exists('access_database_R')){
     return(bind_rows(datalist))
   }
   
-  getAttrDef <- function(filter_by = NULL, withDesc = TRUE) {
+  getAttrDef <- function(filter_by = NULL, withDesc = TRUE, withNone = FALSE) {
     
     library(dplyr)
     
@@ -33,7 +33,8 @@ if(!exists('access_database_R')){
     if (!is.null(filter_by)) list_attrdef<-filter(list_attrdef, type==filter_by)
     list_select_attr<-as.list(list_attrdef$name)
     if(withDesc) names(list_select_attr)<-paste(list_attrdef$name,list_attrdef$description,sep = " - ")
-
+    if(withNone) list_select_attr<-append(list_select_attr, list("None"="none"), 0)
+    
     return(list_select_attr)
   }
   

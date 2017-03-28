@@ -17,17 +17,28 @@ shinyUI(
              navbarMenu("Explore",
                tabPanel("Single",
                         wellPanel(fluidRow(
-                          column(width=6,
+                          column(width=4,
                                  selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
-                          column(width=6,
+                          column(width=8,
                                  selectInput("single_atributo","Atributo:",choices = getAttrDef("NUMERIC")))
                         )),
                         
                         tabsetPanel(type = "tabs", 
-                                    tabPanel("Plot", plotOutput("single_plot1"),plotOutput("single_plot11"),plotOutput("single_plot3")), 
-                                    tabPanel("Boxplot", plotOutput("single_plot2")),
+                                    tabPanel("Histogram",plotOutput("single_hist_plot")), 
+                                    tabPanel("Freqpoly",plotOutput("single_freq_plot")), 
+                                    tabPanel("Boxplot", plotOutput("single_box_plot")),
                                     tabPanel("Summary", verbatimTextOutput("single_text1"),verbatimTextOutput("single_text2"))
-                        )
+                        ),
+                        wellPanel(fluidRow(
+                          column(width=6,
+                                 sliderInput("single_limit", "Limit", min = 1, max = 1000, value = c(200,500)),
+                                 sliderInput("single_bins", "Bins",1,100,30)
+                                 ),
+                          column(width=6,
+                                 selectInput("single_group","Ciclo:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
+                                 radioButtons("single_scale","Scale",choices = c("None", "Log10", "SQRT"))
+                                 )
+                        ))
                ),
                tabPanel("Multiple",
                         fluidPage(sidebarLayout(
