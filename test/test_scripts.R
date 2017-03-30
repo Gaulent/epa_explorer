@@ -31,7 +31,7 @@ ggplot(aes(x=EDADEST, y=DREN), data = na.omit(dframe)) +
   geom_jitter(alpha=1/20) + 
   xlim(7, 60)
 
-
+#meter tambien geom_smooth
 
 # -------------------------------- IMPORTANTE -----------------------
 # Para comparar cosas en el tiempo.
