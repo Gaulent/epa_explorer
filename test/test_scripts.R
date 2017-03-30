@@ -31,3 +31,17 @@ ggplot(aes(x=EDADEST, y=DREN), data = na.omit(dframe)) +
   geom_jitter(alpha=1/20) + 
   xlim(7, 60)
 
+
+
+# -------------------------------- IMPORTANTE -----------------------
+# Para comparar cosas en el tiempo.
+
+library(dplyr)
+pf.fc_by_age_months <- pf %.%
+  group_by(age_with_months) %.%
+  summarise(friend_count_mean = mean(friend_count),
+            friend_count_median = median(friend_count),
+            n = n()) %.%
+  arrange(age_with_months)
+
+head(pf.fc_by_age_months)
