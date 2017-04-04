@@ -34,7 +34,7 @@ shinyServer(function(input, output, session) {
       dframe <- getData(c(input$single_atributo, input$single_group),c("CICLO=", input$single_ciclo))
     minv <- floor(min(dframe[, input$single_atributo], na.rm = TRUE))
     maxv <- ceiling(max(dframe[, input$single_atributo], na.rm = TRUE))
-    updateSliderInput(session,"single_limit","Limit",min = minv,max = maxv,value = c(minv, maxv))
+    updateSliderInput(session,"single_limit",min = minv,max = maxv,value = c(minv, maxv))
     dframe
   })
   
@@ -118,19 +118,51 @@ shinyServer(function(input, output, session) {
   # Pestaña Multi ---------------------------------
 
   multi_data<-reactive({
-    
-    # Lista de distintos Ciclos Posibles
-    getData(c(input$multi_atributo1,input$multi_atributo2),c("CICLO=",input$multi_ciclo), toString = FALSE)
-    
+    updateSliderInput(session,"multi_limit_x",value = c(0,100))
+    getData(c(input$multi_atributo1,input$multi_atributo2),c("CICLO=",input$multi_ciclo))
+    #if(sum(input$multi_limit_x==c(0,100))==2)
+      
   })
   
   output$multi_plot <- renderPlot({
     #if (is.numeric(data()[,input$single_atributo]))
+
+    min_x <- floor(min(multi_data()[, input$multi_atributo1], na.rm = TRUE))
+    max_x <- ceiling(max(multi_data()[, input$multi_atributo1], na.rm = TRUE))
+    min_y <- floor(min(multi_data()[, input$multi_atributo2], na.rm = TRUE))
+    max_y <- ceiling(max(multi_data()[, input$multi_atributo2], na.rm = TRUE))
+
+    xlim <- c((max_x-min_x)*input$multi_limit_x[1]/100+min_x, (max_x-min_x)*input$multi_limit_x[2]/100+min_x)
+    ylim <- c((max_y-min_y)*input$multi_limit_y[1]/100+min_y, (max_y-min_y)*input$multi_limit_y[2]/100+min_y)
     
-    plot(x = multi_data()[,input$multi_atributo1], y = multi_data()[,input$multi_atributo2],
-         main = "Scatterplot of Price vs. Mileage",
-         xlab = "Used Car Odometer (mi.)",
-         ylab = "Used Car Price ($)")
+    resplot <- ggplot(data = na.omit(multi_data()), aes_string(x = input$multi_atributo1, y = input$multi_atributo2)) +
+      geom_point(alpha=1/input$multi_alpha, color = 'orange') + 
+      xlim(xlim) + ylim(ylim)
+
+    
+    if("Mean" %in% input$multi_add)
+      resplot <- resplot + geom_line(stat='summary', fun.y = mean)
+    if("10 Percentile" %in% input$multi_add)
+      resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .1), linetype = 2, color = 'blue')
+    if("50 Percentile" %in% input$multi_add)
+      resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .5), color = 'blue')
+    if("90 Percentile" %in% input$multi_add)
+      resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
+    if("Covariance" %in% input$multi_add)
+      resplot <- resplot + geom_smooth(method = 'lm', color = 'red')
+
+    if (input$multi_scale == "SQRT")
+      resplot <- resplot + coord_trans(y = 'sqrt')
+#     if (input$single_group != "none")
+#       resplot <- resplot + facet_wrap(input$single_group, ncol = 2)
+#     
+#     if (input$single_scale == "None")
+#       resplot <- resplot + scale_x_continuous(limits = input$single_limit)
+#     if (input$single_scale == "Log10")
+#       resplot <- resplot + scale_x_log10()
+
+    
+    resplot
   })  
   
   output$multi_text <- renderPrint({
