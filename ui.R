@@ -15,7 +15,7 @@ shinyUI(
   navbarPage(title = "EPA Database",
                    
              navbarMenu("Explore",
-               tabPanel("Single",
+               tabPanel("One Variable",
                         wellPanel(fluidRow(
                           column(width=4,
                                  selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
@@ -40,29 +40,29 @@ shinyUI(
                                  )
                         ))
                ),
-               tabPanel("Multiple",
+               tabPanel("Two Variable",
                         wellPanel(fluidRow(
                           column(width=4,
-                                 selectInput("multi_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
+                                 selectInput("pair_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
                           column(width=8,
-                                 selectInput("multi_atributo1","Atributo:",choices = getAttrDef("NUMERIC")),
-                                 selectInput("multi_atributo2","Atributo:",choices = getAttrDef("NUMERIC")))
+                                 selectInput("pair_atributo1","Atributo:",choices = getAttrDef("NUMERIC")),
+                                 selectInput("pair_atributo2","Atributo:",choices = getAttrDef("NUMERIC")))
                         )),
                         
                         tabsetPanel(type = "tabs", 
-                                    tabPanel("Point",plotOutput("multi_plot")), 
-                                    tabPanel("Summary", verbatimTextOutput("multi_text"))
+                                    tabPanel("Point",plotOutput("pair_plot")), 
+                                    tabPanel("Summary", verbatimTextOutput("pair_text"))
                         ),
                         
                         wellPanel(fluidRow(
                           column(width=6,
-                                 sliderInput("multi_limit_x", "Limit X", min = 0, max = 100, value = c(0,100)),
-                                 sliderInput("multi_limit_y", "Limit Y", min = 0, max = 100, value = c(0,100)),
-                                 sliderInput("multi_alpha", "Alpha",1,100,1)
+                                 sliderInput("pair_limit_x", "Limit X", min = 0, max = 100, value = c(0,100)),
+                                 sliderInput("pair_limit_y", "Limit Y", min = 0, max = 100, value = c(0,100)),
+                                 sliderInput("pair_alpha", "Alpha",1,100,1)
                           ),
                           column(width=6,
-                                 radioButtons("multi_scale","Scale",choices = c("None", "SQRT")),
-                                 checkboxGroupInput("multi_add", "Add", list("Mean", "10 Percentile", "50 Percentile", "90 Percentile", "Covariance"))
+                                 radioButtons("pair_scale","Scale",choices = c("None", "SQRT")),
+                                 checkboxGroupInput("pair_add", "Add", list("Mean", "10 Percentile", "50 Percentile", "90 Percentile", "Covariance"))
                           )
                         ))                        
                ),
