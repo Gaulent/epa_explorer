@@ -28,17 +28,21 @@ shinyServer(function(input, output, session) {
   # Pestaña Single ---------------------------------
 
   single_data <- reactive({
+    updateSliderInput(session,"single_limit",value = c(0,100))
     if (input$single_group == "none")
       dframe <- getData(input$single_atributo, c("CICLO=", input$single_ciclo))
     else
       dframe <- getData(c(input$single_atributo, input$single_group),c("CICLO=", input$single_ciclo))
-    minv <- floor(min(dframe[, input$single_atributo], na.rm = TRUE))
-    maxv <- ceiling(max(dframe[, input$single_atributo], na.rm = TRUE))
-    updateSliderInput(session,"single_limit",min = minv,max = maxv,value = c(minv, maxv))
     dframe
   })
   
   output$single_hist_plot <- renderPlot({
+    
+    min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
+    max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
+
+    xlim <- c((max_x-min_x)*input$single_limit[1]/100+min_x, (max_x-min_x)*input$single_limit[2]/100+min_x)
+
     resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo)) +
       geom_histogram(bins = input$single_bins,color = 'black',fill = '#099DD9')
     
@@ -46,7 +50,7 @@ shinyServer(function(input, output, session) {
       resplot <- resplot + facet_wrap(input$single_group, ncol = 2)
     
     if (input$single_scale == "None")
-      resplot <- resplot + scale_x_continuous(limits = input$single_limit)
+      resplot <- resplot + scale_x_continuous(limits = xlim)
     if (input$single_scale == "Log10")
       resplot <- resplot + scale_x_log10()
     if (input$single_scale == "SQRT")

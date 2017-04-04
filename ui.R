@@ -31,7 +31,7 @@ shinyUI(
                         ),
                         wellPanel(fluidRow(
                           column(width=6,
-                                 sliderInput("single_limit", "Limit", min = 1, max = 1000, value = c(200,500)),
+                                 sliderInput("single_limit", "Limit", min = 0, max = 100, value = c(0,100)),
                                  sliderInput("single_bins", "Bins",1,100,30)
                                  ),
                           column(width=6,
