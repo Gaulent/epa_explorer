@@ -145,15 +145,15 @@ shinyServer(function(input, output, session) {
       xlim(xlim) + ylim(ylim)
 
     
-    if("Mean" %in% input$pair_add)
+    if(input$pair_add_mean)
       resplot <- resplot + geom_line(stat='summary', fun.y = mean)
-    if("10 Percentile" %in% input$pair_add)
+    if(input$pair_add_10perc)
       resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .1), linetype = 2, color = 'blue')
-    if("50 Percentile" %in% input$pair_add)
+    if(input$pair_add_50perc)
       resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .5), color = 'blue')
-    if("90 Percentile" %in% input$pair_add)
+    if(input$pair_add_90perc)
       resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
-    if("Covariance" %in% input$pair_add)
+    if(input$pair_add_cov)
       resplot <- resplot + geom_smooth(method = 'lm', color = 'red')
 
     if (input$pair_scale == "SQRT")

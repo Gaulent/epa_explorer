@@ -62,7 +62,12 @@ shinyUI(
                           ),
                           column(width=6,
                                  radioButtons("pair_scale","Scale",choices = c("None", "SQRT")),
-                                 checkboxGroupInput("pair_add", "Add", list("Mean", "10 Percentile", "50 Percentile", "90 Percentile", "Covariance"))
+                                 checkboxInput("pair_add_jitter", "Jitter"),
+                                 checkboxInput("pair_add_mean", "Mean"),
+                                 checkboxInput("pair_add_10perc", "10 Percentile"),
+                                 checkboxInput("pair_add_50perc", "50 Percentile"),
+                                 checkboxInput("pair_add_90perc", "90 Percentile"),
+                                 checkboxInput("pair_add_cov", "Covariance")
                           )
                         ))                        
                ),
