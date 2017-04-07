@@ -141,10 +141,13 @@ shinyServer(function(input, output, session) {
     ylim <- c((max_y-min_y)*input$pair_limit_y[1]/100+min_y, (max_y-min_y)*input$pair_limit_y[2]/100+min_y)
     
     resplot <- ggplot(data = na.omit(pair_data()), aes_string(x = input$pair_atributo1, y = input$pair_atributo2)) +
-      geom_point(alpha=1/input$pair_alpha, color = 'orange') + 
       xlim(xlim) + ylim(ylim)
-
     
+    if(input$pair_add_jitter)
+      resplot <- resplot + geom_jitter(alpha=1/input$pair_alpha, color = 'orange')
+    else
+      resplot <- resplot + geom_point(alpha=1/input$pair_alpha, color = 'orange')
+      
     if(input$pair_add_mean)
       resplot <- resplot + geom_line(stat='summary', fun.y = mean)
     if(input$pair_add_10perc)
