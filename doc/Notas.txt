@@ -1,0 +1,12 @@
+TODO:
+Meter el scatterplot
+Meter analisis en tiempo
+Meter una tercera variable en el color de la comparacion de 2 variables.
+Ver si puedo entrar al progreso de ggpairs
+Volver al machine learning
+Buscar por "data exploratory analysis" para datos categoricos
+
+Bibliografia
+
+-> https://classroom.udacity.com/courses/ud651
+Data Analysis with R
