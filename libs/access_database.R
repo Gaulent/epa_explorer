@@ -1,7 +1,7 @@
 if(!exists('access_database_R')){
   access_database_R<-T
   
-  database_path <- "D:/workarea/epa_explorer/epa_db.db"
+  database_path <- paste(c(getwd(),"/epa_db.db"), collapse="")
   
   cache_ciclo <- NULL
   

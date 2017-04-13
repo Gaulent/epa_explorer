@@ -5,7 +5,8 @@ Meter una tercera variable en el color de la comparacion de 2 variables.
 Ver si puedo entrar al progreso de ggpairs
 Volver al machine learning
 Buscar por "data exploratory analysis" para datos categoricos
-
+Quitar la dependencia a gmodels (CrossTable)
+Buscar la forma de hacer general la ruta de nota_de_prensa
 
 Configuracion Especial Shiny
 - options(shiny.port=4218)
