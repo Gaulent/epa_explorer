@@ -12,15 +12,21 @@ output:
 ---
 
 ```{r echo=FALSE}
+if(!params$underShiny) {
+knitr::opts_knit$set(root.dir = '..')
+}
+```
+
+```{r echo=FALSE}
 
 #Informacion completa de exportacion a Word http://rmarkdown.rstudio.com/word_document_format.html
-
-source("D:/workarea/epa_explorer/libs/access_database.R", encoding = "UTF-8")
 
 if(params$underShiny) {
   progress <- shiny::Progress$new()
   progress$set(message = "Generando Informe", value = 0)
   progress$set(0.09, detail = "Inicializando")
+} else {
+  source("libs/access_database.R", encoding = "UTF-8")
 }
 
 #TODO: Repasar que los caption salgan correctos.
