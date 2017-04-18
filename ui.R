@@ -71,14 +71,18 @@ shinyUI(
                           )
                         ))                        
                ),
-               tabPanel("Test Graph",
-                        fluidPage(sidebarLayout(
-                          sidebarPanel(
-                            selectInput("graph_ciclo","Ciclo:",choices =  rev(getMapValues("CICLO"))),
-                            actionButton("graph_btn", "Go!")
+               tabPanel("Multi Variable",
+                        wellPanel(fluidRow(
+                          column(width=4,
+                                 selectInput("multi_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
+                                 actionButton("multi_btn", "Go!")
                           ),
-                          mainPanel(plotOutput("graph_plot"))
-                        ))
+                          column(width=8,
+                                 selectizeInput("multi_atributo","Atributos:",choices = getAttrDef(withDesc=FALSE), multiple = TRUE, options = list(maxItems = 8))
+                                 )
+                        )),
+                        plotOutput("multi_plot")
+                        
                )
              ),
              tabPanel("Clustering",tabsetPanel(

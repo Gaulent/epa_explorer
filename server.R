@@ -119,7 +119,7 @@ shinyServer(function(input, output, session) {
   
 
   
-  # Pestaña Multi ---------------------------------
+  # Pestaña Pair ---------------------------------
 
   pair_data<-reactive({
     updateSliderInput(session,"pair_limit_x",value = c(0,100))
@@ -170,6 +170,27 @@ shinyServer(function(input, output, session) {
     CrossTable(x = pair_data()[,input$pair_atributo1], y = pair_data()[,input$pair_atributo2])
   })    
 
+  # Pestaña Multi ---------------------------------
+
+  multi_graph <- eventReactive(input$multi_btn, {
+    #progress <- shiny::Progress$new()
+    #progress$set(message = "Recuperando Datos", value = 1)
+    #on.exit(progress$close())
+
+    library(GGally)
+    
+    current_data<-getData(input$multi_atributo, c("CICLO=",input$multi_ciclo))
+
+    #ggpairs(current_data[sample.int(nrow(current_data),1000), ], 
+    ##        lower = list(continuous = wrap("points", shape = I('.'))), 
+    #        upper = list(combo = wrap("box", outlier.shape = I('.'))))
+    ggpairs(current_data[sample.int(nrow(current_data),1000), ])
+  })
+  
+  output$multi_plot <- renderPlot({
+    multi_graph()
+  })
+  
   # Pestaña Report ---------------------------------
   
   get_export_filename <- function() {

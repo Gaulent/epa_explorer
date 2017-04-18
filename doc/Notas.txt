@@ -6,6 +6,7 @@ Ver si puedo entrar al progreso de ggpairs
 Volver al machine learning
 Buscar por "data exploratory analysis" para datos categoricos
 Quitar la dependencia a gmodels (CrossTable)
+-> Exploratory Analysis Categorico http://www.jstatsoft.org/v53/i07/paper
 
 Configuracion Especial Shiny
 - options(shiny.port=4218)
@@ -24,7 +25,7 @@ que tipo de estudios hacen los sociologos
 1.- lo de actualizar la base de datos
 2.- estadisticas
 3.- clustering, reglas de asociacion
-ssps
+ssps https://tntcat.iiasa.ac.at/SspDb/dsd?
 
 bitbucket:
 gaulent@PXwIcler1sEo
