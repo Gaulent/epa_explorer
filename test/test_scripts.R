@@ -6,7 +6,14 @@ source("libs/update_database.R", encoding = "UTF-8")
 
 library(ggplot2)
 
-#Scatterplot
+
+
+
+dframe<-getData("*","CICLO=176")
+dframe <- as.data.frame(unclass(dframe))
+kmodes(na.omit(dframe[, 20:24]), 4, iter.max = 2)
+
+
 
 
 # -------------------------------- IMPORTANTE -----------------------
