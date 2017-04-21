@@ -17,6 +17,7 @@ Quitar la dependencia a gmodels (CrossTable)
 Configuracion Especial Shiny
 - options(shiny.port=4218)
 - options(shiny.host="0.0.0.0")
+- shiny.io deployed on: https://gaulent.shinyapps.io/epa_explorer/
 
 Bibliografia
 

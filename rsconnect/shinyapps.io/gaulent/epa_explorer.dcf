@@ -1,0 +1,11 @@
+name: epa_explorer
+title: epa_explorer
+account: gaulent
+server: shinyapps.io
+appId: 174263
+bundleId: 798734
+url: https://gaulent.shinyapps.io/epa_explorer/
+when: 1492798164.2566
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|doc/Atributos.xmind|doc/descartes.docx|doc/disereg_epa0516.ods|doc/disereg_epa9904.xls|doc/epacues05.pdf|doc/estudios.xls.xlsx|doc/Notas.csv|doc/Notas.txt|doc/Notas.xlsx|mem/memoria.docx|mem/presentacion.pdf|mem/resumen.docx|mem/ejemplo/memoria.docx|mem/ejemplo/presentacion.pdf|mem/ejemplo/ProyectoEjemplo.zip|mem/ejemplo/resumen.docx|reports/epa_db.db|test/import_csv.R|test/import_to_db.R|test/retrocomp.R|test/set_names.R|test/test_scripts.R|test/data/create_table.sql|test/data/epa_db_base.db
