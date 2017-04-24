@@ -35,7 +35,7 @@ shinyUI(
                                  sliderInput("single_bins", "Bins",1,100,30)
                                  ),
                           column(width=6,
-                                 selectInput("single_group","Ciclo:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
+                                 selectInput("single_group","Group by:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
                                  radioButtons("single_scale","Scale",choices = c("None", "Log10", "SQRT"))
                                  )
                         ))
@@ -48,12 +48,7 @@ shinyUI(
                                  selectInput("pair_atributo1","Atributo:",choices = getAttrDef("NUMERIC")),
                                  selectInput("pair_atributo2","Atributo:",choices = getAttrDef("NUMERIC")))
                         )),
-                        
-                        tabsetPanel(type = "tabs", 
-                                    tabPanel("Point",plotOutput("pair_plot")), 
-                                    tabPanel("Summary", verbatimTextOutput("pair_text"))
-                        ),
-                        
+                        plotOutput("pair_plot", height = "800px"),
                         wellPanel(fluidRow(
                           column(width=6,
                                  sliderInput("pair_limit_x", "Limit X", min = 0, max = 100, value = c(0,100)),
@@ -61,6 +56,7 @@ shinyUI(
                                  sliderInput("pair_alpha", "Alpha",1,100,1)
                           ),
                           column(width=6,
+                                 selectInput("pair_group","Group by:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
                                  radioButtons("pair_scale","Scale",choices = c("None", "SQRT")),
                                  checkboxInput("pair_add_jitter", "Jitter"),
                                  checkboxInput("pair_add_mean", "Mean"),

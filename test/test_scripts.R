@@ -4,10 +4,9 @@
 source("libs/access_database.R", encoding = "UTF-8")
 source("libs/update_database.R", encoding = "UTF-8")
 
-library(ggplot2)
 
 
-
+library(klaR)
 
 dframe<-getData("*","CICLO=176")
 dframe <- as.data.frame(unclass(dframe))

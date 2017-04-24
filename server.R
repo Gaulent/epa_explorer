@@ -8,7 +8,6 @@
 #
 
 library(shiny)
-library(gmodels) # For CrossTable()
 library(ggplot2)
 library(dplyr)
 
@@ -60,6 +59,12 @@ shinyServer(function(input, output, session) {
   })
   
   output$single_freq_plot <- renderPlot({
+    
+    min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
+    max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
+    
+    xlim <- c((max_x-min_x)*input$single_limit[1]/100+min_x, (max_x-min_x)*input$single_limit[2]/100+min_x)
+    
     resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo))
 
     if (input$single_group == "none")
@@ -68,7 +73,7 @@ shinyServer(function(input, output, session) {
       resplot <- resplot + geom_freqpoly(bins = input$single_bins, aes_string(color = input$single_group))
     
     if (input$single_scale == "None")
-      resplot <- resplot + scale_x_continuous(limits = input$single_limit)
+      resplot <- resplot + scale_x_continuous(limits = xlim)
     if (input$single_scale == "Log10")
       resplot <- resplot + scale_x_log10()
     if (input$single_scale == "SQRT")
@@ -79,12 +84,17 @@ shinyServer(function(input, output, session) {
 
   output$single_box_plot <- renderPlot({
     
+    min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
+    max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
+    
+    xlim <- c((max_x-min_x)*input$single_limit[1]/100+min_x, (max_x-min_x)*input$single_limit[2]/100+min_x)
+    
     if (input$single_group == "none")
       resplot <- ggplot(data=na.omit(single_data()), aes_string(x=1, y=input$single_atributo)) + geom_boxplot()
     else
       resplot <- ggplot(data=na.omit(single_data()), aes_string(x=input$single_group, y=input$single_atributo)) + geom_boxplot()
     
-    resplot <- resplot + coord_cartesian(ylim = input$single_limit)
+    resplot <- resplot + coord_cartesian(ylim = xlim)
 
     resplot
   })  
@@ -124,9 +134,13 @@ shinyServer(function(input, output, session) {
   pair_data<-reactive({
     updateSliderInput(session,"pair_limit_x",value = c(0,100))
     updateSliderInput(session,"pair_limit_y",value = c(0,100))
-    getData(c(input$pair_atributo1,input$pair_atributo2),c("CICLO=",input$pair_ciclo))
-    #if(sum(input$multi_limit_x==c(0,100))==2)
-      
+
+    if (input$pair_group == "none")
+      dframe <- getData(c(input$pair_atributo1,input$pair_atributo2), c("CICLO=", input$pair_ciclo))
+    else
+      dframe <- getData(c(input$pair_atributo1,input$pair_atributo2, input$pair_group),c("CICLO=", input$pair_ciclo))
+
+    dframe
   })
   
   output$pair_plot <- renderPlot({
@@ -143,11 +157,15 @@ shinyServer(function(input, output, session) {
     resplot <- ggplot(data = na.omit(pair_data()), aes_string(x = input$pair_atributo1, y = input$pair_atributo2)) +
       xlim(xlim) + ylim(ylim)
     
-    if(input$pair_add_jitter)
+    if(input$pair_add_jitter && input$pair_group == "none")
       resplot <- resplot + geom_jitter(alpha=1/input$pair_alpha, color = 'orange')
-    else
+    else if (!input$pair_add_jitter && input$pair_group == "none")
       resplot <- resplot + geom_point(alpha=1/input$pair_alpha, color = 'orange')
-      
+    else if (input$pair_add_jitter && input$pair_group != "none")
+      resplot <- resplot + geom_jitter(alpha=1/input$pair_alpha, aes_string(color = input$pair_group))
+    else if (!input$pair_add_jitter && input$pair_group != "none")
+      resplot <- resplot + geom_point(alpha=1/input$pair_alpha, aes_string(color = input$pair_group))
+    
     if(input$pair_add_mean)
       resplot <- resplot + geom_line(stat='summary', fun.y = mean)
     if(input$pair_add_10perc)
@@ -165,11 +183,6 @@ shinyServer(function(input, output, session) {
     resplot
   })  
   
-  output$pair_text <- renderPrint({
-    # TODO: At least 2 elements
-    CrossTable(x = pair_data()[,input$pair_atributo1], y = pair_data()[,input$pair_atributo2])
-  })    
-
   # Pestaña Multi ---------------------------------
 
   multi_graph <- eventReactive(input$multi_btn, {
