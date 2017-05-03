@@ -203,6 +203,26 @@ shinyServer(function(input, output, session) {
   output$multi_plot <- renderPlot({
     multi_graph()
   })
+
+  # Pestaña Time ---------------------------------
+  
+  output$time_plot <- renderPlot({
+    
+    if (input$time_atributo == "none") {
+      dframe <- getData("CICLO, FACTOREL", toString = FALSE)
+      df<-dframe %>% group_by(CICLO) %>% summarise(n=sum(FACTOREL))
+      
+      ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
+        geom_area()
+    }
+    else {
+      dframe <- getData(c(input$time_atributo, "CICLO, FACTOREL"), toString = FALSE)
+      df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
+      
+      ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
+        geom_area(aes_string(fill = input$time_atributo))
+    }
+  })
   
   # Pestaña Report ---------------------------------
   

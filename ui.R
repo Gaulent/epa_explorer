@@ -48,7 +48,7 @@ shinyUI(
                                  selectInput("pair_atributo1","Atributo:",choices = getAttrDef("NUMERIC")),
                                  selectInput("pair_atributo2","Atributo:",choices = getAttrDef("NUMERIC")))
                         )),
-                        plotOutput("pair_plot", height = "800px"),
+                        plotOutput("pair_plot", height = "600px"),
                         wellPanel(fluidRow(
                           column(width=6,
                                  sliderInput("pair_limit_x", "Limit X", min = 0, max = 100, value = c(0,100)),
@@ -79,6 +79,10 @@ shinyUI(
                         )),
                         plotOutput("multi_plot")
                         
+               ),
+               tabPanel("Over Time",
+                        wellPanel(selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=TRUE))),
+                        plotOutput("time_plot")
                )
              ),
              tabPanel("Clustering",tabsetPanel(

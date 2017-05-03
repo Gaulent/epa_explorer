@@ -1,6 +1,5 @@
 
 TODO:
-Meter analisis en tiempo
 Volver al machine learning
 Buscar por "data exploratory analysis" para datos categoricos
 clustering, reglas de asociacion
