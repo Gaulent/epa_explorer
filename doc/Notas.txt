@@ -4,11 +4,18 @@ Volver al machine learning
 Buscar por "data exploratory analysis" para datos categoricos
 clustering, reglas de asociacion
 -> Exploratory Analysis Categorico http://www.jstatsoft.org/v53/i07/paper
+Probar motor chulo de plot, plotly
+- eliminar zoom por coorcart y scale
+- https://cpsievert.github.io/plotly_book/linking-views-with-shiny.html
+https://suryaprakash.shinyapps.io/Data_Exploration/
 
 Configuracion Especial Shiny
 - options(shiny.port=4218)
 - options(shiny.host="0.0.0.0")
 - shiny.io deployed on: https://gaulent.shinyapps.io/epa_explorer/
+
+
+
 
 
 

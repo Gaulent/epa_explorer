@@ -24,9 +24,9 @@ shinyUI(
                         )),
                         
                         tabsetPanel(type = "tabs", 
-                                    tabPanel("Histogram",plotOutput("single_hist_plot")), 
-                                    tabPanel("Freqpoly",plotOutput("single_freq_plot")), 
-                                    tabPanel("Boxplot", plotOutput("single_box_plot")),
+                                    tabPanel("Histogram",plotlyOutput("single_hist_plot")), 
+                                    tabPanel("Freqpoly",plotlyOutput("single_freq_plot")), 
+                                    tabPanel("Boxplot", plotlyOutput("single_box_plot")),
                                     tabPanel("Summary", verbatimTextOutput("single_text1"),verbatimTextOutput("single_text2"))
                         ),
                         wellPanel(fluidRow(
@@ -82,7 +82,7 @@ shinyUI(
                ),
                tabPanel("Over Time",
                         wellPanel(selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=TRUE))),
-                        plotOutput("time_plot")
+                        plotlyOutput("time_plot")
                )
              ),
              tabPanel("Clustering",tabsetPanel(

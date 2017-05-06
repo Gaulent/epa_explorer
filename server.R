@@ -10,6 +10,7 @@
 library(shiny)
 library(ggplot2)
 library(dplyr)
+library(plotly)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
@@ -35,7 +36,7 @@ shinyServer(function(input, output, session) {
     dframe
   })
   
-  output$single_hist_plot <- renderPlot({
+  output$single_hist_plot <- renderPlotly({
     
     min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
     max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
@@ -55,10 +56,10 @@ shinyServer(function(input, output, session) {
     if (input$single_scale == "SQRT")
       resplot <- resplot + scale_x_sqrt()
     
-    resplot
+    ggplotly(resplot)
   })
   
-  output$single_freq_plot <- renderPlot({
+  output$single_freq_plot <- renderPlotly({
     
     min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
     max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
@@ -79,10 +80,10 @@ shinyServer(function(input, output, session) {
     if (input$single_scale == "SQRT")
       resplot <- resplot + scale_x_sqrt()
     
-    resplot
+    ggplotly(resplot)
   })
 
-  output$single_box_plot <- renderPlot({
+  output$single_box_plot <- renderPlotly({
     
     min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
     max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
@@ -96,7 +97,7 @@ shinyServer(function(input, output, session) {
     
     resplot <- resplot + coord_cartesian(ylim = xlim)
 
-    resplot
+    ggplotly(resplot)
   })  
     
 
@@ -206,22 +207,24 @@ shinyServer(function(input, output, session) {
 
   # Pestaña Time ---------------------------------
   
-  output$time_plot <- renderPlot({
+  output$time_plot <- renderPlotly({
     
     if (input$time_atributo == "none") {
       dframe <- getData("CICLO, FACTOREL", toString = FALSE)
       df<-dframe %>% group_by(CICLO) %>% summarise(n=sum(FACTOREL))
       
-      ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
+      resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
         geom_area()
     }
     else {
       dframe <- getData(c(input$time_atributo, "CICLO, FACTOREL"), toString = FALSE)
       df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
       
-      ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
+      resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
         geom_area(aes_string(fill = input$time_atributo))
     }
+    
+    ggplotly(resplot)
   })
   
   # Pestaña Report ---------------------------------
