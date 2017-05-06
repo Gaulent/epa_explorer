@@ -1,5 +1,11 @@
 
 TODO:
+
+Visualizacion de arules
+http://www.rdatamining.com/examples/association-rules
+https://cran.r-project.org/web/packages/arulesViz/vignettes/arulesViz.pdf
+
+
 Volver al machine learning
 Buscar por "data exploratory analysis" para datos categoricos
 clustering, reglas de asociacion
