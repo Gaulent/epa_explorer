@@ -209,21 +209,12 @@ shinyServer(function(input, output, session) {
   
   output$time_plot <- renderPlotly({
     
-    if (input$time_atributo == "none") {
-      dframe <- getData("CICLO, FACTOREL", toString = FALSE)
-      df<-dframe %>% group_by(CICLO) %>% summarise(n=sum(FACTOREL))
+    dframe <- getData(c(input$time_atributo, "CICLO, FACTOREL"),"CICLO>165", toString = FALSE)
+    df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
       
-      resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
-        geom_area()
-    }
-    else {
-      dframe <- getData(c(input$time_atributo, "CICLO, FACTOREL"), toString = FALSE)
-      df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
-      
-      resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
-        geom_area(aes_string(fill = input$time_atributo))
-    }
-    
+    resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
+      geom_area(aes_string(fill = input$time_atributo))
+
     ggplotly(resplot)
   })
   
@@ -303,5 +294,31 @@ shinyServer(function(input, output, session) {
   # Se llama al cerrar el navegador
   session$onSessionEnded(function() {
     print ("Session ended.")
+  })
+  
+  # Pestaña ARules_Train ---------------------------------
+  
+  arules_train_data <- eventReactive(input$arules_train_btn, {
+    
+    selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP", "SIDI1", "SIDI2", "SIDI3", "SIDI4", "SIDI5", "SIDI6", "SIDI7", "SIDAC1", "SIDAC2")
+    
+    dframe<-getData(selected_atributes,c("CICLO=",input$arules_train_ciclo, "AND NIVEL=1"))
+    
+    dframe <- as.data.frame(unclass(dframe))
+    
+    indx <- sapply(dframe, is.numeric)
+    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = 5, include.lowest = TRUE, ordered_result = TRUE))
+    
+    #☻sample_df <- dframe[sample.int(nrow(dframe),100000), ]
+    
+    library(arules)
+
+        # find association rules with default settings
+    rules <- apriori(na.omit(dframe), parameter=list(support = 0.1, minlen = 3, maxlen = 3, target= "rules", confidence = 0.7))
+    inspect(rules[1:20])
+  })
+  
+  output$arules_train_text <- renderPrint({
+    arules_train_data()
   })
 })

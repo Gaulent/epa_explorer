@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(plotly)
 
 # Define UI for application that draws a histogram
 
@@ -81,7 +82,7 @@ shinyUI(
                         
                ),
                tabPanel("Over Time",
-                        wellPanel(selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=TRUE))),
+                        wellPanel(selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=FALSE))),
                         plotlyOutput("time_plot")
                )
              ),
@@ -95,16 +96,28 @@ shinyUI(
                         ))
                )
              )),
-             tabPanel("Association Rules",tabsetPanel(
-               tabPanel("SubTab1",
+             navbarMenu("Association Rules",
+               tabPanel("Train",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")))
+                            selectInput("arules_train_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
+                            actionButton("arules_train_btn", "Go!")
                           ),
-                          mainPanel()
+                          mainPanel(
+                            verbatimTextOutput("arules_train_text")
+                          ))
+                        )),
+               tabPanel("View",
+                        fluidPage(sidebarLayout(
+                          sidebarPanel(
+                            selectInput("arules_train_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
+                          actionButton("arules_train_btn", "Go!")
+                        ),
+                        mainPanel(
+                          verbatimTextOutput("arules_train_text1")
+                        )
                         ))
-               )
-             )),
+             ),
              tabPanel("Reports",
                       fluidPage(sidebarLayout(
                         sidebarPanel(
