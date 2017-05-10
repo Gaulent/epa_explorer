@@ -110,13 +110,17 @@ shinyUI(
                tabPanel("View",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("arules_train_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
-                          actionButton("arules_train_btn", "Go!")
+                            selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5)
                         ),
                         mainPanel(
-                          verbatimTextOutput("arules_train_text1")
+                          tabsetPanel(type = "tabs", 
+                                      tabPanel("Summary",verbatimTextOutput("arules_view_text")), 
+                                      tabPanel("Plot",plotOutput("arules_view_plot", height = "800px")), 
+                                      tabPanel("Graph", plotOutput("arules_view_graph", height = "800px")),
+                                      tabPanel("Paracoord", plotOutput("arules_view_paracoord", height = "800px"))
+                          )
                         )
-                        ))
+                        )))
              ),
              tabPanel("Reports",
                       fluidPage(sidebarLayout(

@@ -315,10 +315,42 @@ shinyServer(function(input, output, session) {
 
         # find association rules with default settings
     rules <- apriori(na.omit(dframe), parameter=list(support = 0.1, minlen = 3, maxlen = 3, target= "rules", confidence = 0.7))
+    
+    dir.create("model/arules", showWarnings = FALSE, recursive = TRUE)
+    
+    saveRDS(rules, file = paste(c("model/arules/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
+
+    updateSelectInput(session, "arules_view_file",choices = rev(dir("./model/arules", pattern="*.rds")), selected = rev(dir("./model/arules", pattern="*.rds"))[1])
+    
     inspect(rules[1:20])
   })
   
   output$arules_train_text <- renderPrint({
     arules_train_data()
+  })
+  
+  # Pestaña ARules_View ---------------------------------
+  
+  arules_model <- reactive({
+    readRDS(paste(c("model/arules/",input$arules_view_file),collapse=""))
+  })
+  
+  output$arules_view_text <- renderPrint({
+    inspect(arules_model()[1:20])
+  })
+  
+  output$arules_view_plot <- renderPlot({
+    library(arulesViz)
+    plot(arules_model())
+  })
+
+  output$arules_view_graph <- renderPlot({
+    library(arulesViz)
+    plot(arules_model()[1:20], method="graph", control=list(type="items"))
+  })
+  
+  output$arules_view_paracoord <- renderPlot({
+    library(arulesViz)
+    plot(arules_model()[1:100], method="paracoord", control=list(reorder=TRUE))
   })
 })
