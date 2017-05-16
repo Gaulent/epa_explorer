@@ -101,6 +101,9 @@ shinyUI(
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("arules_train_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
+                            sliderInput("arules_train_support","Support:", min = 0, max = 1, value = 0.1),
+                            sliderInput("arules_train_confidence","Confidence:", min = 0, max = 1, value = 0.7),
+                            sliderInput("arules_train_minlen","Length:", min = 1, max = 10, value = c(2,3)),
                             actionButton("arules_train_btn", "Go!")
                           ),
                           mainPanel(
@@ -117,7 +120,8 @@ shinyUI(
                                       tabPanel("Summary",verbatimTextOutput("arules_view_text")), 
                                       tabPanel("Plot",plotOutput("arules_view_plot", height = "800px")), 
                                       tabPanel("Graph", plotOutput("arules_view_graph", height = "800px")),
-                                      tabPanel("Paracoord", plotOutput("arules_view_paracoord", height = "800px"))
+                                      #tabPanel("Paracoord", plotOutput("arules_view_paracoord", height = "800px"))
+                                      tabPanel("Explore", DT::dataTableOutput("arules_view_explore"))
                           )
                         )
                         )))
