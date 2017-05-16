@@ -8,9 +8,6 @@
 #
 
 library(shiny)
-library(ggplot2)
-library(dplyr)
-library(plotly)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
@@ -191,8 +188,6 @@ shinyServer(function(input, output, session) {
     #progress$set(message = "Recuperando Datos", value = 1)
     #on.exit(progress$close())
 
-    library(GGally)
-    
     current_data<-getData(input$multi_atributo, c("CICLO=",input$multi_ciclo))
 
     #ggpairs(current_data[sample.int(nrow(current_data),1000), ], 
@@ -311,8 +306,6 @@ shinyServer(function(input, output, session) {
     
     #☻sample_df <- dframe[sample.int(nrow(dframe),100000), ]
     
-    library(arules)
-
         # find association rules with default settings
     rules <- apriori(na.omit(dframe), parameter=list(support = input$arules_train_support, minlen = input$arules_train_minlen[1], maxlen = input$arules_train_minlen[2], target= "rules", confidence = input$arules_train_confidence))
     
@@ -334,22 +327,18 @@ shinyServer(function(input, output, session) {
   })
   
   output$arules_view_text <- renderPrint({
-    library(arules)
     summary(arules_model())
   })
   
   output$arules_view_plot <- renderPlot({
-    library(arulesViz)
     plot(arules_model())
   })
 
   output$arules_view_graph <- renderPlot({
-    library(arulesViz)
     plot(sort(arules_model(), by = "lift")[1:20], method="graph", control=list(type="items"))
   })
   
   #output$arules_view_paracoord <- renderPlot({
-  #  library(arulesViz)
   #  plot(arules_model()[1:100], method="paracoord", control=list(reorder=TRUE))
   #})
   
