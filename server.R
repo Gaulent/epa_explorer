@@ -295,7 +295,7 @@ shinyServer(function(input, output, session) {
   
   arules_train_data <- eventReactive(input$arules_train_btn, {
     
-    selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP", "SIDI1", "SIDI2", "SIDI3", "SIDI4", "SIDI5", "SIDI6", "SIDI7", "SIDAC1", "SIDAC2")
+    selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
     
     dframe<-getData(selected_atributes,c("CICLO=",input$arules_train_ciclo, "AND NIVEL=1"))
     

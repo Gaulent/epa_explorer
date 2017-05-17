@@ -9,7 +9,9 @@ source("libs/update_database.R", encoding = "UTF-8")
 # Pruebas de Clustering
 # ---------------------------------------------------------
 
-dframe<-getData("*","CICLO=176")
+selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
+
+dframe<-getData(selected_atributes,c("CICLO=176 AND NIVEL=1"))
 
 dframe <- as.data.frame(unclass(dframe))
 
@@ -20,7 +22,10 @@ dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = 5, include.lowes
 dframe <- dframe[sample.int(nrow(dframe),1000), ]
 
 library(klaR)
-kmodes(na.omit(dframe[, 2:5]), 4, iter.max = 2)
+clusters <- kmodes(na.omit(dframe), 4, iter.max = 2)
+
+plot(dframe[1:2], col = clusters$cluster)
+
 
 # Pruebas de reglas de asociacion
 # ---------------------------------------------------------
