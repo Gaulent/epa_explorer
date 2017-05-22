@@ -85,16 +85,30 @@ shinyUI(
                         plotlyOutput("time_plot")
                )
              ),
-             tabPanel("Clustering",tabsetPanel(
-               tabPanel("SubTab1",
-                        fluidPage(sidebarLayout(
-                          sidebarPanel(
-                            selectInput("ciclo","Ciclo:",choices =  rev(getMapValues("CICLO")))
-                          ),
-                          mainPanel()
-                        ))
-               )
-             )),
+             navbarMenu("Clustering",
+                        tabPanel("Train",
+                                 fluidPage(sidebarLayout(
+                                   sidebarPanel(
+                                     selectInput("cluster_train_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
+                                     sliderInput("cluster_train_groups","Number of Clusters:", min = 1, max = 10, value = 4),
+                                     actionButton("cluster_train_btn", "Go!")
+                                   ),
+                                   mainPanel(
+                                     verbatimTextOutput("cluster_train_text")
+                                   ))
+                                 )),
+                        tabPanel("View",
+                                 fluidPage(sidebarLayout(
+                                   sidebarPanel(
+                                     selectInput("cluster_view_file","Fichero:", choices = rev(dir("./model/cluster", pattern="*.rds")), selectize = FALSE, size = 5)
+                                   ),
+                                   mainPanel(
+                                     tabsetPanel(type = "tabs", 
+                                                 tabPanel("Summary",verbatimTextOutput("cluster_view_text"))
+                                     )
+                                   )
+                                 )))
+             ),
              navbarMenu("Association Rules",
                tabPanel("Train",
                         fluidPage(sidebarLayout(

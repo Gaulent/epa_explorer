@@ -306,8 +306,14 @@ shinyServer(function(input, output, session) {
     
     #☻sample_df <- dframe[sample.int(nrow(dframe),100000), ]
     
-        # find association rules with default settings
+    progress <- shiny::Progress$new()
+    progress$set(message = "ARules", detail = "Ocupado", value = 1)
+    
+    # find association rules with default settings
     rules <- apriori(na.omit(dframe), parameter=list(support = input$arules_train_support, minlen = input$arules_train_minlen[1], maxlen = input$arules_train_minlen[2], target= "rules", confidence = input$arules_train_confidence))
+    
+    progress$set(detail = "Finalizado")
+    progress$close()
     
     dir.create("model/arules", showWarnings = FALSE, recursive = TRUE)
     
@@ -345,4 +351,53 @@ shinyServer(function(input, output, session) {
   output$arules_view_explore <- DT::renderDataTable({
     DT::datatable(as(arules_model(),"data.frame"), options = list(pageLength = 25))
   })
+  
+  # Pestaña Cluster_Train ---------------------------------
+  
+  cluster_train_data <- eventReactive(input$cluster_train_btn, {
+    
+    selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
+    
+    dframe<-getData(selected_atributes,c("CICLO=",input$cluster_train_ciclo, "AND NIVEL=1"))
+    
+    dframe <- as.data.frame(unclass(dframe))
+    
+    indx <- sapply(dframe, is.numeric)
+    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = 5, include.lowest = TRUE, ordered_result = TRUE))
+    
+    dframe <- dframe[sample.int(nrow(dframe),1000), ]
+    
+    # find association rules with default settings
+    
+    progress <- shiny::Progress$new()
+    progress$set(message = "Clustering", detail = "Ocupado", value = 1)
+    
+    clusters <- kmodes(na.omit(dframe), input$cluster_train_groups, iter.max = 2)
+    
+    progress$set(detail = "Finalizado")
+    progress$close()
+
+    dir.create("model/cluster", showWarnings = FALSE, recursive = TRUE)
+    
+    saveRDS(clusters, file = paste(c("model/cluster/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
+
+    updateSelectInput(session, "cluster_view_file",choices = rev(dir("./model/cluster", pattern="*.rds")), selected = rev(dir("./model/cluster", pattern="*.rds"))[1])
+
+    summary(clusters)
+  })
+  
+  output$cluster_train_text <- renderPrint({
+    cluster_train_data()
+  })
+  
+  # Pestaña Cluster_View ---------------------------------
+  
+  cluster_model <- reactive({
+    readRDS(paste(c("model/cluster/",input$cluster_view_file),collapse=""))
+  })
+  
+  output$cluster_view_text <- renderPrint({
+    summary(cluster_model())
+  })
+  
 })

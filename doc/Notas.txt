@@ -5,6 +5,8 @@ Visualizacion de arules
 http://www.rdatamining.com/examples/association-rules
 https://cran.r-project.org/web/packages/arulesViz/vignettes/arulesViz.pdf
 
+Procesamiento paralelo (Linux):
+https://stackoverflow.com/questions/30587883/is-it-possible-to-stop-executing-of-r-code-inside-shiny-without-stopping-the-sh
 
 Volver al machine learning
 Buscar por "data exploratory analysis" para datos categoricos
