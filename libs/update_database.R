@@ -105,7 +105,7 @@ if(!exists('update_database_R')){
     
     db_updates<-getSQL("SELECT * FROM db_updates")
     
-    return(setdiff(df,db_updates))
+    return(dplyr::setdiff(df,db_updates))
   }
 
   update_database <- function(selected_file) {
