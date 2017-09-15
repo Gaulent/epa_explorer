@@ -1,10 +1,6 @@
 #
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
+# En este fichero global.R se instalan y se cargan todos los paquetes y librerias
+# necesarias para el correcto funcionamiento de la aplicacion.
 #
 
 list.of.packages <- c("shiny", "rmarkdown", "RSQLite", "dplyr", "readr", "RCurl", "ggplot2", "GGally", "plotly", "crosstalk", "arules", "arulesViz", "klaR")

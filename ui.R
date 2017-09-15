@@ -1,10 +1,5 @@
 #
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
+# Definicion de la vista de la aplicacion EPA Explorer
 #
 
 library(shiny)
@@ -12,31 +7,30 @@ library(shiny)
 # Define UI for application that draws a histogram
 
 shinyUI(
-  navbarPage(title = "EPA Database",
+  navbarPage(title = "EPA Explorer",
                    
-             navbarMenu("Explore",
-               tabPanel("One Variable",
+             navbarMenu("Explorar",
+               tabPanel("Una variable",
                         wellPanel(fluidRow(
                           column(width=4,
-                                 selectInput("single_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
+                                 selectInput("single_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO")))),
                           column(width=8,
                                  selectInput("single_atributo","Atributo:",choices = getAttrDef("NUMERIC")))
                         )),
                         
                         tabsetPanel(type = "tabs", 
-                                    tabPanel("Histogram",plotlyOutput("single_hist_plot")), 
-                                    tabPanel("Freqpoly",plotlyOutput("single_freq_plot")), 
-                                    tabPanel("Boxplot", plotlyOutput("single_box_plot")),
-                                    tabPanel("Summary", verbatimTextOutput("single_text1"),verbatimTextOutput("single_text2"))
+                                    tabPanel("Histograma",plotlyOutput("single_hist_plot")), 
+                                    tabPanel("Líneas",plotlyOutput("single_freq_plot")), 
+                                    tabPanel("Cajas", plotlyOutput("single_box_plot")),
+                                    tabPanel("Resumen", verbatimTextOutput("single_text1"),verbatimTextOutput("single_text2"))
                         ),
                         wellPanel(fluidRow(
                           column(width=6,
-                                 sliderInput("single_limit", "Limit", min = 0, max = 100, value = c(0,100)),
-                                 sliderInput("single_bins", "Bins",1,100,30)
+                                 sliderInput("single_bins", "Granularidad",1,100,30)
                                  ),
                           column(width=6,
-                                 selectInput("single_group","Group by:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
-                                 radioButtons("single_scale","Scale",choices = c("None", "Log10", "SQRT"))
+                                 selectInput("single_group","Agrupar por:",choices = getAttrDef("FACTOR",withDesc=TRUE, withNone=TRUE)),
+                                 radioButtons("single_scale","Función de escalado:",choices = c("Ninguna", "Logarítmica", "Raiz cuadrada"))
                                  )
                         ))
                ),

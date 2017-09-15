@@ -1,31 +1,22 @@
 #
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
+# Este fichero contiene la logica del servidor de la aplicacion
 #
 
 library(shiny)
 
-# Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
   
-  # Codigo puesto aqui se ejecuta 1 vez por usuario.
-  # En las funciones reactivas, muchas veces por usuario
-  # Fuera, o en global.R 1 vez por sesion de R.
-  
-  # Calculo de los datos una sola vez.
-  # TODO: Puedo dejar la conexion a la bd abierta?
-  # Como se que no pilla mucha memoria?
-  
+  # Descomentar para suprimir Warnigns
+  options(warn = -1)
+
+  # Vector de valores reactivos  
   rv<-reactiveValues()
-  
+
+    
   # Pestaña Single ---------------------------------
 
   single_data <- reactive({
-    updateSliderInput(session,"single_limit",value = c(0,100))
+
     if (input$single_group == "none")
       dframe <- getData(input$single_atributo, c("CICLO=", input$single_ciclo))
     else
@@ -38,16 +29,12 @@ shinyServer(function(input, output, session) {
     min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
     max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
 
-    xlim <- c((max_x-min_x)*input$single_limit[1]/100+min_x, (max_x-min_x)*input$single_limit[2]/100+min_x)
-
     resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo)) +
       geom_histogram(bins = input$single_bins,color = 'black',fill = '#099DD9')
     
     if (input$single_group != "none")
       resplot <- resplot + facet_wrap(input$single_group, ncol = 2)
     
-    if (input$single_scale == "None")
-      resplot <- resplot + scale_x_continuous(limits = xlim)
     if (input$single_scale == "Log10")
       resplot <- resplot + scale_x_log10()
     if (input$single_scale == "SQRT")
@@ -61,8 +48,6 @@ shinyServer(function(input, output, session) {
     min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
     max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
     
-    xlim <- c((max_x-min_x)*input$single_limit[1]/100+min_x, (max_x-min_x)*input$single_limit[2]/100+min_x)
-    
     resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo))
 
     if (input$single_group == "none")
@@ -70,8 +55,6 @@ shinyServer(function(input, output, session) {
     else
       resplot <- resplot + geom_freqpoly(bins = input$single_bins, aes_string(color = input$single_group))
     
-    if (input$single_scale == "None")
-      resplot <- resplot + scale_x_continuous(limits = xlim)
     if (input$single_scale == "Log10")
       resplot <- resplot + scale_x_log10()
     if (input$single_scale == "SQRT")
@@ -85,15 +68,11 @@ shinyServer(function(input, output, session) {
     min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
     max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
     
-    xlim <- c((max_x-min_x)*input$single_limit[1]/100+min_x, (max_x-min_x)*input$single_limit[2]/100+min_x)
-    
     if (input$single_group == "none")
       resplot <- ggplot(data=na.omit(single_data()), aes_string(x=1, y=input$single_atributo)) + geom_boxplot()
     else
       resplot <- ggplot(data=na.omit(single_data()), aes_string(x=input$single_group, y=input$single_atributo)) + geom_boxplot()
     
-    resplot <- resplot + coord_cartesian(ylim = xlim)
-
     ggplotly(resplot)
   })  
     
