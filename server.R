@@ -26,9 +26,6 @@ shinyServer(function(input, output, session) {
   
   output$single_hist_plot <- renderPlotly({
     
-    min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
-    max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
-
     resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo)) +
       geom_histogram(bins = input$single_bins,color = 'black',fill = '#099DD9')
     
@@ -44,9 +41,6 @@ shinyServer(function(input, output, session) {
   })
   
   output$single_freq_plot <- renderPlotly({
-    
-    min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
-    max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
     
     resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo))
 
@@ -65,9 +59,6 @@ shinyServer(function(input, output, session) {
 
   output$single_box_plot <- renderPlotly({
     
-    min_x <- floor(min(single_data()[, input$single_atributo], na.rm = TRUE))
-    max_x <- ceiling(max(single_data()[, input$single_atributo], na.rm = TRUE))
-    
     if (input$single_group == "none")
       resplot <- ggplot(data=na.omit(single_data()), aes_string(x=1, y=input$single_atributo)) + geom_boxplot()
     else
@@ -76,26 +67,9 @@ shinyServer(function(input, output, session) {
     ggplotly(resplot)
   })  
     
-
   output$single_text1 <- renderPrint({
     if (is.numeric(single_data()[,input$single_atributo]))
     summary(single_data()[,input$single_atributo])
-    
-    
-    #> var(usedcars$price)
-    #[1] 9749892
-    #> sd(usedcars$price)
-    #[1] 3122.482
-    #> var(usedcars$mileage)
-    #[1] 728033954
-    #> sd(usedcars$mileage)
-    #[1] 26982.1
-    #IQR(usedcars$price)
-    #> range(usedcars$price)
-    #[1]  3800 21992
-    #> diff(range(usedcars$price))
-    #[1] 18192
-
   })
 
   output$single_text2 <- renderPrint({
@@ -103,7 +77,6 @@ shinyServer(function(input, output, session) {
     quantile(single_data()[,input$single_atributo],na.rm = TRUE)
     
   })
-  
 
   
   # Pestaña Pair ---------------------------------
@@ -113,51 +86,52 @@ shinyServer(function(input, output, session) {
     updateSliderInput(session,"pair_limit_y",value = c(0,100))
 
     if (input$pair_group == "none")
-      dframe <- getData(c(input$pair_atributo1,input$pair_atributo2), c("CICLO=", input$pair_ciclo))
+      dframe <- getData(input$pair_atributos, c("CICLO=", input$pair_ciclo))
     else
-      dframe <- getData(c(input$pair_atributo1,input$pair_atributo2, input$pair_group),c("CICLO=", input$pair_ciclo))
+      dframe <- getData(c(input$pair_atributos, input$pair_group),c("CICLO=", input$pair_ciclo))
 
     dframe
   })
   
   output$pair_plot <- renderPlot({
     #if (is.numeric(data()[,input$single_atributo]))
-
-    min_x <- floor(min(pair_data()[, input$pair_atributo1], na.rm = TRUE))
-    max_x <- ceiling(max(pair_data()[, input$pair_atributo1], na.rm = TRUE))
-    min_y <- floor(min(pair_data()[, input$pair_atributo2], na.rm = TRUE))
-    max_y <- ceiling(max(pair_data()[, input$pair_atributo2], na.rm = TRUE))
-
-    xlim <- c((max_x-min_x)*input$pair_limit_x[1]/100+min_x, (max_x-min_x)*input$pair_limit_x[2]/100+min_x)
-    ylim <- c((max_y-min_y)*input$pair_limit_y[1]/100+min_y, (max_y-min_y)*input$pair_limit_y[2]/100+min_y)
-    
-    resplot <- ggplot(data = na.omit(pair_data()), aes_string(x = input$pair_atributo1, y = input$pair_atributo2)) +
-      xlim(xlim) + ylim(ylim)
-    
-    if(input$pair_add_jitter && input$pair_group == "none")
-      resplot <- resplot + geom_jitter(alpha=1/input$pair_alpha, color = 'orange')
-    else if (!input$pair_add_jitter && input$pair_group == "none")
-      resplot <- resplot + geom_point(alpha=1/input$pair_alpha, color = 'orange')
-    else if (input$pair_add_jitter && input$pair_group != "none")
-      resplot <- resplot + geom_jitter(alpha=1/input$pair_alpha, aes_string(color = input$pair_group))
-    else if (!input$pair_add_jitter && input$pair_group != "none")
-      resplot <- resplot + geom_point(alpha=1/input$pair_alpha, aes_string(color = input$pair_group))
-    
-    if(input$pair_add_mean)
-      resplot <- resplot + geom_line(stat='summary', fun.y = mean)
-    if(input$pair_add_10perc)
-      resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .1), linetype = 2, color = 'blue')
-    if(input$pair_add_50perc)
-      resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .5), color = 'blue')
-    if(input$pair_add_90perc)
-      resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
-    if(input$pair_add_cov)
-      resplot <- resplot + geom_smooth(method = 'lm', color = 'red')
-
-    if (input$pair_scale == "SQRT")
-      resplot <- resplot + coord_trans(y = 'sqrt')
-
-    resplot
+    if(length(input$pair_atributos)==2) {
+      min_x <- floor(min(pair_data()[, input$pair_atributos[1]], na.rm = TRUE))
+      max_x <- ceiling(max(pair_data()[, input$pair_atributos[1]], na.rm = TRUE))
+      min_y <- floor(min(pair_data()[, input$pair_atributos[2]], na.rm = TRUE))
+      max_y <- ceiling(max(pair_data()[, input$pair_atributos[2]], na.rm = TRUE))
+  
+      xlim <- c((max_x-min_x)*input$pair_limit_x[1]/100+min_x, (max_x-min_x)*input$pair_limit_x[2]/100+min_x)
+      ylim <- c((max_y-min_y)*input$pair_limit_y[1]/100+min_y, (max_y-min_y)*input$pair_limit_y[2]/100+min_y)
+      
+      resplot <- ggplot(data = na.omit(pair_data()), aes_string(x = input$pair_atributos[1], y = input$pair_atributos[2])) +
+        xlim(xlim) + ylim(ylim)
+      
+      if(input$pair_add_jitter && input$pair_group == "none")
+        resplot <- resplot + geom_jitter(alpha=1/input$pair_alpha, color = 'steelblue3')
+      else if (!input$pair_add_jitter && input$pair_group == "none")
+        resplot <- resplot + geom_point(alpha=1/input$pair_alpha, color = 'steelblue3')
+      else if (input$pair_add_jitter && input$pair_group != "none")
+        resplot <- resplot + geom_jitter(alpha=1/input$pair_alpha, aes_string(color = input$pair_group))
+      else if (!input$pair_add_jitter && input$pair_group != "none")
+        resplot <- resplot + geom_point(alpha=1/input$pair_alpha, aes_string(color = input$pair_group))
+      
+      if(input$pair_add_mean)
+        resplot <- resplot + geom_line(stat='summary', fun.y = mean)
+      if(input$pair_add_10perc)
+        resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .1), linetype = 2, color = 'blue')
+      if(input$pair_add_50perc)
+        resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .5), color = 'blue')
+      if(input$pair_add_90perc)
+        resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
+      if(input$pair_add_cov)
+        resplot <- resplot + geom_smooth(method = 'lm', color = 'red')
+  
+      if (input$pair_scale == "SQRT")
+        resplot <- resplot + coord_trans(y = 'sqrt')
+  
+      resplot
+    }
   })  
   
   # Pestaña Multi ---------------------------------
@@ -183,7 +157,9 @@ shinyServer(function(input, output, session) {
   
   output$time_plot <- renderPlotly({
     
-    dframe <- getData(c(input$time_atributo, "CICLO, FACTOREL"),"CICLO>165", toString = FALSE)
+    dframe <- na.omit(getData(c(input$time_atributo, "CICLO, FACTOREL"),"CICLO>170", toString = FALSE))
+    #Traducir los valores
+    dframe[1]<-mapToString(dframe[1])
     df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
       
     resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
@@ -344,21 +320,23 @@ shinyServer(function(input, output, session) {
     indx <- sapply(dframe, is.numeric)
     dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = 5, include.lowest = TRUE, ordered_result = TRUE))
     
-    dframe <- dframe[sample.int(nrow(dframe),1000), ]
+    dframe <- na.omit(dframe[sample.int(nrow(dframe),1000), ])
     
     # find association rules with default settings
     
     progress <- shiny::Progress$new()
     progress$set(message = "Clustering", detail = "Ocupado", value = 1)
     
-    clusters <- kmodes(na.omit(dframe), input$cluster_train_groups, iter.max = 2)
+    clusters <- kmodes(dframe, input$cluster_train_groups, iter.max = 2)
+    
+    dframe["CLUSTER"]<-clusters$cluster
     
     progress$set(detail = "Finalizado")
     progress$close()
 
     dir.create("model/cluster", showWarnings = FALSE, recursive = TRUE)
     
-    saveRDS(clusters, file = paste(c("model/cluster/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
+    saveRDS(dframe, file = paste(c("model/cluster/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
 
     updateSelectInput(session, "cluster_view_file",choices = rev(dir("./model/cluster", pattern="*.rds")), selected = rev(dir("./model/cluster", pattern="*.rds"))[1])
 
@@ -379,4 +357,12 @@ shinyServer(function(input, output, session) {
     summary(cluster_model())
   })
   
+  output$cluster_view_graph <- renderPlot({
+    dframe<-cluster_model()
+    cluster<-dframe["CLUSTER"]
+    dframe["CLUSTER"]<-NULL
+        #TODO
+    clusplot(dframe, cluster$CLUSTER, color=TRUE, shade=TRUE,labels=2, lines=0)
+  })
+
 })

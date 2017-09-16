@@ -30,42 +30,41 @@ shinyUI(
                                  ),
                           column(width=6,
                                  selectInput("single_group","Agrupar por:",choices = getAttrDef("FACTOR",withDesc=TRUE, withNone=TRUE)),
-                                 radioButtons("single_scale","Función de escalado:",choices = c("Ninguna", "Logarítmica", "Raiz cuadrada"))
+                                 radioButtons("single_scale","Función de escalado:",choices = c("Ninguna"="none", "Logarítmica"="Log10", "Raiz cuadrada"="SQRT"))
                                  )
                         ))
                ),
-               tabPanel("Two Variable",
+               tabPanel("Dos variables",
                         wellPanel(fluidRow(
                           column(width=4,
-                                 selectInput("pair_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")))),
+                                 selectInput("pair_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO")))),
                           column(width=8,
-                                 selectInput("pair_atributo1","Atributo:",choices = getAttrDef("NUMERIC")),
-                                 selectInput("pair_atributo2","Atributo:",choices = getAttrDef("NUMERIC")))
+                                 selectizeInput("pair_atributos","Atributos:",choices = getAttrDef("NUMERIC"), multiple = TRUE, options = list(maxItems = 2)))
                         )),
                         plotOutput("pair_plot", height = "600px"),
                         wellPanel(fluidRow(
                           column(width=6,
-                                 sliderInput("pair_limit_x", "Limit X", min = 0, max = 100, value = c(0,100)),
-                                 sliderInput("pair_limit_y", "Limit Y", min = 0, max = 100, value = c(0,100)),
-                                 sliderInput("pair_alpha", "Alpha",1,100,1)
+                                 sliderInput("pair_limit_x", "Filtrar eje X", min = 0, max = 100, value = c(0,100)),
+                                 sliderInput("pair_limit_y", "Filtrar eje Y", min = 0, max = 100, value = c(0,100)),
+                                 sliderInput("pair_alpha", "Transparencia",1,100,1)
                           ),
                           column(width=6,
-                                 selectInput("pair_group","Group by:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
-                                 radioButtons("pair_scale","Scale",choices = c("None", "SQRT")),
+                                 selectInput("pair_group","Agrupar por:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
+                                 radioButtons("pair_scale","Función de escalado:",choices = c("Ninguna"="none", "Raiz cuadrada"="SQRT")),
                                  checkboxInput("pair_add_jitter", "Jitter"),
-                                 checkboxInput("pair_add_mean", "Mean"),
-                                 checkboxInput("pair_add_10perc", "10 Percentile"),
-                                 checkboxInput("pair_add_50perc", "50 Percentile"),
-                                 checkboxInput("pair_add_90perc", "90 Percentile"),
-                                 checkboxInput("pair_add_cov", "Covariance")
+                                 checkboxInput("pair_add_mean", "Incluir Media"),
+                                 checkboxInput("pair_add_10perc", "Incluir Percentil 10"),
+                                 checkboxInput("pair_add_50perc", "Incluir Percentil 50"),
+                                 checkboxInput("pair_add_90perc", "Incluir Percentil 90"),
+                                 checkboxInput("pair_add_cov", "Covarianza")
                           )
                         ))                        
                ),
-               tabPanel("Multi Variable",
+               tabPanel("Múltiples Variables",
                         wellPanel(fluidRow(
                           column(width=4,
-                                 selectInput("multi_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
-                                 actionButton("multi_btn", "Go!")
+                                 selectInput("multi_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
+                                 actionButton("multi_btn", "Ejecutar!")
                           ),
                           column(width=8,
                                  selectizeInput("multi_atributo","Atributos:",choices = getAttrDef(withDesc=FALSE), multiple = TRUE, options = list(maxItems = 8))
@@ -74,83 +73,84 @@ shinyUI(
                         plotOutput("multi_plot")
                         
                ),
-               tabPanel("Over Time",
+               tabPanel("Evolución Temporal",
                         wellPanel(selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=FALSE))),
                         plotlyOutput("time_plot")
                )
              ),
              navbarMenu("Clustering",
-                        tabPanel("Train",
+                        tabPanel("Entrenamiento",
                                  fluidPage(sidebarLayout(
                                    sidebarPanel(
-                                     selectInput("cluster_train_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
-                                     sliderInput("cluster_train_groups","Number of Clusters:", min = 1, max = 10, value = 4),
-                                     actionButton("cluster_train_btn", "Go!")
+                                     selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
+                                     sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
+                                     actionButton("cluster_train_btn", "Ejecutar!")
                                    ),
                                    mainPanel(
                                      verbatimTextOutput("cluster_train_text")
                                    ))
                                  )),
-                        tabPanel("View",
+                        tabPanel("Visualizar",
                                  fluidPage(sidebarLayout(
                                    sidebarPanel(
                                      selectInput("cluster_view_file","Fichero:", choices = rev(dir("./model/cluster", pattern="*.rds")), selectize = FALSE, size = 5)
                                    ),
                                    mainPanel(
                                      tabsetPanel(type = "tabs", 
-                                                 tabPanel("Summary",verbatimTextOutput("cluster_view_text"))
+                                                 tabPanel("Resumen",verbatimTextOutput("cluster_view_text")),
+                                                 tabPanel("Puntos",plotOutput("cluster_view_graph", height = "800px"))
                                      )
                                    )
                                  )))
              ),
-             navbarMenu("Association Rules",
-               tabPanel("Train",
+             navbarMenu("Reglas de Asociación",
+               tabPanel("Entrenamiento",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("arules_train_ciclo","Ciclo:",choices = rev(getMapValues("CICLO"))),
-                            sliderInput("arules_train_support","Support:", min = 0, max = 1, value = 0.1),
-                            sliderInput("arules_train_confidence","Confidence:", min = 0, max = 1, value = 0.7),
-                            sliderInput("arules_train_minlen","Length:", min = 1, max = 10, value = c(2,3)),
-                            actionButton("arules_train_btn", "Go!")
+                            selectInput("arules_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
+                            sliderInput("arules_train_support","Soporte:", min = 0, max = 1, value = 0.1),
+                            sliderInput("arules_train_confidence","Confianza:", min = 0, max = 1, value = 0.7),
+                            sliderInput("arules_train_minlen","Longitud:", min = 1, max = 10, value = c(2,3)),
+                            actionButton("arules_train_btn", "Ejecutar!")
                           ),
                           mainPanel(
                             verbatimTextOutput("arules_train_text")
                           ))
                         )),
-               tabPanel("View",
+               tabPanel("Visualizar",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5)
                         ),
                         mainPanel(
                           tabsetPanel(type = "tabs", 
-                                      tabPanel("Summary",verbatimTextOutput("arules_view_text")), 
-                                      tabPanel("Plot",plotOutput("arules_view_plot", height = "800px")), 
-                                      tabPanel("Graph", plotOutput("arules_view_graph", height = "800px")),
+                                      tabPanel("Resumen",verbatimTextOutput("arules_view_text")), 
+                                      tabPanel("Puntos",plotOutput("arules_view_plot", height = "800px")), 
+                                      tabPanel("Grafo", plotOutput("arules_view_graph", height = "800px")),
                                       #tabPanel("Paracoord", plotOutput("arules_view_paracoord", height = "800px"))
-                                      tabPanel("Explore", DT::dataTableOutput("arules_view_explore"))
+                                      tabPanel("Explorar", DT::dataTableOutput("arules_view_explore"))
                           )
                         )
                         )))
              ),
-             tabPanel("Reports",
+             tabPanel("Informes",
                       fluidPage(sidebarLayout(
                         sidebarPanel(
                           selectInput("rpt_file","Fichero:", choices = dir("./reports", pattern="*.Rmd"), selectize = FALSE, size = 5),
-                          selectInput("rpt_ciclo","Ciclo:",choices = rev(getMapValues("CICLO")[-(1:25)])),
-                          downloadButton("rpt_generate", "Generate report") #Markdown test
+                          selectInput("rpt_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO")[-(1:25)])),
+                          downloadButton("rpt_generate", "Generar Informe") #Markdown test
                         ),
                         mainPanel()
                       ))
              ),
-             tabPanel("Update",
+             tabPanel("Actualizar",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("cfg_file","Fichero:", choices = check_for_updates()$Name, selectize = FALSE, size = 5),
-                            actionButton("cfg_update_btn", "Update!")
+                            actionButton("cfg_update_btn", "Actualizar!")
                           ),
                           mainPanel(
-                            verbatimTextOutput("cfg_db_summary")
+                            h3("Paquetes Instalados:"),verbatimTextOutput("cfg_db_summary")
                           )
                         ))
              )
