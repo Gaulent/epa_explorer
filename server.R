@@ -250,14 +250,16 @@ shinyServer(function(input, output, session) {
   
   arules_train_data <- eventReactive(input$arules_train_btn, {
     
-    selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
-    
-    dframe<-getData(selected_atributes,c("CICLO=",input$arules_train_ciclo, "AND NIVEL=1"))
+    #selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
+    selected_atributes <- input$arules_train_atributo
+  
+    #dframe<-getData(selected_atributes,c("CICLO=",input$arules_train_ciclo, "AND NIVEL=1"))
+    dframe<-getData(selected_atributes,c("CICLO=",input$arules_train_ciclo))
     
     dframe <- as.data.frame(unclass(dframe))
     
     indx <- sapply(dframe, is.numeric)
-    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = 5, include.lowest = TRUE, ordered_result = TRUE))
+    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = input$arules_train_breaks, include.lowest = TRUE, ordered_result = TRUE))
     
     #☻sample_df <- dframe[sample.int(nrow(dframe),100000), ]
     
@@ -304,23 +306,25 @@ shinyServer(function(input, output, session) {
   #})
   
   output$arules_view_explore <- DT::renderDataTable({
-    DT::datatable(as(arules_model(),"data.frame"), options = list(pageLength = 25))
+    DT::datatable(as(arules_model(),"data.frame"), extensions = 'Buttons', options = list(pageLength = 100, dom = 'Bfrtip', buttons = c('excel', 'pdf')))
   })
   
   # Pestaña Cluster_Train ---------------------------------
   
   cluster_train_data <- eventReactive(input$cluster_train_btn, {
     
-    selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
+    #selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
+    selected_atributes <- input$cluster_train_atributo
     
-    dframe<-getData(selected_atributes,c("CICLO=",input$cluster_train_ciclo, "AND NIVEL=1"))
+    #dframe<-getData(selected_atributes,c("CICLO=",input$cluster_train_ciclo, "AND NIVEL=1"))
+    dframe<-getData(selected_atributes,c("CICLO=",input$cluster_train_ciclo))
     
     dframe <- as.data.frame(unclass(dframe))
     
     indx <- sapply(dframe, is.numeric)
-    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = 5, include.lowest = TRUE, ordered_result = TRUE))
+    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = input$cluster_train_breaks, include.lowest = TRUE, ordered_result = TRUE))
     
-    dframe <- na.omit(dframe[sample.int(nrow(dframe),1000), ])
+    dframe <- na.omit(dframe[ sample.int(nrow(dframe),1000), ])
     
     # find association rules with default settings
     

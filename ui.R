@@ -80,16 +80,21 @@ shinyUI(
              ),
              navbarMenu("Clustering",
                         tabPanel("Entrenamiento",
-                                 fluidPage(sidebarLayout(
-                                   sidebarPanel(
-                                     selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
-                                     sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
-                                     actionButton("cluster_train_btn", "Ejecutar!")
+                                 fluidPage(wellPanel(fluidRow(
+                                   column(width=4,
+                                          selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
+                                          sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
+                                          sliderInput("cluster_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
+                                          actionButton("cluster_train_btn", "Ejecutar!")
                                    ),
-                                   mainPanel(
+                                   column(width=8,
+                                          selectizeInput("cluster_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8))
+                                   ))),
+                                   fluidRow(
+                                     column(width=12,
                                      verbatimTextOutput("cluster_train_text")
                                    ))
-                                 )),
+                                   )),
                         tabPanel("Visualizar",
                                  fluidPage(sidebarLayout(
                                    sidebarPanel(
@@ -105,18 +110,23 @@ shinyUI(
              ),
              navbarMenu("Reglas de Asociación",
                tabPanel("Entrenamiento",
-                        fluidPage(sidebarLayout(
-                          sidebarPanel(
-                            selectInput("arules_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
-                            sliderInput("arules_train_support","Soporte:", min = 0, max = 1, value = 0.1),
-                            sliderInput("arules_train_confidence","Confianza:", min = 0, max = 1, value = 0.7),
-                            sliderInput("arules_train_minlen","Longitud:", min = 1, max = 10, value = c(2,3)),
-                            actionButton("arules_train_btn", "Ejecutar!")
+                        fluidPage(wellPanel(fluidRow(
+                          column(width=4,
+                                 selectInput("arules_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
+                                 sliderInput("arules_train_support","Soporte:", min = 0, max = 1, value = 0.1),
+                                 sliderInput("arules_train_confidence","Confianza:", min = 0, max = 1, value = 0.7),
+                                 sliderInput("arules_train_minlen","Longitud:", min = 1, max = 10, value = c(2,3)),
+                                 sliderInput("arules_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
+                                 actionButton("arules_train_btn", "Ejecutar!")
                           ),
-                          mainPanel(
-                            verbatimTextOutput("arules_train_text")
-                          ))
-                        )),
+                          column(width=8,
+                                 selectizeInput("arules_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8))
+                          ))),
+                          fluidRow(
+                            column(width=12,
+                                   verbatimTextOutput("arules_train_text")
+                            ))
+                        )),               
                tabPanel("Visualizar",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
