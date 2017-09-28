@@ -7,10 +7,28 @@ library(shiny)
 # Define UI for application that draws a histogram
 
 shinyUI(
-  navbarPage(title = "EPA Explorer",
-                   
+
+  navbarPage(title = div(
+    img(
+      src = "logo.png",
+      height = 50,
+      width = 100
+    )), windowTitle = "EPA Explorer",
+ 
              navbarMenu("Explorar",
                tabPanel("Una variable",
+                        
+                        tags$head(
+                          HTML('<link rel="icon", href="icon.png", 
+                                   type="image/png" />'),
+                          tags$style(HTML("
+                      
+                      .navbar-brand {
+                      padding: 0;
+                      }
+                      
+                      "))
+                        ),
                         wellPanel(fluidRow(
                           column(width=4,
                                  selectInput("single_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO")))),
@@ -164,4 +182,5 @@ shinyUI(
                           )
                         ))
              )
+
   ))
