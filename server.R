@@ -325,7 +325,7 @@ shinyServer(function(input, output, session) {
     progress <- shiny::Progress$new()
     progress$set(message = "Clustering", detail = "Ocupado", value = 1)
     
-    clusters <- kmodes(dframe, input$cluster_train_groups, iter.max = 2)
+    clusters <- kmodes(dframe, input$cluster_train_groups, iter.max = input$cluster_train_itermax)
     
     dframe["CLUSTER"]<-clusters$cluster
     
@@ -338,11 +338,21 @@ shinyServer(function(input, output, session) {
     
     updateSelectInput(session, "cluster_view_file",choices = rev(dir("./model/cluster", pattern="*.rds")), selected = rev(dir("./model/cluster", pattern="*.rds"))[1])
     
-    summary(clusters)
+    #Valor de retorno
+    clusters
+    
   })
   
-  output$cluster_train_text <- renderPrint({
-    cluster_train_data()
+  output$cluster_train_text_modes <- renderPrint({
+    cluster_train_data()$modes
+  })
+
+  output$cluster_train_text_size <- renderPrint({
+    cluster_train_data()$size
+  })
+
+  output$cluster_train_text_withindiff <- renderPrint({
+    cluster_train_data()$withindiff
   })
   
   

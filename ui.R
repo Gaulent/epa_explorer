@@ -99,15 +99,19 @@ shinyUI(
                                  selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
                                  sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
                                  sliderInput("cluster_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
+                                 sliderInput("cluster_train_itermax","Número máximo de iteraciones:", min = 2, max = 10, value = 2),
                                  actionButton("cluster_train_btn", "Ejecutar!")
                           ),
                           column(width=8,
-                                 selectizeInput("cluster_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8))
-                          ))),
-                          fluidRow(
-                            column(width=12,
-                                   verbatimTextOutput("cluster_train_text")
-                            ))
+                                 selectizeInput("cluster_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8)),
+                                 h4("Salida del algoritmo:"),
+                                 h5("Modos"),
+                                 verbatimTextOutput("cluster_train_text_modes"),
+                                 h5("Tamaños de cluster"),
+                                 verbatimTextOutput("cluster_train_text_size"),
+                                 h5("Distancia interna de cluster"),
+                                 verbatimTextOutput("cluster_train_text_withindiff")
+                          )))
                         )),
                tabPanel("Visualizar",
                         fluidPage(sidebarLayout(
@@ -134,21 +138,20 @@ shinyUI(
                                  actionButton("arules_train_btn", "Ejecutar!")
                           ),
                           column(width=8,
-                                 selectizeInput("arules_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8))
-                          ))),
-                          fluidRow(
-                            column(width=12,
-                                   verbatimTextOutput("arules_train_text")
-                            ))
+                                 selectizeInput("arules_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8)),
+                                 h4("Salida del algoritmo:"),
+                                 verbatimTextOutput("arules_train_text")
+                          )))
                         )),               
                tabPanel("Visualizar",
                         fluidPage(sidebarLayout(
-                          sidebarPanel(
-                            selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5)
+                          sidebarPanel(width = 5,
+                            selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5),
+                            h4("Resumen:"),
+                            verbatimTextOutput("arules_view_text")
                           ),
-                          mainPanel(
+                          mainPanel(width = 7,
                             tabsetPanel(type = "tabs", 
-                                        tabPanel("Resumen",verbatimTextOutput("arules_view_text")), 
                                         tabPanel("Puntos",plotOutput("arules_view_plot", height = "800px")), 
                                         tabPanel("Grafo", plotOutput("arules_view_graph", height = "800px")),
                                         #tabPanel("Paracoord", plotOutput("arules_view_paracoord", height = "800px"))
