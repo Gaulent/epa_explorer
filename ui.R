@@ -4,18 +4,16 @@
 
 library(shiny)
 
-# Define UI for application that draws a histogram
-
 shinyUI(
-
+  
   navbarPage(title = div(
     img(
       src = "logo.png",
       height = 50,
       width = 100
     )), windowTitle = "EPA Explorer",
- 
-             navbarMenu("Explorar",
+    
+    navbarMenu("Explorar",
                tabPanel("Una variable",
                         
                         tags$head(
@@ -23,12 +21,10 @@ shinyUI(
                                    type="image/png" />'),
                           tags$style(HTML("
                       
-                      .navbar-brand {
-                      padding: 0;
-                      }
-                      
-                      "))
-                        ),
+                            .navbar-brand {
+                              padding: 0;
+                            }
+                      "))),
                         wellPanel(fluidRow(
                           column(width=4,
                                  selectInput("single_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO")))),
@@ -45,11 +41,11 @@ shinyUI(
                         wellPanel(fluidRow(
                           column(width=6,
                                  sliderInput("single_bins", "Granularidad",1,100,30)
-                                 ),
+                          ),
                           column(width=6,
                                  selectInput("single_group","Agrupar por:",choices = getAttrDef("FACTOR",withDesc=TRUE, withNone=TRUE)),
                                  radioButtons("single_scale","Función de escalado:",choices = c("Ninguna"="none", "Logarítmica"="Log10", "Raiz cuadrada"="SQRT"))
-                                 )
+                          )
                         ))
                ),
                tabPanel("Dos variables",
@@ -86,7 +82,7 @@ shinyUI(
                           ),
                           column(width=8,
                                  selectizeInput("multi_atributo","Atributos:",choices = getAttrDef(withDesc=FALSE), multiple = TRUE, options = list(maxItems = 8))
-                                 )
+                          )
                         )),
                         plotOutput("multi_plot")
                         
@@ -95,38 +91,38 @@ shinyUI(
                         wellPanel(selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=FALSE))),
                         plotlyOutput("time_plot")
                )
-             ),
-             navbarMenu("Clustering",
-                        tabPanel("Entrenamiento",
-                                 fluidPage(wellPanel(fluidRow(
-                                   column(width=4,
-                                          selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
-                                          sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
-                                          sliderInput("cluster_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
-                                          actionButton("cluster_train_btn", "Ejecutar!")
-                                   ),
-                                   column(width=8,
-                                          selectizeInput("cluster_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8))
-                                   ))),
-                                   fluidRow(
-                                     column(width=12,
-                                     verbatimTextOutput("cluster_train_text")
-                                   ))
-                                   )),
-                        tabPanel("Visualizar",
-                                 fluidPage(sidebarLayout(
-                                   sidebarPanel(
-                                     selectInput("cluster_view_file","Fichero:", choices = rev(dir("./model/cluster", pattern="*.rds")), selectize = FALSE, size = 5)
-                                   ),
-                                   mainPanel(
-                                     tabsetPanel(type = "tabs", 
-                                                 tabPanel("Resumen",verbatimTextOutput("cluster_view_text")),
-                                                 tabPanel("Puntos",plotOutput("cluster_view_graph", height = "800px"))
-                                     )
-                                   )
-                                 )))
-             ),
-             navbarMenu("Reglas de Asociación",
+    ),
+    navbarMenu("Clustering",
+               tabPanel("Entrenamiento",
+                        fluidPage(wellPanel(fluidRow(
+                          column(width=4,
+                                 selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
+                                 sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
+                                 sliderInput("cluster_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
+                                 actionButton("cluster_train_btn", "Ejecutar!")
+                          ),
+                          column(width=8,
+                                 selectizeInput("cluster_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8))
+                          ))),
+                          fluidRow(
+                            column(width=12,
+                                   verbatimTextOutput("cluster_train_text")
+                            ))
+                        )),
+               tabPanel("Visualizar",
+                        fluidPage(sidebarLayout(
+                          sidebarPanel(
+                            selectInput("cluster_view_file","Fichero:", choices = rev(dir("./model/cluster", pattern="*.rds")), selectize = FALSE, size = 5)
+                          ),
+                          mainPanel(
+                            tabsetPanel(type = "tabs", 
+                                        tabPanel("Resumen",verbatimTextOutput("cluster_view_text")),
+                                        tabPanel("Puntos",plotOutput("cluster_view_graph", height = "800px"))
+                            )
+                          )
+                        )))
+    ),
+    navbarMenu("Reglas de Asociación",
                tabPanel("Entrenamiento",
                         fluidPage(wellPanel(fluidRow(
                           column(width=4,
@@ -149,38 +145,38 @@ shinyUI(
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5)
-                        ),
-                        mainPanel(
-                          tabsetPanel(type = "tabs", 
-                                      tabPanel("Resumen",verbatimTextOutput("arules_view_text")), 
-                                      tabPanel("Puntos",plotOutput("arules_view_plot", height = "800px")), 
-                                      tabPanel("Grafo", plotOutput("arules_view_graph", height = "800px")),
-                                      #tabPanel("Paracoord", plotOutput("arules_view_paracoord", height = "800px"))
-                                      tabPanel("Explorar", DT::dataTableOutput("arules_view_explore"))
-                          )
-                        )
-                        )))
-             ),
-             tabPanel("Informes",
-                      fluidPage(sidebarLayout(
-                        sidebarPanel(
-                          selectInput("rpt_file","Fichero:", choices = dir("./reports", pattern="*.Rmd"), selectize = FALSE, size = 5),
-                          selectInput("rpt_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO")[-(1:25)])),
-                          downloadButton("rpt_generate", "Generar Informe") #Markdown test
-                        ),
-                        mainPanel()
-                      ))
-             ),
-             tabPanel("Actualizar",
-                        fluidPage(sidebarLayout(
-                          sidebarPanel(
-                            selectInput("cfg_file","Fichero:", choices = check_for_updates()$Name, selectize = FALSE, size = 5),
-                            actionButton("cfg_update_btn", "Actualizar!")
                           ),
                           mainPanel(
-                            h3("Paquetes Instalados:"),verbatimTextOutput("cfg_db_summary")
+                            tabsetPanel(type = "tabs", 
+                                        tabPanel("Resumen",verbatimTextOutput("arules_view_text")), 
+                                        tabPanel("Puntos",plotOutput("arules_view_plot", height = "800px")), 
+                                        tabPanel("Grafo", plotOutput("arules_view_graph", height = "800px")),
+                                        #tabPanel("Paracoord", plotOutput("arules_view_paracoord", height = "800px"))
+                                        tabPanel("Explorar", DT::dataTableOutput("arules_view_explore"))
+                            )
                           )
-                        ))
-             )
-
+                        )))
+    ),
+    tabPanel("Informes",
+             fluidPage(sidebarLayout(
+               sidebarPanel(
+                 selectInput("rpt_file","Fichero:", choices = dir("./reports", pattern="*.Rmd"), selectize = FALSE, size = 5),
+                 selectInput("rpt_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO")[-(1:25)])),
+                 downloadButton("rpt_generate", "Generar Informe") #Markdown test
+               ),
+               mainPanel()
+             ))
+    ),
+    tabPanel("Actualizar",
+             fluidPage(sidebarLayout(
+               sidebarPanel(
+                 selectInput("cfg_file","Fichero:", choices = check_for_updates()$Name, selectize = FALSE, size = 5),
+                 actionButton("cfg_update_btn", "Actualizar!")
+               ),
+               mainPanel(
+                 h3("Paquetes Instalados:"),verbatimTextOutput("cfg_db_summary")
+               )
+             ))
+    )
+    
   ))

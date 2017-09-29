@@ -8,15 +8,15 @@ shinyServer(function(input, output, session) {
   
   # Descomentar para suprimir Warnigns
   options(warn = -1)
-
+  
   # Vector de valores reactivos  
   rv<-reactiveValues()
-
-    
+  
+  
   # Pestaña Single ---------------------------------
-
+  
   single_data <- reactive({
-
+    
     if (input$single_group == "none")
       dframe <- getData(input$single_atributo, c("CICLO=", input$single_ciclo))
     else
@@ -43,7 +43,7 @@ shinyServer(function(input, output, session) {
   output$single_freq_plot <- renderPlotly({
     
     resplot <- ggplot(data = na.omit(single_data()), aes_string(x = input$single_atributo))
-
+    
     if (input$single_group == "none")
       resplot <- resplot + geom_freqpoly(bins = input$single_bins)
     else
@@ -56,7 +56,7 @@ shinyServer(function(input, output, session) {
     
     ggplotly(resplot)
   })
-
+  
   output$single_box_plot <- renderPlotly({
     
     if (input$single_group == "none")
@@ -66,41 +66,41 @@ shinyServer(function(input, output, session) {
     
     ggplotly(resplot)
   })  
-    
+  
   output$single_text1 <- renderPrint({
     if (is.numeric(single_data()[,input$single_atributo]))
-    summary(single_data()[,input$single_atributo])
+      summary(single_data()[,input$single_atributo])
   })
-
+  
   output$single_text2 <- renderPrint({
     if (is.numeric(single_data()[,input$single_atributo]))
-    quantile(single_data()[,input$single_atributo],na.rm = TRUE)
+      quantile(single_data()[,input$single_atributo],na.rm = TRUE)
     
   })
-
+  
   
   # Pestaña Pair ---------------------------------
-
+  
   pair_data<-reactive({
     updateSliderInput(session,"pair_limit_x",value = c(0,100))
     updateSliderInput(session,"pair_limit_y",value = c(0,100))
-
+    
     if (input$pair_group == "none")
       dframe <- getData(input$pair_atributos, c("CICLO=", input$pair_ciclo))
     else
       dframe <- getData(c(input$pair_atributos, input$pair_group),c("CICLO=", input$pair_ciclo))
-
+    
     dframe
   })
   
   output$pair_plot <- renderPlot({
-    #if (is.numeric(data()[,input$single_atributo]))
+    
     if(length(input$pair_atributos)==2) {
       min_x <- floor(min(pair_data()[, input$pair_atributos[1]], na.rm = TRUE))
       max_x <- ceiling(max(pair_data()[, input$pair_atributos[1]], na.rm = TRUE))
       min_y <- floor(min(pair_data()[, input$pair_atributos[2]], na.rm = TRUE))
       max_y <- ceiling(max(pair_data()[, input$pair_atributos[2]], na.rm = TRUE))
-  
+      
       xlim <- c((max_x-min_x)*input$pair_limit_x[1]/100+min_x, (max_x-min_x)*input$pair_limit_x[2]/100+min_x)
       ylim <- c((max_y-min_y)*input$pair_limit_y[1]/100+min_y, (max_y-min_y)*input$pair_limit_y[2]/100+min_y)
       
@@ -126,33 +126,32 @@ shinyServer(function(input, output, session) {
         resplot <- resplot + geom_line(stat='summary', fun.y = quantile, fun.args = list(probs = .9), linetype = 2, color = 'blue')
       if(input$pair_add_cov)
         resplot <- resplot + geom_smooth(method = 'lm', color = 'red')
-  
+      
       if (input$pair_scale == "SQRT")
         resplot <- resplot + coord_trans(y = 'sqrt')
-  
+      
       resplot
     }
   })  
   
+  
   # Pestaña Multi ---------------------------------
-
+  
   multi_graph <- eventReactive(input$multi_btn, {
     #progress <- shiny::Progress$new()
     #progress$set(message = "Recuperando Datos", value = 1)
     #on.exit(progress$close())
-
+    
     current_data<-getData(input$multi_atributo, c("CICLO=",input$multi_ciclo))
-
-    #ggpairs(current_data[sample.int(nrow(current_data),1000), ], 
-    ##        lower = list(continuous = wrap("points", shape = I('.'))), 
-    #        upper = list(combo = wrap("box", outlier.shape = I('.'))))
+    
     ggpairs(current_data[sample.int(nrow(current_data),1000), ])
   })
   
   output$multi_plot <- renderPlot({
     multi_graph()
   })
-
+  
+  
   # Pestaña Time ---------------------------------
   
   output$time_plot <- renderPlotly({
@@ -161,10 +160,10 @@ shinyServer(function(input, output, session) {
     #Traducir los valores
     dframe[1]<-mapToString(dframe[1])
     df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
-      
+    
     resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
       geom_area(aes_string(fill = input$time_atributo))
-
+    
     ggplotly(resplot)
   })
   
@@ -173,24 +172,18 @@ shinyServer(function(input, output, session) {
   get_export_filename <- function() {
     paste(c(gsub("\\.Rmd$","",input$rpt_file),".docx"),collapse="")
   }
-
+  
   output$rpt_generate <- downloadHandler(
-    # For PDF output, change this to "report.pdf"
+    
     filename = get_export_filename,
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     content = function(file) {
-      # Copy the report file to a temporary directory before processing it, in
-      # case we don't have write permissions to the current working dir (which
-      # can happen when deployed).
+      
       tempReport <- file.path(tempdir(), input$rpt_file)
       file.copy(paste(c("reports/",input$rpt_file),collapse=""), tempReport, overwrite = TRUE)
       
-      # Set up parameters to pass to Rmd document
       params <- list(ciclo = as.numeric(input$rpt_ciclo), underShiny = TRUE)
       
-      # Knit the document, passing in the `params` list, and eval it in a
-      # child of the global environment (this isolates the code in the document
-      # from the code in this app).
       rmarkdown::render(tempReport, output_file = file,
                         params = params,
                         envir = new.env(parent = globalenv()),
@@ -200,9 +193,10 @@ shinyServer(function(input, output, session) {
     }  
   )
   
+  
   # Pestaña Graph ---------------------------------
   # Pestaña de prueba. Solo se lanza el grafico al pulsar el boton.
-
+  
   graph <- eventReactive(input$graph_btn, {
     progress <- shiny::Progress$new()
     progress$set(message = "Recuperando Datos", value = 1)
@@ -223,28 +217,30 @@ shinyServer(function(input, output, session) {
   output$graph_plot <- renderPlot({
     graph()
   })
-
+  
+  
   # Pestaña Update ---------------------------------
   # Pestaña Settings. Solo actualiza la base de datos al pulsar el boton,
   # pero el summary se muestra siempre.
-
+  
   rv$db_patches<- names(getMapValues("CICLO"))
   
   observeEvent(input$cfg_update_btn,{
-               update_database(input$cfg_file)
-               rv$db_patches <- names(getMapValues("CICLO", forceCheck = TRUE))
-               updateSelectInput(session, "cfg_file", choices = check_for_updates()$Name)
-               updateSelectInput(session, "single_ciclo",choices = rev(getMapValues("CICLO")[-(1:25)]))
-               })
+    update_database(input$cfg_file)
+    rv$db_patches <- names(getMapValues("CICLO", forceCheck = TRUE))
+    updateSelectInput(session, "cfg_file", choices = check_for_updates()$Name)
+    updateSelectInput(session, "single_ciclo",choices = rev(getMapValues("CICLO")[-(1:25)]))
+  })
   
   output$cfg_db_summary <- renderPrint({
     rv$db_patches
   })
-    
+  
   # Se llama al cerrar el navegador
   session$onSessionEnded(function() {
     print ("Session ended.")
   })
+  
   
   # Pestaña ARules_Train ---------------------------------
   
@@ -252,7 +248,7 @@ shinyServer(function(input, output, session) {
     
     #selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
     selected_atributes <- input$arules_train_atributo
-  
+    
     #dframe<-getData(selected_atributes,c("CICLO=",input$arules_train_ciclo, "AND NIVEL=1"))
     dframe<-getData(selected_atributes,c("CICLO=",input$arules_train_ciclo))
     
@@ -275,13 +271,14 @@ shinyServer(function(input, output, session) {
     dir.create("model/arules", showWarnings = FALSE, recursive = TRUE)
     
     saveRDS(rules, file = paste(c("model/arules/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
-
+    
     updateSelectInput(session, "arules_view_file",choices = rev(dir("./model/arules", pattern="*.rds")), selected = rev(dir("./model/arules", pattern="*.rds"))[1])
   })
   
   output$arules_train_text <- renderPrint({
     arules_train_data()
   })
+  
   
   # Pestaña ARules_View ---------------------------------
   
@@ -296,18 +293,15 @@ shinyServer(function(input, output, session) {
   output$arules_view_plot <- renderPlot({
     plot(arules_model())
   })
-
+  
   output$arules_view_graph <- renderPlot({
     plot(sort(arules_model(), by = "lift")[1:20], method="graph", control=list(type="items"))
   })
   
-  #output$arules_view_paracoord <- renderPlot({
-  #  plot(arules_model()[1:100], method="paracoord", control=list(reorder=TRUE))
-  #})
-  
   output$arules_view_explore <- DT::renderDataTable({
     DT::datatable(as(arules_model(),"data.frame"), extensions = 'Buttons', options = list(pageLength = 100, dom = 'Bfrtip', buttons = c('excel', 'pdf')))
   })
+  
   
   # Pestaña Cluster_Train ---------------------------------
   
@@ -337,19 +331,20 @@ shinyServer(function(input, output, session) {
     
     progress$set(detail = "Finalizado")
     progress$close()
-
+    
     dir.create("model/cluster", showWarnings = FALSE, recursive = TRUE)
     
     saveRDS(dframe, file = paste(c("model/cluster/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
-
+    
     updateSelectInput(session, "cluster_view_file",choices = rev(dir("./model/cluster", pattern="*.rds")), selected = rev(dir("./model/cluster", pattern="*.rds"))[1])
-
+    
     summary(clusters)
   })
   
   output$cluster_train_text <- renderPrint({
     cluster_train_data()
   })
+  
   
   # Pestaña Cluster_View ---------------------------------
   
@@ -365,8 +360,7 @@ shinyServer(function(input, output, session) {
     dframe<-cluster_model()
     cluster<-dframe["CLUSTER"]
     dframe["CLUSTER"]<-NULL
-        #TODO
     clusplot(dframe, cluster$CLUSTER, color=TRUE, shade=TRUE,labels=2, lines=0)
   })
-
+  
 })
