@@ -327,14 +327,14 @@ shinyServer(function(input, output, session) {
     
     clusters <- kmodes(dframe, input$cluster_train_groups, iter.max = input$cluster_train_itermax)
     
-    dframe["CLUSTER"]<-clusters$cluster
+    clusters$data <- dframe
     
     progress$set(detail = "Finalizado")
     progress$close()
     
     dir.create("model/cluster", showWarnings = FALSE, recursive = TRUE)
     
-    saveRDS(dframe, file = paste(c("model/cluster/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
+    saveRDS(clusters, file = paste(c("model/cluster/",format(Sys.time(), "%y%m%d_%H.%M.%S"),".rds"),collapse=""))
     
     updateSelectInput(session, "cluster_view_file",choices = rev(dir("./model/cluster", pattern="*.rds")), selected = rev(dir("./model/cluster", pattern="*.rds"))[1])
     
@@ -355,22 +355,34 @@ shinyServer(function(input, output, session) {
     cluster_train_data()$withindiff
   })
   
-  
+
   # Pestaña Cluster_View ---------------------------------
   
   cluster_model <- reactive({
     readRDS(paste(c("model/cluster/",input$cluster_view_file),collapse=""))
   })
   
-  output$cluster_view_text <- renderPrint({
-    summary(cluster_model())
+  output$cluster_view_text_modes <- renderPrint({
+    cluster_model()$modes
   })
   
+  output$cluster_view_text_size <- renderPrint({
+    cluster_model()$size
+  })
+  
+  output$cluster_view_text_withindiff <- renderPrint({
+    cluster_model()$withindiff
+  })
+
   output$cluster_view_graph <- renderPlot({
-    dframe<-cluster_model()
-    cluster<-dframe["CLUSTER"]
-    dframe["CLUSTER"]<-NULL
-    clusplot(dframe, cluster$CLUSTER, color=TRUE, shade=TRUE,labels=2, lines=0)
+    dframe<-cluster_model()$data
+    cluster<-cluster_model()$cluster
+    clusplot(dframe, cluster, color=TRUE, shade=TRUE,labels=2, lines=0)
+  })
+  
+  output$cluster_view_explore <- DT::renderDataTable({
+    dframe <- cbind(CLUSTER = cluster_model()$cluster, cluster_model()$data)
+    DT::datatable(as(dframe,"data.frame"), extensions = 'Buttons', options = list(pageLength = 100, dom = 'Bfrtip', buttons = c('excel', 'pdf')))
   })
   
 })

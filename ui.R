@@ -116,12 +116,19 @@ shinyUI(
                tabPanel("Visualizar",
                         fluidPage(sidebarLayout(
                           sidebarPanel(
-                            selectInput("cluster_view_file","Fichero:", choices = rev(dir("./model/cluster", pattern="*.rds")), selectize = FALSE, size = 5)
+                            selectInput("cluster_view_file","Fichero:", choices = rev(dir("./model/cluster", pattern="*.rds")), selectize = FALSE, size = 5),
+                            h4("Resumen:"),
+                            h5("Modos"),
+                            verbatimTextOutput("cluster_view_text_modes"),
+                            h5("Tamaños de cluster"),
+                            verbatimTextOutput("cluster_view_text_size"),
+                            h5("Distancia interna de cluster"),
+                            verbatimTextOutput("cluster_view_text_withindiff")
                           ),
                           mainPanel(
                             tabsetPanel(type = "tabs", 
-                                        tabPanel("Resumen",verbatimTextOutput("cluster_view_text")),
-                                        tabPanel("Puntos",plotOutput("cluster_view_graph", height = "800px"))
+                                        tabPanel("Puntos",plotOutput("cluster_view_graph", height = "800px")),
+                                        tabPanel("Explorar", DT::dataTableOutput("cluster_view_explore"))
                             )
                           )
                         )))
@@ -145,12 +152,12 @@ shinyUI(
                         )),               
                tabPanel("Visualizar",
                         fluidPage(sidebarLayout(
-                          sidebarPanel(width = 5,
+                          sidebarPanel(#width = 5,
                             selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5),
                             h4("Resumen:"),
                             verbatimTextOutput("arules_view_text")
                           ),
-                          mainPanel(width = 7,
+                          mainPanel(#width = 7,
                             tabsetPanel(type = "tabs", 
                                         tabPanel("Puntos",plotOutput("arules_view_plot", height = "800px")), 
                                         tabPanel("Grafo", plotOutput("arules_view_graph", height = "800px")),
