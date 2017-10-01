@@ -187,6 +187,40 @@ shinyUI(
                  h3("Paquetes Instalados:"),verbatimTextOutput("cfg_db_summary")
                )
              ))
+    ),
+    tabPanel("Ayuda",
+             navlistPanel(widths = c(3, 9),
+               tabPanel("1.- Introducción",
+                        includeHTML("www/manual/manual_1.html")
+               ),
+               tabPanel("2.- Puesta en Marcha",
+                        includeHTML("www/manual/manual_2.html")
+               ),
+               tabPanel("→ 2.1.- Requisitos Mínimos",
+                        includeHTML("www/manual/manual_2.1.html")
+               ),
+               tabPanel("→ 2.2.- Instalación",
+                        includeHTML("www/manual/manual_2.2.html")
+               ),
+               tabPanel("3.- Manual Operativo",
+                        includeHTML("www/manual/manual_3.html")
+               ),
+               tabPanel("→ 3.1.- Análisis Exploratorio",
+                        includeHTML("www/manual/manual_3.1.html")
+               ),
+               tabPanel("→ 3.2.- Clustering",
+                        includeHTML("www/manual/manual_3.2.html")
+               ),
+               tabPanel("→ 3.3.- Reglas de Asociación",
+                        includeHTML("www/manual/manual_3.3.html")
+               ),               
+               tabPanel("→ 3.4.- Generación de informes",
+                        includeHTML("www/manual/manual_3.4.html")
+               ),
+               tabPanel("→ 3.5.- Actualización de datos",
+                        includeHTML("www/manual/manual_3.5.html")
+               )
+             )
     )
-    
+
   ))
