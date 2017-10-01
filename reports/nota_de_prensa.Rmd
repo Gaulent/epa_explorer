@@ -37,7 +37,7 @@ if(params$underShiny) {
 
 ```
 
-### Tercer trimestre de 2016
+### Ejercicio `r paste((params$ciclo+2)%/%4+1972,(params$ciclo+2)%%4+1,sep = "T")`
 
 #### Principales resultados
 
@@ -79,9 +79,9 @@ for (i in 0:6) {
 }
 
 datos<-round(grafica/1000,digits = 1)
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016")
+nombres = paste((seq(params$ciclo-4*6, params$ciclo, 4)+2)%/%4+1972,(seq(params$ciclo-4*6, params$ciclo, 4)+2)%%4+1,sep = "T")
 colores = c("gold1","gold1","gold1","gold1","gold1","gold1","red3")
-main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del 3er trimestre sobre el 2º del mismo año)"
+main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del trimestre actual sobre el anterior del mismo año)"
 
 ylim <- c(1.2*min(datos), 1.2*max(datos))
 bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=main_text, cex.names=0.75, cex.axis = 0.75,ylim=ylim)
@@ -115,7 +115,7 @@ for (i in 0:12) {
 }
 
 datos<-round(grafica,digits = 2)
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016")
+nombres <- paste((seq(params$ciclo-12, params$ciclo, 1)+2)%/%4+1972,(seq(params$ciclo-12, params$ciclo, 1)+2)%%4+1,sep = "T")
 colores = c("gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","red3")
 main_text = "Evolución del total de ocupados, en tasa anual"
 
@@ -172,9 +172,9 @@ datos_privado<-round(grafica/1000,digits = 1)
 
 
 
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016")
+nombres = paste((seq(params$ciclo-4*6, params$ciclo, 4)+2)%/%4+1972,(seq(params$ciclo-4*6, params$ciclo, 4)+2)%%4+1,sep = "T")
 colores = c("red3","gold1")
-main_text = "Evolución intertrimestral de la ocupación por naturaleza del empleador,\nen miles (variación del 3er trimestre sobre el 2º del mismo año)"
+main_text = "Evolución intertrimestral de la ocupación por naturaleza del empleador,\nen miles (variación del trimestre actual sobre el anterior del mismo año)"
 
 datos <- rbind(datos_publico,datos_privado)
 
@@ -217,7 +217,7 @@ datos_privado<-round(grafica,digits = 2)
 
 
 
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016")
+nombres = paste((seq(params$ciclo-12, params$ciclo, 1)+2)%/%4+1972,(seq(params$ciclo-12, params$ciclo, 1)+2)%%4+1,sep = "T")
 colores = c("red3","gold1")
 main_text = "Evolución de la ocupación por naturaleza del empleador, en tasa anual"
 
@@ -251,9 +251,9 @@ for (i in 0:6) {
 }
 
 datos<-round(grafica/1000,digits = 1)
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016")
+nombres = paste((seq(params$ciclo-4*6, params$ciclo, 4)+2)%/%4+1972,(seq(params$ciclo-4*6, params$ciclo, 4)+2)%%4+1,sep = "T")
 colores = c("gold1","gold1","gold1","gold1","gold1","gold1","red3")
-main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del 3er trimestre sobre el 2º del mismo año)"
+main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del trimestre actual sobre el anterior del mismo año)"
 
 ylim <- c(1.2*min(datos), 1.2*max(datos))
 bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=main_text, cex.names=0.75, cex.axis = 0.75,ylim=ylim)
@@ -295,7 +295,7 @@ for (i in 0:12) {
 }
 
 datos<-round(grafica,digits = 2)
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016")
+nombres = paste((seq(params$ciclo-12, params$ciclo, 1)+2)%/%4+1972,(seq(params$ciclo-12, params$ciclo, 1)+2)%%4+1,sep = "T")
 colores = c("gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","red3")
 main_text = "Evolución del total de ocupados, en tasa anual"
 
@@ -333,9 +333,9 @@ for (i in 0:6) {
 }
 
 datos<-round(grafica/1000,digits = 1)
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016")
+nombres = paste((seq(params$ciclo-4*6, params$ciclo, 4)+2)%/%4+1972,(seq(params$ciclo-4*6, params$ciclo, 4)+2)%%4+1,sep = "T")
 colores = c("gold1","gold1","gold1","gold1","gold1","gold1","red3")
-main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del 3er trimestre sobre el 2º del mismo año)"
+main_text = "Evolución intertrimestral de la ocupación, en miles\n(variación del trimestre actual sobre el anterior del mismo año)"
 
 ylim <- c(1.2*min(datos), 1.6*max(datos))
 bp <- barplot(datos,space=1,names.arg=nombres, col = colores, border=NA, main=main_text, cex.names=0.75, cex.axis = 0.75,ylim=ylim)
@@ -367,7 +367,7 @@ for (i in 0:12) {
 }
 
 datos<-round(grafica,digits = 2)
-nombres = c("T3-2010","T3-2011","T3-2012","T3-2013","T3-2014","T3-2015","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016","T3-2016")
+nombres = paste((seq(params$ciclo-12, params$ciclo, 1)+2)%/%4+1972,(seq(params$ciclo-12, params$ciclo, 1)+2)%%4+1,sep = "T")
 colores = c("gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","gold1","red3")
 main_text = "Evolución del total de ocupados, en tasa anual"
 
