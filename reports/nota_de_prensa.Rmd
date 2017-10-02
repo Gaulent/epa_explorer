@@ -39,31 +39,7 @@ if(params$underShiny) {
 
 ### Ejercicio `r paste((params$ciclo+2)%/%4+1972,(params$ciclo+2)%%4+1,sep = "T")`
 
-#### Principales resultados
-
-* El número de ocupados se incrementa en 226.500 personas en el tercer trimestre de 2016 respecto al trimestre anterior (un 1,24%) y se sitúa en 18.527.500. En términos desestacionalizados la variación trimestral es del 0,77%. El empleo ha crecido en 478.800 personas en los 12 últimos meses. La tasa anual es del 2,65%.
-
-* La ocupación sube este trimestre en 8.900 personas en el sector público y en 217.700 en el privado. En los 12 últimos meses el empleo ha aumentado en 461.300 personas en el sector privado y en 17.500 en el público.
-
-* El total de asalariados crece este tercer trimestre en 216.800 (455.700 en un año). Los asalariados con contrato indefinido descienden en 29.100, y los que tienen contrato temporal aumentan en 245.900. En variación anual, el empleo indefinido se ha incrementado en 213.100 personas y el temporal en 242.600. El número de trabajadores por cuenta propia sube en 10.900 este trimestre, mientras que en los 12 últimos meses ha crecido en 22.500.
-
-* La ocupación aumenta este trimestre en los Servicios (178.700 más), en la Industria (34.200) y en la Construcción (29.900), y desciende en la Agricultura (16.300 menos). En el último año el empleo ha subido en todos los sectores: en los Servicios 407.600 ocupados más, en la Agricultura 34.300, en la Construcción 24.500 y en la Industria 12.400.
-
-* Casi todas las comunidades autónomas aumentan su número de ocupados este trimestre. Los mayores incrementos se dan en Cataluña (42.700 ocupados más), Castilla y León (32.100) e Illes Balears (25.400). El número de ocupados desciende en Región de Murcia en 5.600. En el último año todas las comunidades incrementan su ocupación. Los mayores aumentos se observan en Cataluña (113.100), Andalucía (83.100) y Comunitat Valenciana (58.300).
-
-* El número de parados baja este trimestre en 253.900 personas (-5,55%) y se sitúa en 4.320.800. En términos desestacionalizados la variación trimestral es del -3,03%. En los 12 últimos meses el paro ha disminuido en 530.000 personas (-10,93%).
-
-* La tasa de paro se sitúa en el 18,91%, lo que supone 1,09 puntos menos que en el trimestre anterior. En el último año esta tasa ha descendido en 2,27 puntos.
-
-* Por comunidades, las mayores bajadas del paro este trimestre se dan en Cataluña (51.100 parados menos), Comunidad de Madrid (41.800) y Comunitat Valenciana (29.200). En términos anuales, las mayores reducciones se producen en Andalucía (148.200 menos), Cataluña (107.100) y Comunitat Valenciana (52.200).
-
-* El número de activos desciende este trimestre en 27.300, hasta 22.848.300. La tasa de actividad baja 13 centésimas y se sitúa en el 59,28%. En el último año la población activa ha descendido en 51.200 personas. 
-
 #### Ocupación
-
-El número de ocupados aumenta en 226.500 personas en el tercer trimestre de 2016 y se sitúa en 18.527.500, el nivel más alto desde mediados de 2011. La tasa de variación trimestral del empleo es del 1,24%. El incremento en la ocupación es el más elevado en un tercer trimestre desde 2005.
-
-La tasa de empleo (porcentaje de ocupados respecto de la población de 16 y más años) se sitúa en el 48,07%, lo que supone un incremento de 54 centésimas respecto del trimestre anterior. En variación anual, esta tasa ha subido 1,17 puntos.
 
 ```{r echo=FALSE}
 # Grafica.
@@ -93,13 +69,15 @@ if(params$underShiny) progress$set(0.17, detail = "Parte 1")
 
 ```
 
-Por sexo, el empleo aumenta este trimestre en mayor cuantía entre los hombres (141.700 ocupados más) que entre las mujeres (84.900 ocupadas más).
+[Análisis en números absolutos de ocupación]
 
-Por nacionalidad, la ocupación se incrementa en 196.800 personas entre los españoles y en 29.700 entre los extranjeros.
+[Variación en la tasa de empleo (ocupados respecto de la población de 16 y más años)]
 
-Por edad, el aumento del empleo se produce en la mayoría de los grupos de edad. Los mayores incrementos se observan en los grupos más jóvenes (20-24 años con 62.300 más, 25-29 años con 51.600 y 16-19 con 36.300) y en el grupo de 55 años y más (58.400). La ocupación desciende entre los ocupados de 35-39 años (28.800 menos) y entre los de 45-49 años (15.500 menos).
+[Variación trimestral en ocupación agrupado por sexo.]
 
-En los 12 últimos meses el empleo se ha incrementado en 478.800 personas (216.300 hombres y 262.600 mujeres). La tasa de variación anual de la ocupación es del 2,65%, lo que supone 22 centésimas más que la del trimestre precedente.
+[Variación trimestral en ocupación agrupado por nacionalidad.]
+
+[Variación trimestral en ocupación agrupado por rangos de edades.]
 
 ```{r echo=FALSE}
 # Grafica.
@@ -129,21 +107,9 @@ if(params$underShiny) progress$set(0.26, detail = "Parte 2")
 
 ```
 
-El número de ocupados aumenta este trimestre en los Servicios (178.700 más), en la Industria (34.200) y en la Construcción (29.900) y desciende en la Agricultura (16.300 menos).
+[Variación anual de la ocupación]
 
-En el último año el empleo ha subido en todos los sectores: en los Servicios hay 407.600 ocupados más, en la Agricultura 34.300, en la Construcción 24.500 y en la Industria 12.400.
-
-El empleo a tiempo completo sube este trimestre en 330.500 personas, mientras que el número de ocupados a tiempo parcial baja en 104.000. El porcentaje de personas ocupadas que trabaja a tiempo parcial se reduce 75 centésimas, hasta el 14,56%.
-
-En los 12 últimos meses el empleo a tiempo completo se ha incrementado en 532.100 personas, mientras que el número de ocupados a tiempo parcial ha disminuido en 53.300.
-
-El número de asalariados se incrementa este trimestre en 216.800. Los que tienen contrato indefinido disminuyen en 29.100, mientras que los de contrato temporal aumentan en 245.900. La tasa de temporalidad sube 1,23 centésimas, hasta el 26,96%, la cifra más alta desde finales de 2008.
-
-En los 12 últimos meses el número de asalariados ha subido en 455.700. El empleo indefinido se ha incrementado en 213.100 personas y el temporal en 242.600.
-
-Por su parte, el número total de trabajadores por cuenta propia aumenta en 10.900 personas este trimestre. El de trabajadores independientes y empresarios sin asalariados baja en 9.200, mientras que el de ayudas familiares aumenta en 12.200.
-
-El empleo privado1 sube este trimestre en 217.700 personas, situándose en 15.523.600. El empleo público2 aumenta en 8.900, hasta 3.003.900.
+[Variación anual agrupado por tipo de industria.]
 
 ```{r echo=FALSE}
 # Grafica.
@@ -188,7 +154,13 @@ if(params$underShiny) progress$set(0.35, detail = "Parte 3")
 
 ```
 
-El empleo del sector privado presenta una variación anual del 3,06%, mientras que el empleo público crece un 0,59%. En los 12 últimos meses la ocupación ha aumentado en 461.300 personas en el sector privado y en 17.500 en el público.
+[Variación trimestral en ocupación agrupado por tipo de industria.]
+
+[Variación trimestral en ocupación agrupado por tipo (tiempo completo o parcial).]
+
+[Variación trimestral en ocupación agrupado por contrato (indefinido o temporal).]
+
+[Variación trimestral en ocupación agrupado por empleo público o privado.]
 
 ```{r echo=FALSE}
 # Grafica.
@@ -233,9 +205,13 @@ if(params$underShiny) progress$set(0.43, detail = "Parte 4")
 
 ```
 
-#### Desempleo y tasa de paro
+[Variación anual agrupado por tipo de contrato (tiempo completo o parcial).]
 
-El paro disminuye este trimestre en 253.900 personas. El número total de parados se sitúa en 4.320.800, el nivel más reducido desde el tercer trimestre de 2009. En términos relativos, el descenso trimestral del desempleo es del -5,55%. 
+[Variación anual agrupado por tipo de contrato (indefinido o temporal).]
+
+[Variación anual agrupado por empleo público o privado.]
+
+#### Desempleo y tasa de paro
 
 ```{r echo=FALSE}
 # Grafica.
@@ -265,21 +241,17 @@ if(params$underShiny) progress$set(0.52, detail = "Parte 5")
 
 ```
 
-La tasa de paro disminuye 1,09 puntos y se sitúa en el 18,91%. Es el valor más bajo desde finales de 2009. En los 12 últimos meses ha descendido en 2,27 puntos.
+[Análisis en números absolutos de paro]
 
-Por sexo, entre los hombres el paro se reduce en 120.300, hasta 2.129.400. Entre las mujeres el paro baja en 133.600 este trimestre, situándose en 2.191.400.
+[Variación en la tasa de paro]
 
-La tasa de paro masculina baja 1,01 puntos y se sitúa en el 17,39%, mientras que la femenina se reduce 1,16 puntos, hasta el 20,66%.
+[Variación trimestral en paro agrupado por sexo.]
 
-Por edad, todos los grupos de edad presentan descensos del paro este trimestre. Los mayores se concentran en los tramos de 25-54 años (199.700 parados menos) y de 20-24 años (43.900 menos).
+[Variación trimestral en paro agrupado por nacionalidad.]
 
-Por nacionalidad, el paro baja en 171.900 personas entre los españoles y en 81.900 entre los extranjeros. La tasa de paro de la población española es del 18,13%, mientras que la de la población extranjera es del 24,78%.
+[Variación trimestral en paro agrupado por rangos de edades.]
 
-El desempleo disminuye este trimestre en todos los sectores. En los Servicios en 102.100, en la Agricultura y en la Industria baja en 11.300 personas en cada sector y en la Construcción desciende en 4.000.
-
-El paro se reduce en 123.500 entre las personas que perdieron su empleo hace más de un año y en 1.600 entre las que buscan su primer empleo.
-
-La evolución del paro en variación anual es del -10,93%. La cifra total de desempleados se ha reducido en 530.000 personas en un año, con un descenso de 329.400 en los hombres y de 200.600 entre las mujeres. 
+[Variación trimestral en ocupación agrupado por tipo de industria.]
 
 ```{r echo=FALSE}
 # Grafica.
@@ -309,15 +281,11 @@ if(params$underShiny) progress$set(0.61, detail = "Parte 6")
 
 ```
 
-Por edad, la reducción anual del desempleo se observa en todos los grupos y se concentra en el grupo de personas de 25-54 años (382.600 parados menos).
+[Variación anual de paro]
 
-En los 12 últimos meses el desempleo ha descendido en los Servicios (78.100 parados menos), en la Construcción (22.000) y en la Agricultura (18.000). En la Industria prácticamente no ha habido variación en el último año. Por su parte, el número de parados que ha perdido su empleo hace más de un año ha bajado en 315.500, mientras que el de parados que buscan su primer empleo ha disminuido en 95.700.
+[Variación anual agrupado por tipo de industria.]
 
 #### Población activa y tasa de actividad
-
-La población activa experimenta un descenso de 27.300 personas en el tercer trimestre de 2016 y se sitúa en 22.848.300. El número de mujeres activas baja en 48.700, mientras que el número de hombres activos aumenta en 21.400.
-
-Por nacionalidad, el número de activos españoles aumenta en 24.900, mientras que el de activos extranjeros desciende en 52.200.
 
 ```{r echo=FALSE}
 # Grafica.
@@ -347,11 +315,13 @@ if(params$underShiny) progress$set(0.70, detail = "Parte 7")
 
 ```
 
-La tasa de actividad baja 13 centésimas este trimestre, hasta el 59,28%. Por sexo, la de los hombres se incrementa cinco centésimas y se sitúa en el 65,26%, mientras que la femenina baja 30 centésimas, hasta el 53,61%.
+[Análisis en números absolutos población activa]
 
-La tasa de actividad de los españoles no varía respecto del trimestre anterior y continúa en el 57,90%. La de los extranjeros baja 1,31 puntos, hasta el 72,23%. La diferencia entre ambas tasas se explica, fundamentalmente, por la diferente estructura por edades de unos y otros.
+[Variación de población activa agrupado por sexo.]
 
-En términos anuales, la población activa se ha reducido en 51.200 personas, mientras que la población en edad de trabajar (16-64 años) ha bajado en 102.500. La tasa de variación anual de los activos es del -0,22%, frente al -0,61% del trimestre anterior. 
+[Variación de población activa agrupado por nacionalidad.]
+
+[Análisis en números absolutos población activa]
 
 ```{r echo=FALSE}
 # Grafica.
@@ -381,21 +351,13 @@ if(params$underShiny) progress$set(0.78, detail = "Parte 8")
 
 ```
 
-#### Hogares
+[Variación de tasa de actividad agrupado por sexo.]
 
-El número de hogares se incrementa en 29.600 este trimestre respecto al segundo del año y se sitúa en 18.455.800. De ellos, 4.711.200 son unipersonales.
+[Variación de tasa de actividad agrupado por nacionalidad.]
 
-Los hogares que tienen a todos sus miembros activos en paro disminuyen este trimestre en 55.500, hasta un total de 1.438.300. De ellos, 357.200 son unipersonales.
-
-Por su parte, el número de hogares en los que todos sus miembros activos están ocupados aumenta en 160.800, hasta 9.823.000. De ellos, 1.854.300 son unipersonales.
-
-En comparativa anual, el número de hogares con al menos un activo en los que todos los activos están en paro se ha reducido en 134.700, mientras que los que tienen a todos sus activos ocupados ha crecido en 357.000.
+[Variación anual general de tasa de actividad.]
 
 #### Resultados por comunidades autónomas
-
-Prácticamente todas las comunidades autónomas aumentan su número de ocupados este trimestre. Los mayores incrementos se producen en Cataluña (42.700 más), Castilla y León (32.100) e Illes Balears (25.400). El número de ocupados desciende en Región de Murcia en 5.600.
-
-En términos relativos, las comunidades con mejor evolución trimestral del empleo son Comunidad Foral de Navarra (4,87%), Illes Balears (4,63%) y Cantabria (3,85%). 
 
 ```{r echo=FALSE}
 # Grafica.
@@ -443,9 +405,10 @@ if(params$underShiny) progress$set(0.87, detail = "Parte 9")
 
 ```
 
-En variación anual, todas las comunidades autónomas presentan incrementos de ocupación. Los mayores aumentos se observan en Cataluña (113.100 más), Andalucía (83.100) y Comunitat Valenciana (58.300).
+[Variación trimestral en número de ocupados y tasa de ocupación por comunidades]
 
-En términos relativos, las mayores variaciones anuales de la ocupación se dan en Región de Murcia (5,51%), Cantabria (3,97%) y en Cataluña y País Vasco (3,64% cada una). 
+[Variación trimestral de paro y tasa de paro por comunidades]
+
 
 ```{r echo=FALSE}
 # Grafica.
@@ -490,27 +453,13 @@ if(params$underShiny) progress$set(0.96, detail = "Parte 10")
 
 ```
 
-Las mayores bajadas del paro este trimestre respecto al anterior se dan en Cataluña (51.100 parados menos), Comunidad de Madrid (41.800) y Comunitat Valenciana (29.200). Por el contrario, el paro aumenta este trimestre en Región de Murcia (7.800 parados más) y País Vasco (4.600).
+[Variación anual en número de ocupados y tasa de ocupación por comunidades]
 
-En variación anual, el paro baja en casi todas las comunidades autónomas. Los mayores descensos se dan en Andalucía (148.200 parados menos), Cataluña (107.100) y Comunitat Valenciana (52.200).
+[Variación anual de paro y tasa de paro por comunidades]
 
-Illes Balears (10,60%), Comunidad Foral de Navarra (12,41%) y Cantabria (12,53%) registran las tasas de paro más bajas este trimestre. En el extremo opuesto, Andalucía (28,52%), Canarias (26,01%) y Extremadura (25,61%) presentan las más elevadas.
+#### Principales resultados
 
-Los mayores aumentos del número de activos se dan este trimestre en Comunidad Foral de Navarra (11.500 activos más), País Vasco (11.400) e Illes Balears (11.300). Los mayores descensos se registran en Comunidad de Madrid (39.800 activos menos), Andalucía (18.800) y Cataluña (8.400).
-
-En los 12 últimos meses, País Vasco presenta el mayor incremento del número de activos (25.400 más). Le siguen Comunitat Valenciana, con 6.100 activos más, y Principado de Asturias y Cataluña, con 6.000 más cada una. En cambio, los mayores descensos anuales se dan en Andalucía (65.100 activos menos), Castilla-La Mancha (12.500) y Comunidad de Madrid (11.200).
-
-Las tasas de actividad oscilan este trimestre entre el 67,70% de Illes Balears y el 52,36% de Principado de Asturias. 
-
-#### Resultados EPA por provincias
-
-Se puede acceder al resumen de resultados provinciales de la EPA desde el enlace:
-
-http://www.ine.es/daco/daco42/daco4211/epapro0316.pdf
-
-También se puede acceder a toda la información provincial desde la base de datos INEbase:
-
-http://www.ine.es/dynt3/inebase/index.html?padre=996
+[Recopilacion de las conclusiones mas relevantes de los anteriores puntos.]
 
 ### Nota metodológica
 
