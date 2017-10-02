@@ -219,6 +219,14 @@ shinyUI(
                ),
                tabPanel("→ 3.5.- Actualización de datos",
                         includeHTML("www/manual/manual_3.5.html")
+               ),
+               tabPanel("ANEXO 1.- Descripción de atributos",
+                        includeHTML("www/manual/manual_a1.html"),
+                        tableOutput("help_attr_table")
+               ),
+               tabPanel("ANEXO 2.- Listado de paquetes",
+                        includeHTML("www/manual/manual_a2.html"),
+                        tableOutput("help_pack_table")
                )
              )
     )

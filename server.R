@@ -385,4 +385,18 @@ shinyServer(function(input, output, session) {
     DT::datatable(as(dframe,"data.frame"), extensions = 'Buttons', options = list(pageLength = 100, dom = 'Bfrtip', buttons = c('excel', 'pdf')))
   })
   
+  
+  # Pestaña Help ---------------------------------
+  
+  output$help_attr_table <- renderTable({
+    getSQL("SELECT * FROM list_attrdef")
+  })
+  
+  output$help_pack_table <- renderTable({
+    packinfo <- installed.packages(fields = c("Package", "Version"))
+    packinfo <- packinfo[.packages(),c("Package", "Version", "License", "Built")]
+    packinfo[ order(packinfo[,1]), ]
+  })
+
+  
 })
