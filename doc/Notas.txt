@@ -1,4 +1,18 @@
 
+DEMO:
+
+1.- Actualizar para incluir el trimestre 2017T2.
+
+2.- ¿Distribucion de la cantidad de meses desde la renovacion del contrato?
+    ¿Como varia el numero de horas pactadas por contrato entre hombres y mujeres?
+    ¿Diferencias entre la edad de fin de estudios dependiendo del nivel de estudio?
+
+3.- Dos variables: ¿Comparar Horas pactadas con horas que desearia trabajar?
+
+?.- Generar nota de prensa del periodo 2016T3.
+
+
+
 TODO:
 
 Visualizacion de arules

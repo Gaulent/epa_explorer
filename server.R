@@ -156,7 +156,7 @@ shinyServer(function(input, output, session) {
   
   output$time_plot <- renderPlotly({
     
-    dframe <- na.omit(getData(c(input$time_atributo, "CICLO, FACTOREL"),"CICLO>170", toString = FALSE))
+    dframe <- na.omit(getData(c(input$time_atributo, "CICLO, FACTOREL"),"CICLO>160", toString = FALSE))
     #Traducir los valores
     dframe[1]<-mapToString(dframe[1])
     df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
@@ -226,10 +226,22 @@ shinyServer(function(input, output, session) {
   rv$db_patches<- names(getMapValues("CICLO"))
   
   observeEvent(input$cfg_update_btn,{
+    
+    progress <- shiny::Progress$new()
+    progress$set(message = "Actualización", detail = input$cfg_file, value = 1)
+    
     update_database(input$cfg_file)
     rv$db_patches <- names(getMapValues("CICLO", forceCheck = TRUE))
     updateSelectInput(session, "cfg_file", choices = check_for_updates()$Name)
-    updateSelectInput(session, "single_ciclo",choices = rev(getMapValues("CICLO")[-(1:25)]))
+    updateSelectInput(session, "single_ciclo",choices = rev(getMapValues("CICLO")))
+    updateSelectInput(session, "pair_ciclo",choices = rev(getMapValues("CICLO")))
+    updateSelectInput(session, "multi_ciclo",choices = rev(getMapValues("CICLO")))
+    updateSelectInput(session, "cluster_train_ciclo",choices = rev(getMapValues("CICLO")))
+    updateSelectInput(session, "arules_train_ciclo",choices = rev(getMapValues("CICLO")))
+    updateSelectInput(session, "rpt_ciclo",choices = rev(getMapValues("CICLO")[-(1:25)]))
+    
+    progress$set(detail = "Finalizado")
+    progress$close()
   })
   
   output$cfg_db_summary <- renderPrint({
