@@ -1,4 +1,136 @@
 
+incorporar distintos tipos de discretizado
+considerar el uso de kmedias cuando todos son numericos
+Tabla comparativa de EPA Explorer vs PC-Axis
+Incorporar seleccion de intervalos de ciclo en la representacion por tiempo.
+Multi- poibilidad de exportar los datos de la matriz de la visualizacon
+
+Clusteing:
+Conjuntos para Numericos -> Numero de intervalor
+Revisar las tildes!!!!!
+Bajo numero de intervalos, posibilidad de eleccion de tipo de discretizado. {Igual frecuencia, igal anchura}
+Eleccion de kmeans/kmodes
+
+Visualizacion de clusters, considerar scatering
+
+Clstering: añadir botones para exportar tanto los datos como el resumen
+
+considerar otras visualizaciones de reglas de asociacion.
+moveer la de codigo al finalç
+
+primero funcionalidades, despues tecnologias.
+
+.- EPA EXPLORER - Incluir el logo de la aplicacion
+
+cada salto de seccion poner el indice de nuevo
+
+1.- motivo del proyecto -> objetivo
+
+EPA -> Antecedente
+
+
+
+--> Este proyecto surge por la necesidad particular de un rupo de investigacion del area de economia y empresa de la UCA
+que contactó con mis directores de proecto para conseguir ayuda en la interpretacion y analisis de estos datos.
+
+
+Quitar puntos finales de de la presentacion que esten listados en viñetas
+
+En la 7: Los registros tienen n cantidad de datos, mencional alguno por categorias
+
+Meter 6 y 7 como origen en la seccion de desarrollo
+
+Tecnologias despues
+
+PRevio a la descripcion funcional un indice(resumen) de todos.
+- Actualizacion
+- Exploracion
+- Entrenamiento Clustering / RA
+- Visualizacion Clus / RA
+- Generacion de Informes
+
+
+-> Importacion de datos remotos de las bases de datos del INE.
+  - Acceso directo a la iformacion
+  - Gestion local de archivos.
+CONCLUSION --> Disponiblidad de la ultima actualizacion
+
+--> Analisis Exploratorio de Datos
+ - Seleccion de parametros de visualizacion
+ - Seleccion del tipo de visualizacion
+ - Visualizacion
+
+--> Tecnicas de aprendizaje no supervisados.
+  -> Clustering / Reglqas de Asociacion
+  -> Visualisacion de los resultados
+  -> Exportacion de los resultados
+
+--> Generacion de Informes
+
+--> Requisitos NO FUNCIONALES
+- Accesibilidad
+- Performance
+- Usabilidad
+- 
+
+--> Casos de uso (despues de los requisitos funcionales)
+-- Seleccionar un ejemplo de caso de uso.
+Incluir diagrama de secuencia de ejemplo en el caso de uso.
+--> Despues arquitectura de diseño
+   Modelo vista controlador.
+
+--> Despues de diseño vista controlador meter lo de las tecnologias.
+
+--> Quitar el punto framework Shiny y meterlo junto a tecnologias empleadas.
+
+--> Transparencia de Exportacion, cambiar el icono por uno generico de documento
+ y no word
+
+--------> PRUEBAS
+
+Incorporar seccion de pruebas y validacion.
+
+
+
+Seccion de concluisiones
+--> CONCLUSIONES TECNICAS
+- Se ha presentado EPA Explorer, un programa para procesado, analisis, ...
+- Recuerdo de motivacion: destinado a equipos de investigacion,
+gente que quiera profundizas, etc etc.
+- Interfaz intuitiva, etc
+- Se ha intentado dar un enfoque muy visual que ayude al analisis de los datos.
+
+- Valoracion sobre las tecnologias
+- Valoracion sobre las metodologia, ha sido acertado por que tal
+
+
+--> TRABAJOS FUTUROS
+
+- Inclusion de otros algoritmos de aprendzaje automatico
+Quitar gestion de usuarios.
+- Con la ampliacion de funcionalidades podria ser necesario el llevar una
+  Gestion de procesos en paralelo.
+
+--> VALORACION PERSONA
+
+---> Satisfaccion por los objetivos cumplidos.
+-> Aplicabilidad en el ambito profesional
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+====== VIEJAS =============
 DEMO:
 
 1.- Actualizar para incluir el trimestre 2017T2.

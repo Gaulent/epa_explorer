@@ -99,7 +99,7 @@ shinyUI(
                                  selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
                                  sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
                                  sliderInput("cluster_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
-                                 sliderInput("cluster_train_itermax","Número máximo de iteraciones:", min = 2, max = 10, value = 2),
+                                 sliderInput("cluster_train_itermax","Número máximo de iteraciones:", min = 5, max = 25, value = 10),
                                  actionButton("cluster_train_btn", "Ejecutar!")
                           ),
                           column(width=8,
