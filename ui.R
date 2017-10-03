@@ -225,8 +225,10 @@ shinyUI(
                         tableOutput("help_attr_table")
                ),
                tabPanel("ANEXO 2.- Listado de paquetes",
-                        includeHTML("www/manual/manual_a2.html"),
-                        tableOutput("help_pack_table")
+                        fluidPage(includeHTML("www/manual/manual_a2.html"),
+                        tableOutput("help_pack_table"),
+                        p("Versión de R:"),
+                        wellPanel(R.version.string))
                )
              )
     )
