@@ -1,15 +1,12 @@
-
-incorporar distintos tipos de discretizado
 considerar el uso de kmedias cuando todos son numericos
 Tabla comparativa de EPA Explorer vs PC-Axis
-Incorporar seleccion de intervalos de ciclo en la representacion por tiempo.
+
 Multi- poibilidad de exportar los datos de la matriz de la visualizacon
 
 Clusteing:
 Conjuntos para Numericos -> Numero de intervalor
 Revisar las tildes!!!!!
-Bajo numero de intervalos, posibilidad de eleccion de tipo de discretizado. {Igual frecuencia, igal anchura}
-Eleccion de kmeans/kmodes
+
 
 Visualizacion de clusters, considerar scatering
 

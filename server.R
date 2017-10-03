@@ -154,9 +154,12 @@ shinyServer(function(input, output, session) {
   
   # Pestaña Time ---------------------------------
   
-  output$time_plot <- renderPlotly({
+  time_graph <- eventReactive(input$time_btn, {
+    #progress <- shiny::Progress$new()
+    #progress$set(message = "Recuperando Datos", value = 1)
+    #on.exit(progress$close())
     
-    dframe <- na.omit(getData(c(input$time_atributo, "CICLO, FACTOREL"),"CICLO>160", toString = FALSE))
+    dframe <- na.omit(getData(c(input$time_atributo, "CICLO, FACTOREL"),c("CICLO>=", input$time_ciclo_from, "AND CICLO<=", input$time_ciclo_to), toString = FALSE))
     #Traducir los valores
     dframe[1]<-mapToString(dframe[1])
     df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
@@ -165,6 +168,10 @@ shinyServer(function(input, output, session) {
       geom_area(aes_string(fill = input$time_atributo))
     
     ggplotly(resplot)
+  })
+  
+  output$time_plot <- renderPlotly({
+    time_graph()
   })
   
   # Pestaña Report ---------------------------------
@@ -267,8 +274,13 @@ shinyServer(function(input, output, session) {
     dframe <- as.data.frame(unclass(dframe))
     
     indx <- sapply(dframe, is.numeric)
-    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = input$arules_train_breaks, include.lowest = TRUE, ordered_result = TRUE))
+
+    if(input$arules_cut_type == "Igual Tamaño")
+      dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = input$arules_train_breaks, include.lowest = TRUE, ordered_result = TRUE))
+    else
+      dframe[indx] <- lapply(dframe[indx], function(x) cut2(x,g = input$arules_train_breaks))
     
+        
     #☻sample_df <- dframe[sample.int(nrow(dframe),100000), ]
     
     progress <- shiny::Progress$new()
@@ -328,8 +340,12 @@ shinyServer(function(input, output, session) {
     dframe <- as.data.frame(unclass(dframe))
     
     indx <- sapply(dframe, is.numeric)
-    dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = input$cluster_train_breaks, include.lowest = TRUE, ordered_result = TRUE))
     
+    if(input$cluster_cut_type == "Igual Tamaño")
+      dframe[indx] <- lapply(dframe[indx], function(x) cut(x,breaks = input$cluster_train_breaks, include.lowest = TRUE, ordered_result = TRUE))
+    else
+      dframe[indx] <- lapply(dframe[indx], function(x) cut2(x,g = input$cluster_train_breaks))
+
     dframe <- na.omit(dframe[ sample.int(nrow(dframe),1000), ])
     
     # find association rules with default settings

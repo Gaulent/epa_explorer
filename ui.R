@@ -88,7 +88,18 @@ shinyUI(
                         
                ),
                tabPanel("Evolución Temporal",
-                        wellPanel(selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=FALSE))),
+                        wellPanel(fluidRow(
+                          column(width=3,
+                                 selectInput("time_ciclo_from","Ejercicio Inicial:",choices = rev(getMapValues("CICLO")), selected = rev(getMapValues("CICLO"))[10]),
+                                 actionButton("time_btn", "Ejecutar!")
+                          ),
+                          column(width=3,
+                                 selectInput("time_ciclo_to","Ejercicio Final:",choices = rev(getMapValues("CICLO")))
+                          ),
+                          column(width=6,
+                                 selectInput("time_atributo","Atributo:",choices = getAttrDef("FACTOR", withNone=FALSE))
+                          )
+                        )),
                         plotlyOutput("time_plot")
                )
     ),
@@ -97,9 +108,11 @@ shinyUI(
                         fluidPage(wellPanel(fluidRow(
                           column(width=4,
                                  selectInput("cluster_train_ciclo","Ejercicio:",choices = rev(getMapValues("CICLO"))),
-                                 sliderInput("cluster_train_groups","Numero de Clusters:", min = 1, max = 10, value = 4),
-                                 sliderInput("cluster_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
+                                 sliderInput("cluster_train_groups","Número de Clusters:", min = 1, max = 10, value = 4),
                                  sliderInput("cluster_train_itermax","Número máximo de iteraciones:", min = 5, max = 25, value = 10),
+                                 hr(),
+                                 radioButtons("cluster_cut_type","Tipo de discretizado:",choices = c("Igual Tamaño", "Igual Frecuencia")),
+                                 sliderInput("cluster_train_breaks","Número de intervalos:", min = 2, max = 10, value = 5),
                                  actionButton("cluster_train_btn", "Ejecutar!")
                           ),
                           column(width=8,
@@ -141,7 +154,9 @@ shinyUI(
                                  sliderInput("arules_train_support","Soporte:", min = 0, max = 1, value = 0.1),
                                  sliderInput("arules_train_confidence","Confianza:", min = 0, max = 1, value = 0.7),
                                  sliderInput("arules_train_minlen","Longitud:", min = 1, max = 10, value = c(2,3)),
-                                 sliderInput("arules_train_breaks","Conjuntos para Numericos:", min = 2, max = 10, value = 5),
+                                 hr(),
+                                 radioButtons("arules_cut_type","Tipo de discretizado:",choices = c("Igual Tamaño", "Igual Frecuencia")),
+                                 sliderInput("arules_train_breaks","Número de intervalos:", min = 2, max = 10, value = 5),
                                  actionButton("arules_train_btn", "Ejecutar!")
                           ),
                           column(width=8,
