@@ -165,7 +165,7 @@ shinyServer(function(input, output, session) {
     df<-dframe %>% group_by_(.dots=lapply(c("CICLO",input$time_atributo), as.symbol)) %>% summarise(n=sum(FACTOREL))
     
     resplot <- ggplot(data = df, aes_string(x = "CICLO", y = "n")) +
-      geom_area(aes_string(fill = input$time_atributo))
+      geom_line(aes_string(color = input$time_atributo))
     
     ggplotly(resplot)
   })

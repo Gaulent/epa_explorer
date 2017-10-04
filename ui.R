@@ -81,7 +81,7 @@ shinyUI(
                                  actionButton("multi_btn", "Ejecutar!")
                           ),
                           column(width=8,
-                                 selectizeInput("multi_atributo","Atributos:",choices = getAttrDef(withDesc=FALSE), multiple = TRUE, options = list(maxItems = 8))
+                                 selectizeInput("multi_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8))
                           )
                         )),
                         plotOutput("multi_plot")
@@ -117,7 +117,7 @@ shinyUI(
                           ),
                           column(width=8,
                                  selectizeInput("cluster_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8)),
-                                 h4("Salida del algoritmo:"),
+                                 h4("Salida del algoritmo - Kmodes:"),
                                  h5("Modos"),
                                  verbatimTextOutput("cluster_train_text_modes"),
                                  h5("Tamaños de cluster"),
@@ -130,7 +130,7 @@ shinyUI(
                         fluidPage(sidebarLayout(
                           sidebarPanel(
                             selectInput("cluster_view_file","Fichero:", choices = rev(dir("./model/cluster", pattern="*.rds")), selectize = FALSE, size = 5),
-                            h4("Resumen:"),
+                            h4("Resumen - Kmodes:"),
                             h5("Modos"),
                             verbatimTextOutput("cluster_view_text_modes"),
                             h5("Tamaños de cluster"),
@@ -162,7 +162,7 @@ shinyUI(
                           ),
                           column(width=8,
                                  selectizeInput("arules_train_atributo","Atributos:",choices = getAttrDef(withDesc=TRUE), multiple = TRUE, options = list(maxItems = 8)),
-                                 h4("Salida del algoritmo:"),
+                                 h4("Salida del algoritmo - Apriori:"),
                                  verbatimTextOutput("arules_train_text")
                           )))
                         )),               
@@ -170,7 +170,7 @@ shinyUI(
                         fluidPage(sidebarLayout(
                           sidebarPanel(#width = 5,
                             selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5),
-                            h4("Resumen:"),
+                            h4("Resumen - Apriori:"),
                             verbatimTextOutput("arules_view_text"),
                             downloadButton("arules_downloadData", "Descargar datos")
                           ),
@@ -248,6 +248,6 @@ shinyUI(
                         wellPanel(R.version.string))
                )
              )
-    )
+    ), selected="Ayuda"
 
   ))
