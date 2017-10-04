@@ -323,13 +323,25 @@ shinyServer(function(input, output, session) {
   })
   
   output$arules_view_explore <- DT::renderDataTable({
-    DT::datatable(as(arules_model(),"data.frame"), extensions = 'Buttons', options = list(pageLength = 100, dom = 'Bfrtip', buttons = c('excel', 'pdf')))
+    DT::datatable(as(arules_model(),"data.frame"), options = list(pageLength = 20))
   })
+  
+  output$arules_downloadData <- downloadHandler(
+    filename = function() {
+      paste("arules-data-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv2(as(arules_model(),"data.frame"), file)
+    }
+  )
+  
   
   
   # Pestaña Cluster_Train ---------------------------------
   
   cluster_train_data <- eventReactive(input$cluster_train_btn, {
+    
+    set.seed(12345)
     
     #selected_atributes <- c("CCAA","PROV","EDAD5", "SEXO", "NAC", "MUN", "REGNA", "ECIV", "NFORMA", "CURSR", "CURSNR", "TRAREM", "AOI", "OFEMP")
     selected_atributes <- input$cluster_train_atributo
@@ -346,7 +358,8 @@ shinyServer(function(input, output, session) {
     else
       dframe[indx] <- lapply(dframe[indx], function(x) cut2(x,g = input$cluster_train_breaks))
 
-    dframe <- na.omit(dframe[ sample.int(nrow(dframe),1000), ])
+    dframe <- na.omit(dframe)
+    dframe <- dframe[ sample.int(nrow(dframe),1000), ]
     
     # find association rules with default settings
     
@@ -410,10 +423,19 @@ shinyServer(function(input, output, session) {
   
   output$cluster_view_explore <- DT::renderDataTable({
     dframe <- cbind(CLUSTER = cluster_model()$cluster, cluster_model()$data)
-    DT::datatable(as(dframe,"data.frame"), extensions = 'Buttons', options = list(pageLength = 100, dom = 'Bfrtip', buttons = c('excel', 'pdf')))
+    DT::datatable(as(dframe,"data.frame"), options = list(pageLength = 20))
   })
   
-  
+  output$cluster_downloadData <- downloadHandler(
+    filename = function() {
+      paste("cluster-data-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      dframe <- cbind(CLUSTER = cluster_model()$cluster, cluster_model()$data)
+      write.csv2(dframe, file)
+    }
+  )
+
   # Pestaña Help ---------------------------------
   
   output$help_attr_table <- renderTable({

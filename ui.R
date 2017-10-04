@@ -64,7 +64,7 @@ shinyUI(
                           ),
                           column(width=6,
                                  selectInput("pair_group","Agrupar por:",choices = getAttrDef("FACTOR",withDesc=FALSE, withNone=TRUE)),
-                                 radioButtons("pair_scale","Función de escalado:",choices = c("Ninguna"="none", "Raiz cuadrada"="SQRT")),
+                                 radioButtons("pair_scale","Función de escalado:",choices = c("Ninguna"="none", "Raíz cuadrada"="SQRT")),
                                  checkboxInput("pair_add_jitter", "Jitter"),
                                  checkboxInput("pair_add_mean", "Incluir Media"),
                                  checkboxInput("pair_add_10perc", "Incluir Percentil 10"),
@@ -136,7 +136,8 @@ shinyUI(
                             h5("Tamaños de cluster"),
                             verbatimTextOutput("cluster_view_text_size"),
                             h5("Distancia interna de cluster"),
-                            verbatimTextOutput("cluster_view_text_withindiff")
+                            verbatimTextOutput("cluster_view_text_withindiff"),
+                            downloadButton("cluster_downloadData", "Descargar datos")
                           ),
                           mainPanel(
                             tabsetPanel(type = "tabs", 
@@ -170,7 +171,8 @@ shinyUI(
                           sidebarPanel(#width = 5,
                             selectInput("arules_view_file","Fichero:", choices = rev(dir("./model/arules", pattern="*.rds")), selectize = FALSE, size = 5),
                             h4("Resumen:"),
-                            verbatimTextOutput("arules_view_text")
+                            verbatimTextOutput("arules_view_text"),
+                            downloadButton("arules_downloadData", "Descargar datos")
                           ),
                           mainPanel(#width = 7,
                             tabsetPanel(type = "tabs", 
