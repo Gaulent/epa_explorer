@@ -20,14 +20,13 @@ Dicha herramienta será visual, amigable y fácil de usar. Estará basada en la 
 * Version
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
-## How do I get set up? ##
+## INSTRUCCIONES DE INSTALACIÓN ##
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Instalación de R. (Se distribuye versión Windows. Otros OS disponibles en https://cran.r-project.org/)
+* Instalación de RStudio. (Se distribuye versión Windows. Otros OS disponibles en https://www.rstudio.com/products/rstudio/download/)
+* En RStudio: File -> Open Project
+* Seleccionar el fichero epa_explorer.Rproj de la carpeta seleccionada.
+* Una vez cargado el proyecto, ejecutarlo con la opción "Run Shiny App"
 
 ## Contribution guidelines ##
 
